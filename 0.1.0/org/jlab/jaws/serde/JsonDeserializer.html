@@ -119,7 +119,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li>java.lang.Object</li>
+<li><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">java.lang.Object</a></li>
 <li>
 <ul class="inheritance">
 <li>org.jlab.jaws.serde.JsonDeserializer&lt;T&gt;</li>
@@ -130,13 +130,18 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <dl>
+<dt><span class="paramLabel">Type Parameters:</span></dt>
+<dd><code>T</code> - The object type</dd>
+</dl>
+<dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code>java.io.Closeable</code>, <code>java.lang.AutoCloseable</code>, <code>org.apache.kafka.common.serialization.Deserializer&lt;T&gt;</code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Closeable.html?is-external=true" title="class or interface in java.io" class="externalLink">Closeable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/AutoCloseable.html?is-external=true" title="class or interface in java.lang" class="externalLink">AutoCloseable</a></code>, <code>org.apache.kafka.common.serialization.Deserializer&lt;T&gt;</code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">JsonDeserializer&lt;T&gt;</span>
-extends java.lang.Object
+extends <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>
 implements org.apache.kafka.common.serialization.Deserializer&lt;T&gt;</pre>
+<div class="block">A Kafka Deserializer for mapping JSON to a Java object.</div>
 </li>
 </ul>
 </div>
@@ -157,7 +162,7 @@ implements org.apache.kafka.common.serialization.Deserializer&lt;T&gt;</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.Class)">JsonDeserializer</a></span>&#8203;(java.lang.Class&lt;<a href="JsonDeserializer.html" title="type parameter in JsonDeserializer">T</a>&gt;&nbsp;tClass)</code></th>
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.Class)">JsonDeserializer</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html?is-external=true" title="class or interface in java.lang" class="externalLink">Class</a>&lt;<a href="JsonDeserializer.html" title="type parameter in JsonDeserializer">T</a>&gt;&nbsp;tClass)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
@@ -185,13 +190,13 @@ implements org.apache.kafka.common.serialization.Deserializer&lt;T&gt;</pre>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#configure(java.util.Map,boolean)">configure</a></span>&#8203;(java.util.Map&lt;java.lang.String,&#8203;?&gt;&nbsp;props,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#configure(java.util.Map,boolean)">configure</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Map.html?is-external=true" title="class or interface in java.util" class="externalLink">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>,&#8203;?&gt;&nbsp;props,
          boolean&nbsp;isKey)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="JsonDeserializer.html" title="type parameter in JsonDeserializer">T</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deserialize(java.lang.String,byte%5B%5D)">deserialize</a></span>&#8203;(java.lang.String&nbsp;topic,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deserialize(java.lang.String,byte%5B%5D)">deserialize</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;topic,
            byte[]&nbsp;bytes)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
@@ -200,8 +205,8 @@ implements org.apache.kafka.common.serialization.Deserializer&lt;T&gt;</pre>
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;java.lang.Object</h3>
-<code>clone, equals, finalize, getClass, hashCode, notify, notifyAll, toString, wait, wait, wait</code></li>
+<h3>Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a></h3>
+<code><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang" class="externalLink">clone</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink">equals</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang" class="externalLink">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang" class="externalLink">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang" class="externalLink">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang" class="externalLink">notify</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang" class="externalLink">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html?is-external=true#toString()" title="class or interface in java.lang" class="externalLink">toString</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang" class="externalLink">wait</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang" class="externalLink">wait</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html?is-external=true#wait(long,int)" title="class or interface in java.lang" class="externalLink">wait</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.org.apache.kafka.common.serialization.Deserializer">
@@ -232,7 +237,7 @@ implements org.apache.kafka.common.serialization.Deserializer&lt;T&gt;</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>JsonDeserializer</h4>
-<pre>public&nbsp;JsonDeserializer&#8203;(java.lang.Class&lt;<a href="JsonDeserializer.html" title="type parameter in JsonDeserializer">T</a>&gt;&nbsp;tClass)</pre>
+<pre>public&nbsp;JsonDeserializer&#8203;(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html?is-external=true" title="class or interface in java.lang" class="externalLink">Class</a>&lt;<a href="JsonDeserializer.html" title="type parameter in JsonDeserializer">T</a>&gt;&nbsp;tClass)</pre>
 </li>
 </ul>
 </li>
@@ -251,7 +256,7 @@ implements org.apache.kafka.common.serialization.Deserializer&lt;T&gt;</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>configure</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;configure&#8203;(java.util.Map&lt;java.lang.String,&#8203;?&gt;&nbsp;props,
+<pre class="methodSignature">public&nbsp;void&nbsp;configure&#8203;(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Map.html?is-external=true" title="class or interface in java.util" class="externalLink">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>,&#8203;?&gt;&nbsp;props,
                       boolean&nbsp;isKey)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -265,7 +270,7 @@ implements org.apache.kafka.common.serialization.Deserializer&lt;T&gt;</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>deserialize</h4>
-<pre class="methodSignature">public&nbsp;<a href="JsonDeserializer.html" title="type parameter in JsonDeserializer">T</a>&nbsp;deserialize&#8203;(java.lang.String&nbsp;topic,
+<pre class="methodSignature">public&nbsp;<a href="JsonDeserializer.html" title="type parameter in JsonDeserializer">T</a>&nbsp;deserialize&#8203;(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;topic,
                      byte[]&nbsp;bytes)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -282,9 +287,9 @@ implements org.apache.kafka.common.serialization.Deserializer&lt;T&gt;</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;close()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>close</code>&nbsp;in interface&nbsp;<code>java.lang.AutoCloseable</code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/AutoCloseable.html?is-external=true#close()" title="class or interface in java.lang" class="externalLink">close</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/AutoCloseable.html?is-external=true" title="class or interface in java.lang" class="externalLink">AutoCloseable</a></code></dd>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>close</code>&nbsp;in interface&nbsp;<code>java.io.Closeable</code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Closeable.html?is-external=true#close()" title="class or interface in java.io" class="externalLink">close</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Closeable.html?is-external=true" title="class or interface in java.io" class="externalLink">Closeable</a></code></dd>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>close</code>&nbsp;in interface&nbsp;<code>org.apache.kafka.common.serialization.Deserializer&lt;<a href="JsonDeserializer.html" title="type parameter in JsonDeserializer">T</a>&gt;</code></dd>
 </dl>

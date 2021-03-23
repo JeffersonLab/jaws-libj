@@ -138,15 +138,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>&nbsp;</dd>
 <dt><a href="org/jlab/jaws/entity/AlarmCategory.html" title="enum in org.jlab.jaws.entity"><span class="typeNameLink">AlarmCategory</span></a> - Enum in <a href="org/jlab/jaws/entity/package-summary.html">org.jlab.jaws.entity</a></dt>
 <dd>
-<div class="block">The alarm category, useful for consumers to filter out alarms of interest</div>
+<div class="block">Enumeration of possible categories; useful for consumers to filter out alarms of interest</div>
 </dd>
 <dt><a href="org/jlab/jaws/entity/AlarmLocation.html" title="enum in org.jlab.jaws.entity"><span class="typeNameLink">AlarmLocation</span></a> - Enum in <a href="org/jlab/jaws/entity/package-summary.html">org.jlab.jaws.entity</a></dt>
 <dd>
-<div class="block">The alarm location</div>
+<div class="block">Enumeration of possible locations</div>
 </dd>
 <dt><a href="org/jlab/jaws/entity/AlarmPriority.html" title="enum in org.jlab.jaws.entity"><span class="typeNameLink">AlarmPriority</span></a> - Enum in <a href="org/jlab/jaws/entity/package-summary.html">org.jlab.jaws.entity</a></dt>
 <dd>
-<div class="block">The alarm priority, useful for operators to know which alarms to handle first</div>
+<div class="block">Enumeration of possible priorities; useful for operators to know which alarms to handle first</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/jlab/jaws/entity/AlarmCategory.html#Aperture">Aperture</a></span> - org.jlab.jaws.entity.<a href="org/jlab/jaws/entity/AlarmCategory.html" title="enum in org.jlab.jaws.entity">AlarmCategory</a></dt>
 <dd>&nbsp;</dd>
@@ -221,7 +221,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/jlab/jaws/entity/StatEnum.html#CALC">CALC</a></span> - org.jlab.jaws.entity.<a href="org/jlab/jaws/entity/StatEnum.html" title="enum in org.jlab.jaws.entity">StatEnum</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/jlab/jaws/entity/CALCProducer.html" title="class in org.jlab.jaws.entity"><span class="typeNameLink">CALCProducer</span></a> - Class in <a href="org/jlab/jaws/entity/package-summary.html">org.jlab.jaws.entity</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Alarm producer which uses CALC-like expressions</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/jlab/jaws/entity/CALCProducer.html#%3Cinit%3E()">CALCProducer()</a></span> - Constructor for class org.jlab.jaws.entity.<a href="org/jlab/jaws/entity/CALCProducer.html" title="class in org.jlab.jaws.entity">CALCProducer</a></dt>
 <dd>
 <div class="block">Default constructor.</div>
@@ -573,7 +575,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">RecordBuilder for EPICSAlarming instances.</div>
 </dd>
 <dt><a href="org/jlab/jaws/entity/EPICSProducer.html" title="class in org.jlab.jaws.entity"><span class="typeNameLink">EPICSProducer</span></a> - Class in <a href="org/jlab/jaws/entity/package-summary.html">org.jlab.jaws.entity</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Alarm producer which sources alarms from EPICS</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/jlab/jaws/entity/EPICSProducer.html#%3Cinit%3E()">EPICSProducer()</a></span> - Constructor for class org.jlab.jaws.entity.<a href="org/jlab/jaws/entity/EPICSProducer.html" title="class in org.jlab.jaws.entity">EPICSProducer</a></dt>
 <dd>
 <div class="block">Default constructor.</div>
@@ -601,17 +605,26 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/jlab/jaws/eventsource/EventSourceConfig.html#EVENT_SOURCE_VALUE_DESERIALIZER">EVENT_SOURCE_VALUE_DESERIALIZER</a></span> - Static variable in class org.jlab.jaws.eventsource.<a href="org/jlab/jaws/eventsource/EventSourceConfig.html" title="class in org.jlab.jaws.eventsource">EventSourceConfig</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/jlab/jaws/eventsource/EventSourceConfig.html" title="class in org.jlab.jaws.eventsource"><span class="typeNameLink">EventSourceConfig</span></a> - Class in <a href="org/jlab/jaws/eventsource/package-summary.html">org.jlab.jaws.eventsource</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Configuration required to run an EventSourceTable.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/jlab/jaws/eventsource/EventSourceConfig.html#%3Cinit%3E(java.util.Map)">EventSourceConfig(Map)</a></span> - Constructor for class org.jlab.jaws.eventsource.<a href="org/jlab/jaws/eventsource/EventSourceConfig.html" title="class in org.jlab.jaws.eventsource">EventSourceConfig</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/jlab/jaws/eventsource/EventSourceListener.html" title="interface in org.jlab.jaws.eventsource"><span class="typeNameLink">EventSourceListener</span></a>&lt;<a href="org/jlab/jaws/eventsource/EventSourceListener.html" title="type parameter in EventSourceListener">K</a>,&#8203;<a href="org/jlab/jaws/eventsource/EventSourceListener.html" title="type parameter in EventSourceListener">V</a>&gt; - Interface in <a href="org/jlab/jaws/eventsource/package-summary.html">org.jlab.jaws.eventsource</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">An EventSourceListener can be registered to receive batch-processing call-backs from
+ an EventSourceTable.</div>
+</dd>
 <dt><a href="org/jlab/jaws/eventsource/EventSourceRecord.html" title="class in org.jlab.jaws.eventsource"><span class="typeNameLink">EventSourceRecord</span></a>&lt;<a href="org/jlab/jaws/eventsource/EventSourceRecord.html" title="type parameter in EventSourceRecord">K</a>,&#8203;<a href="org/jlab/jaws/eventsource/EventSourceRecord.html" title="type parameter in EventSourceRecord">V</a>&gt; - Class in <a href="org/jlab/jaws/eventsource/package-summary.html">org.jlab.jaws.eventsource</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">A Record in the EventSourceTable.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/jlab/jaws/eventsource/EventSourceRecord.html#%3Cinit%3E(K,V)">EventSourceRecord(K, V)</a></span> - Constructor for class org.jlab.jaws.eventsource.<a href="org/jlab/jaws/eventsource/EventSourceRecord.html" title="class in org.jlab.jaws.eventsource">EventSourceRecord</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/jlab/jaws/eventsource/EventSourceTable.html" title="class in org.jlab.jaws.eventsource"><span class="typeNameLink">EventSourceTable</span></a>&lt;<a href="org/jlab/jaws/eventsource/EventSourceTable.html" title="type parameter in EventSourceTable">K</a>,&#8203;<a href="org/jlab/jaws/eventsource/EventSourceTable.html" title="type parameter in EventSourceTable">V</a>&gt; - Class in <a href="org/jlab/jaws/eventsource/package-summary.html">org.jlab.jaws.eventsource</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">An interface to Apache Kafka that models a topic as a database table.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/jlab/jaws/eventsource/EventSourceTable.html#%3Cinit%3E(java.util.Properties)">EventSourceTable(Properties)</a></span> - Constructor for class org.jlab.jaws.eventsource.<a href="org/jlab/jaws/eventsource/EventSourceTable.html" title="class in org.jlab.jaws.eventsource">EventSourceTable</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/jlab/jaws/entity/OffDelayedAlarm.html#expiration">expiration</a></span> - Variable in class org.jlab.jaws.entity.<a href="org/jlab/jaws/entity/OffDelayedAlarm.html" title="class in org.jlab.jaws.entity">OffDelayedAlarm</a></dt>
@@ -1475,11 +1488,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h2 class="title">J</h2>
 <dl>
 <dt><a href="org/jlab/jaws/serde/JsonDeserializer.html" title="class in org.jlab.jaws.serde"><span class="typeNameLink">JsonDeserializer</span></a>&lt;<a href="org/jlab/jaws/serde/JsonDeserializer.html" title="type parameter in JsonDeserializer">T</a>&gt; - Class in <a href="org/jlab/jaws/serde/package-summary.html">org.jlab.jaws.serde</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">A Kafka Deserializer for mapping JSON to a Java object.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/jlab/jaws/serde/JsonDeserializer.html#%3Cinit%3E(java.lang.Class)">JsonDeserializer(Class&lt;T&gt;)</a></span> - Constructor for class org.jlab.jaws.serde.<a href="org/jlab/jaws/serde/JsonDeserializer.html" title="class in org.jlab.jaws.serde">JsonDeserializer</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/jlab/jaws/serde/JsonSerializer.html" title="class in org.jlab.jaws.serde"><span class="typeNameLink">JsonSerializer</span></a>&lt;<a href="org/jlab/jaws/serde/JsonSerializer.html" title="type parameter in JsonSerializer">T</a>&gt; - Class in <a href="org/jlab/jaws/serde/package-summary.html">org.jlab.jaws.serde</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">A Kafka Serializer for mapping a Java object to JSON.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/jlab/jaws/serde/JsonSerializer.html#%3Cinit%3E()">JsonSerializer()</a></span> - Constructor for class org.jlab.jaws.serde.<a href="org/jlab/jaws/serde/JsonSerializer.html" title="class in org.jlab.jaws.serde">JsonSerializer</a></dt>
 <dd>&nbsp;</dd>
 </dl>
@@ -1869,15 +1886,23 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
 </dd>
 <dt><a href="org/jlab/jaws/entity/package-summary.html">org.jlab.jaws.entity</a> - package org.jlab.jaws.entity</dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Provides AVRO generated entity classes.</div>
+</dd>
 <dt><a href="org/jlab/jaws/eventsource/package-summary.html">org.jlab.jaws.eventsource</a> - package org.jlab.jaws.eventsource</dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Provides Event Source classes.</div>
+</dd>
 <dt><a href="org/jlab/jaws/serde/package-summary.html">org.jlab.jaws.serde</a> - package org.jlab.jaws.serde</dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Provides serialization and deserialization classes.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/jlab/jaws/entity/ShelvedAlarmReason.html#Other">Other</a></span> - org.jlab.jaws.entity.<a href="org/jlab/jaws/entity/ShelvedAlarmReason.html" title="enum in org.jlab.jaws.entity">ShelvedAlarmReason</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/jlab/jaws/entity/OverriddenAlarmKey.html" title="class in org.jlab.jaws.entity"><span class="typeNameLink">OverriddenAlarmKey</span></a> - Class in <a href="org/jlab/jaws/entity/package-summary.html">org.jlab.jaws.entity</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Key of an overridden alarm; contains both name and type since any given alarm name can be overridden by multiple types simultaneously</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/jlab/jaws/entity/OverriddenAlarmKey.html#%3Cinit%3E()">OverriddenAlarmKey()</a></span> - Constructor for class org.jlab.jaws.entity.<a href="org/jlab/jaws/entity/OverriddenAlarmKey.html" title="class in org.jlab.jaws.entity">OverriddenAlarmKey</a></dt>
 <dd>
 <div class="block">Default constructor.</div>
@@ -2037,7 +2062,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
 </dd>
 <dt><a href="org/jlab/jaws/entity/RegisteredAlarm.html" title="class in org.jlab.jaws.entity"><span class="typeNameLink">RegisteredAlarm</span></a> - Class in <a href="org/jlab/jaws/entity/package-summary.html">org.jlab.jaws.entity</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Master alarm database record</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/jlab/jaws/entity/RegisteredAlarm.html#%3Cinit%3E()">RegisteredAlarm()</a></span> - Constructor for class org.jlab.jaws.entity.<a href="org/jlab/jaws/entity/RegisteredAlarm.html" title="class in org.jlab.jaws.entity">RegisteredAlarm</a></dt>
 <dd>
 <div class="block">Default constructor.</div>
@@ -2379,7 +2406,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/jlab/jaws/entity/OverriddenAlarmType.html#Shelved">Shelved</a></span> - org.jlab.jaws.entity.<a href="org/jlab/jaws/entity/OverriddenAlarmType.html" title="enum in org.jlab.jaws.entity">OverriddenAlarmType</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/jlab/jaws/entity/ShelvedAlarm.html" title="class in org.jlab.jaws.entity"><span class="typeNameLink">ShelvedAlarm</span></a> - Class in <a href="org/jlab/jaws/entity/package-summary.html">org.jlab.jaws.entity</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">A temporarily suppressed alarm override</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/jlab/jaws/entity/ShelvedAlarm.html#%3Cinit%3E()">ShelvedAlarm()</a></span> - Constructor for class org.jlab.jaws.entity.<a href="org/jlab/jaws/entity/ShelvedAlarm.html" title="class in org.jlab.jaws.entity">ShelvedAlarm</a></dt>
 <dd>
 <div class="block">Default constructor.</div>
@@ -2409,7 +2438,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">RecordBuilder for SimpleAlarming instances.</div>
 </dd>
 <dt><a href="org/jlab/jaws/entity/SimpleProducer.html" title="class in org.jlab.jaws.entity"><span class="typeNameLink">SimpleProducer</span></a> - Class in <a href="org/jlab/jaws/entity/package-summary.html">org.jlab.jaws.entity</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Alarm producer which has no specific source</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/jlab/jaws/entity/SimpleProducer.html#%3Cinit%3E()">SimpleProducer()</a></span> - Constructor for class org.jlab.jaws.entity.<a href="org/jlab/jaws/entity/SimpleProducer.html" title="class in org.jlab.jaws.entity">SimpleProducer</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/jlab/jaws/entity/SimpleProducer.Builder.html" title="class in org.jlab.jaws.entity"><span class="typeNameLink">SimpleProducer.Builder</span></a> - Class in <a href="org/jlab/jaws/entity/package-summary.html">org.jlab.jaws.entity</a></dt>

@@ -95,6 +95,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h1 title="Package" class="title">Package&nbsp;org.jlab.jaws.entity</h1>
 </div>
 <div class="contentContainer">
+<section role="region"><a id="package.description">
+<!--   -->
+</a>
+<div class="block">Provides AVRO generated entity classes.</div>
+</section>
 <ul class="blockList">
 <li class="blockList">
 <table class="typeSummary">
@@ -118,7 +123,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr class="altColor">
 <th class="colFirst" scope="row"><a href="CALCProducer.html" title="class in org.jlab.jaws.entity">CALCProducer</a></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Alarm producer which uses CALC-like expressions</div>
+</td>
 </tr>
 <tr class="rowColor">
 <th class="colFirst" scope="row"><a href="CALCProducer.Builder.html" title="class in org.jlab.jaws.entity">CALCProducer.Builder</a></th>
@@ -152,7 +159,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr class="altColor">
 <th class="colFirst" scope="row"><a href="EPICSProducer.html" title="class in org.jlab.jaws.entity">EPICSProducer</a></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Alarm producer which sources alarms from EPICS</div>
+</td>
 </tr>
 <tr class="rowColor">
 <th class="colFirst" scope="row"><a href="EPICSProducer.Builder.html" title="class in org.jlab.jaws.entity">EPICSProducer.Builder</a></th>
@@ -234,7 +243,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr class="altColor">
 <th class="colFirst" scope="row"><a href="OverriddenAlarmKey.html" title="class in org.jlab.jaws.entity">OverriddenAlarmKey</a></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Key of an overridden alarm; contains both name and type since any given alarm name can be overridden by multiple types simultaneously</div>
+</td>
 </tr>
 <tr class="rowColor">
 <th class="colFirst" scope="row"><a href="OverriddenAlarmKey.Builder.html" title="class in org.jlab.jaws.entity">OverriddenAlarmKey.Builder</a></th>
@@ -256,7 +267,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr class="altColor">
 <th class="colFirst" scope="row"><a href="RegisteredAlarm.html" title="class in org.jlab.jaws.entity">RegisteredAlarm</a></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Master alarm database record</div>
+</td>
 </tr>
 <tr class="rowColor">
 <th class="colFirst" scope="row"><a href="RegisteredAlarm.Builder.html" title="class in org.jlab.jaws.entity">RegisteredAlarm.Builder</a></th>
@@ -266,7 +279,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr class="altColor">
 <th class="colFirst" scope="row"><a href="ShelvedAlarm.html" title="class in org.jlab.jaws.entity">ShelvedAlarm</a></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">A temporarily suppressed alarm override</div>
+</td>
 </tr>
 <tr class="rowColor">
 <th class="colFirst" scope="row"><a href="ShelvedAlarm.Builder.html" title="class in org.jlab.jaws.entity">ShelvedAlarm.Builder</a></th>
@@ -288,7 +303,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr class="altColor">
 <th class="colFirst" scope="row"><a href="SimpleProducer.html" title="class in org.jlab.jaws.entity">SimpleProducer</a></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Alarm producer which has no specific source</div>
+</td>
 </tr>
 <tr class="rowColor">
 <th class="colFirst" scope="row"><a href="SimpleProducer.Builder.html" title="class in org.jlab.jaws.entity">SimpleProducer.Builder</a></th>
@@ -310,19 +327,19 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr class="altColor">
 <th class="colFirst" scope="row"><a href="AlarmCategory.html" title="enum in org.jlab.jaws.entity">AlarmCategory</a></th>
 <td class="colLast">
-<div class="block">The alarm category, useful for consumers to filter out alarms of interest</div>
+<div class="block">Enumeration of possible categories; useful for consumers to filter out alarms of interest</div>
 </td>
 </tr>
 <tr class="rowColor">
 <th class="colFirst" scope="row"><a href="AlarmLocation.html" title="enum in org.jlab.jaws.entity">AlarmLocation</a></th>
 <td class="colLast">
-<div class="block">The alarm location</div>
+<div class="block">Enumeration of possible locations</div>
 </td>
 </tr>
 <tr class="altColor">
 <th class="colFirst" scope="row"><a href="AlarmPriority.html" title="enum in org.jlab.jaws.entity">AlarmPriority</a></th>
 <td class="colLast">
-<div class="block">The alarm priority, useful for operators to know which alarms to handle first</div>
+<div class="block">Enumeration of possible priorities; useful for operators to know which alarms to handle first</div>
 </td>
 </tr>
 <tr class="rowColor">

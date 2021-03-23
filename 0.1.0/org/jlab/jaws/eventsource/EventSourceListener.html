@@ -121,8 +121,16 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
+<dl>
+<dt><span class="paramLabel">Type Parameters:</span></dt>
+<dd><code>K</code> - The type for message keys</dd>
+<dd><code>V</code> - The type for message values</dd>
+</dl>
 <hr>
 <pre>public interface <span class="typeNameLabel">EventSourceListener&lt;K,&#8203;V&gt;</span></pre>
+<div class="block">An EventSourceListener can be registered to receive batch-processing call-backs from
+ an EventSourceTable.  The first call-back is always the initial state of
+ the database (up to the high water mark).</div>
 </li>
 </ul>
 </div>
@@ -145,7 +153,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#update(java.util.List)">update</a></span>&#8203;(java.util.List&lt;<a href="EventSourceRecord.html" title="class in org.jlab.jaws.eventsource">EventSourceRecord</a>&lt;<a href="EventSourceListener.html" title="type parameter in EventSourceListener">K</a>,&#8203;<a href="EventSourceListener.html" title="type parameter in EventSourceListener">V</a>&gt;&gt;&nbsp;changes)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#update(java.util.List)">update</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html?is-external=true" title="class or interface in java.util" class="externalLink">List</a>&lt;<a href="EventSourceRecord.html" title="class in org.jlab.jaws.eventsource">EventSourceRecord</a>&lt;<a href="EventSourceListener.html" title="type parameter in EventSourceListener">K</a>,&#8203;<a href="EventSourceListener.html" title="type parameter in EventSourceListener">V</a>&gt;&gt;&nbsp;changes)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
@@ -171,7 +179,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockListLast">
 <li class="blockList">
 <h4>update</h4>
-<pre class="methodSignature">void&nbsp;update&#8203;(java.util.List&lt;<a href="EventSourceRecord.html" title="class in org.jlab.jaws.eventsource">EventSourceRecord</a>&lt;<a href="EventSourceListener.html" title="type parameter in EventSourceListener">K</a>,&#8203;<a href="EventSourceListener.html" title="type parameter in EventSourceListener">V</a>&gt;&gt;&nbsp;changes)</pre>
+<pre class="methodSignature">void&nbsp;update&#8203;(<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html?is-external=true" title="class or interface in java.util" class="externalLink">List</a>&lt;<a href="EventSourceRecord.html" title="class in org.jlab.jaws.eventsource">EventSourceRecord</a>&lt;<a href="EventSourceListener.html" title="type parameter in EventSourceListener">K</a>,&#8203;<a href="EventSourceListener.html" title="type parameter in EventSourceListener">V</a>&gt;&gt;&nbsp;changes)</pre>
 </li>
 </ul>
 </li>

@@ -124,24 +124,26 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i2" class="altColor">
 <td class="colFirst"><a href="org/jlab/jaws/entity/AlarmCategory.html" title="enum in org.jlab.jaws.entity">AlarmCategory</a></td>
 <th class="colLast" scope="row">
-<div class="block">The alarm category, useful for consumers to filter out alarms of interest</div>
+<div class="block">Enumeration of possible categories; useful for consumers to filter out alarms of interest</div>
 </th>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><a href="org/jlab/jaws/entity/AlarmLocation.html" title="enum in org.jlab.jaws.entity">AlarmLocation</a></td>
 <th class="colLast" scope="row">
-<div class="block">The alarm location</div>
+<div class="block">Enumeration of possible locations</div>
 </th>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><a href="org/jlab/jaws/entity/AlarmPriority.html" title="enum in org.jlab.jaws.entity">AlarmPriority</a></td>
 <th class="colLast" scope="row">
-<div class="block">The alarm priority, useful for operators to know which alarms to handle first</div>
+<div class="block">Enumeration of possible priorities; useful for operators to know which alarms to handle first</div>
 </th>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><a href="org/jlab/jaws/entity/CALCProducer.html" title="class in org.jlab.jaws.entity">CALCProducer</a></td>
-<th class="colLast" scope="row">&nbsp;</th>
+<th class="colLast" scope="row">
+<div class="block">Alarm producer which uses CALC-like expressions</div>
+</th>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><a href="org/jlab/jaws/entity/CALCProducer.Builder.html" title="class in org.jlab.jaws.entity">CALCProducer.Builder</a></td>
@@ -175,7 +177,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><a href="org/jlab/jaws/entity/EPICSProducer.html" title="class in org.jlab.jaws.entity">EPICSProducer</a></td>
-<th class="colLast" scope="row">&nbsp;</th>
+<th class="colLast" scope="row">
+<div class="block">Alarm producer which sources alarms from EPICS</div>
+</th>
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><a href="org/jlab/jaws/entity/EPICSProducer.Builder.html" title="class in org.jlab.jaws.entity">EPICSProducer.Builder</a></td>
@@ -185,19 +189,28 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><a href="org/jlab/jaws/eventsource/EventSourceConfig.html" title="class in org.jlab.jaws.eventsource">EventSourceConfig</a></td>
-<th class="colLast" scope="row">&nbsp;</th>
+<th class="colLast" scope="row">
+<div class="block">Configuration required to run an EventSourceTable.</div>
+</th>
 </tr>
 <tr id="i14" class="altColor">
 <td class="colFirst"><a href="org/jlab/jaws/eventsource/EventSourceListener.html" title="interface in org.jlab.jaws.eventsource">EventSourceListener</a>&lt;<a href="org/jlab/jaws/eventsource/EventSourceListener.html" title="type parameter in EventSourceListener">K</a>,&#8203;<a href="org/jlab/jaws/eventsource/EventSourceListener.html" title="type parameter in EventSourceListener">V</a>&gt;</td>
-<th class="colLast" scope="row">&nbsp;</th>
+<th class="colLast" scope="row">
+<div class="block">An EventSourceListener can be registered to receive batch-processing call-backs from
+ an EventSourceTable.</div>
+</th>
 </tr>
 <tr id="i15" class="rowColor">
 <td class="colFirst"><a href="org/jlab/jaws/eventsource/EventSourceRecord.html" title="class in org.jlab.jaws.eventsource">EventSourceRecord</a>&lt;<a href="org/jlab/jaws/eventsource/EventSourceRecord.html" title="type parameter in EventSourceRecord">K</a>,&#8203;<a href="org/jlab/jaws/eventsource/EventSourceRecord.html" title="type parameter in EventSourceRecord">V</a>&gt;</td>
-<th class="colLast" scope="row">&nbsp;</th>
+<th class="colLast" scope="row">
+<div class="block">A Record in the EventSourceTable.</div>
+</th>
 </tr>
 <tr id="i16" class="altColor">
 <td class="colFirst"><a href="org/jlab/jaws/eventsource/EventSourceTable.html" title="class in org.jlab.jaws.eventsource">EventSourceTable</a>&lt;<a href="org/jlab/jaws/eventsource/EventSourceTable.html" title="type parameter in EventSourceTable">K</a>,&#8203;<a href="org/jlab/jaws/eventsource/EventSourceTable.html" title="type parameter in EventSourceTable">V</a>&gt;</td>
-<th class="colLast" scope="row">&nbsp;</th>
+<th class="colLast" scope="row">
+<div class="block">An interface to Apache Kafka that models a topic as a database table.</div>
+</th>
 </tr>
 <tr id="i17" class="rowColor">
 <td class="colFirst"><a href="org/jlab/jaws/entity/FilteredAlarm.html" title="class in org.jlab.jaws.entity">FilteredAlarm</a></td>
@@ -213,11 +226,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i19" class="rowColor">
 <td class="colFirst"><a href="org/jlab/jaws/serde/JsonDeserializer.html" title="class in org.jlab.jaws.serde">JsonDeserializer</a>&lt;<a href="org/jlab/jaws/serde/JsonDeserializer.html" title="type parameter in JsonDeserializer">T</a>&gt;</td>
-<th class="colLast" scope="row">&nbsp;</th>
+<th class="colLast" scope="row">
+<div class="block">A Kafka Deserializer for mapping JSON to a Java object.</div>
+</th>
 </tr>
 <tr id="i20" class="altColor">
 <td class="colFirst"><a href="org/jlab/jaws/serde/JsonSerializer.html" title="class in org.jlab.jaws.serde">JsonSerializer</a>&lt;<a href="org/jlab/jaws/serde/JsonSerializer.html" title="type parameter in JsonSerializer">T</a>&gt;</td>
-<th class="colLast" scope="row">&nbsp;</th>
+<th class="colLast" scope="row">
+<div class="block">A Kafka Serializer for mapping a Java object to JSON.</div>
+</th>
 </tr>
 <tr id="i21" class="rowColor">
 <td class="colFirst"><a href="org/jlab/jaws/entity/LatchedAlarm.html" title="class in org.jlab.jaws.entity">LatchedAlarm</a></td>
@@ -281,7 +298,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i31" class="rowColor">
 <td class="colFirst"><a href="org/jlab/jaws/entity/OverriddenAlarmKey.html" title="class in org.jlab.jaws.entity">OverriddenAlarmKey</a></td>
-<th class="colLast" scope="row">&nbsp;</th>
+<th class="colLast" scope="row">
+<div class="block">Key of an overridden alarm; contains both name and type since any given alarm name can be overridden by multiple types simultaneously</div>
+</th>
 </tr>
 <tr id="i32" class="altColor">
 <td class="colFirst"><a href="org/jlab/jaws/entity/OverriddenAlarmKey.Builder.html" title="class in org.jlab.jaws.entity">OverriddenAlarmKey.Builder</a></td>
@@ -309,7 +328,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i36" class="altColor">
 <td class="colFirst"><a href="org/jlab/jaws/entity/RegisteredAlarm.html" title="class in org.jlab.jaws.entity">RegisteredAlarm</a></td>
-<th class="colLast" scope="row">&nbsp;</th>
+<th class="colLast" scope="row">
+<div class="block">Master alarm database record</div>
+</th>
 </tr>
 <tr id="i37" class="rowColor">
 <td class="colFirst"><a href="org/jlab/jaws/entity/RegisteredAlarm.Builder.html" title="class in org.jlab.jaws.entity">RegisteredAlarm.Builder</a></td>
@@ -325,7 +346,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i39" class="rowColor">
 <td class="colFirst"><a href="org/jlab/jaws/entity/ShelvedAlarm.html" title="class in org.jlab.jaws.entity">ShelvedAlarm</a></td>
-<th class="colLast" scope="row">&nbsp;</th>
+<th class="colLast" scope="row">
+<div class="block">A temporarily suppressed alarm override</div>
+</th>
 </tr>
 <tr id="i40" class="altColor">
 <td class="colFirst"><a href="org/jlab/jaws/entity/ShelvedAlarm.Builder.html" title="class in org.jlab.jaws.entity">ShelvedAlarm.Builder</a></td>
@@ -353,7 +376,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i44" class="altColor">
 <td class="colFirst"><a href="org/jlab/jaws/entity/SimpleProducer.html" title="class in org.jlab.jaws.entity">SimpleProducer</a></td>
-<th class="colLast" scope="row">&nbsp;</th>
+<th class="colLast" scope="row">
+<div class="block">Alarm producer which has no specific source</div>
+</th>
 </tr>
 <tr id="i45" class="rowColor">
 <td class="colFirst"><a href="org/jlab/jaws/entity/SimpleProducer.Builder.html" title="class in org.jlab.jaws.entity">SimpleProducer.Builder</a></td>
