@@ -2,7 +2,7 @@
 Reusable Java Classes for [JAWS](https://github.com/JeffersonLab/jaws).
 
 ## API
-[Javadocs](https://jeffersonlab.github.io/jaws-libj/0.1.0/index.html)
+[Javadocs](https://jeffersonlab.github.io/jaws-libj)
 
 ## Build
 This [Java 11](https://adoptopenjdk.net/) project uses the [Gradle 6](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
