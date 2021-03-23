@@ -1,6 +1,9 @@
 # jaws-libj [![Java CI with Gradle](https://github.com/JeffersonLab/jaws-libj/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/JeffersonLab/jaws-libj/actions?query=workflow%3A%22Java+CI+with+Gradle%22)
 Reusable Java Classes for [JAWS](https://github.com/JeffersonLab/jaws).
 
+## API
+[Version 0.1.0 Javadocs](https://jeffersonlab.github.io/jaws-libj/0.1.0/index.html)
+
 ## Build
 This [Java 11](https://adoptopenjdk.net/) project uses the [Gradle 6](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
 
