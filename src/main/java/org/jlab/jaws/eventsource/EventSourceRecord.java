@@ -1,5 +1,11 @@
 package org.jlab.jaws.eventsource;
 
+/**
+ * A Record in the EventSourceTable.
+ *
+ * @param <K> The type for message keys
+ * @param <V> The type for message values
+ */
 public class EventSourceRecord<K,V> {
     private K key;
     private V value;

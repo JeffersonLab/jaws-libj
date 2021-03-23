@@ -6,6 +6,11 @@ import org.apache.kafka.common.serialization.Serializer;
 
 import java.util.Map;
 
+/**
+ * A Kafka Serializer for mapping a Java object to JSON.
+ *
+ * @param <T> The object type
+ */
 public class JsonSerializer<T> implements Serializer<T> {
     private final ObjectMapper objectMapper = new ObjectMapper();
 

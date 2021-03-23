@@ -5,6 +5,9 @@ import org.apache.kafka.common.config.ConfigDef;
 
 import java.util.Map;
 
+/**
+ * Configuration required to run an EventSourceTable.
+ */
 public class EventSourceConfig extends AbstractConfig {
     public static final String EVENT_SOURCE_TOPIC = "event.source.topic";
     public static final String EVENT_SOURCE_POLL_MILLIS = "event.source.poll.millis";

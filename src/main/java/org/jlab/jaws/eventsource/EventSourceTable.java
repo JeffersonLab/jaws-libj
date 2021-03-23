@@ -11,6 +11,21 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * An interface to Apache Kafka that models a topic as a database table.
+ * <p>
+ * We're using the term Event Sourcing casually to mean persisting state by replaying a stream of saved change events.
+ * There are much more complicated, confusing, and nuanced definitions that we're surely stomping all over.
+ * </p>
+ * <p>
+ * This class is similar to KTable in that the most recent record key determines the current record value.  It differs
+ * in that it always rewinds a topic to the beginning and replays all messages every run and it notifies listeners once
+ * the high water mark (highest message index) is reached.  It is not part of the Kafka Streams API and requires none of
+ * that run-time scaffolding.
+ * </p>
+ * @param <K> The type for message keys
+ * @param <V> The type for message values
+ */
 public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
 
     private final Logger log = LoggerFactory.getLogger(EventSourceTable.class);
