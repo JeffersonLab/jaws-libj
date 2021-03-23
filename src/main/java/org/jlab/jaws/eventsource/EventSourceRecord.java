@@ -1,4 +1,4 @@
-package org.jlab.kafka.eventsource;
+package org.jlab.jaws.eventsource;
 
 public class EventSourceRecord<K,V> {
     private K key;

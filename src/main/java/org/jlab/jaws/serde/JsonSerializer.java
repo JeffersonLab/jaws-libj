@@ -1,4 +1,4 @@
-package org.jlab.kafka.serde;
+package org.jlab.jaws.serde;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.errors.SerializationException;

@@ -1,4 +1,4 @@
-package org.jlab.kafka;
+package org.jlab.jaws;
 
 public class EventSourceTest {
 }

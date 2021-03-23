@@ -1,4 +1,4 @@
-package org.jlab.kafka.eventsource;
+package org.jlab.jaws.eventsource;
 
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.TopicPartition;

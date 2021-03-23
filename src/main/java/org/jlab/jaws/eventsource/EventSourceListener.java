@@ -1,4 +1,4 @@
-package org.jlab.kafka.eventsource;
+package org.jlab.jaws.eventsource;
 
 import java.util.List;
 

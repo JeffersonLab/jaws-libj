@@ -1,20 +1,20 @@
-package org.jlab.kafka.client;
+package org.jlab.jaws.examples;
 
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
-import org.jlab.alarms.RegisteredAlarm;
-import org.jlab.kafka.eventsource.EventSourceConfig;
-import org.jlab.kafka.eventsource.EventSourceRecord;
-import org.jlab.kafka.eventsource.EventSourceTable;
-import org.jlab.kafka.eventsource.EventSourceListener;
+import org.jlab.jaws.entity.RegisteredAlarm;
+import org.jlab.jaws.eventsource.EventSourceConfig;
+import org.jlab.jaws.eventsource.EventSourceRecord;
+import org.jlab.jaws.eventsource.EventSourceTable;
+import org.jlab.jaws.eventsource.EventSourceListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Properties;
 
-public class EventSourceViewer {
+public class RegisteredAlarmViewer {
 
-    private static final Logger log = LoggerFactory.getLogger(EventSourceViewer.class);
+    private static final Logger log = LoggerFactory.getLogger(RegisteredAlarmViewer.class);
 
     public static void main(String[] args) throws InterruptedException {
         final String servers = args[0];
