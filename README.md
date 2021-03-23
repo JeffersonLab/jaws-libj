@@ -1,4 +1,4 @@
-# kafka-common-java
+# kafka-common-java [![Java CI with Gradle](https://github.com/JeffersonLab/kafka-common-java/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/JeffersonLab/kafka-common-java/actions?query=workflow%3A%22Java+CI+with+Gradle%22)
 Reusable Java Classes for Kafka
 
 ## Build
