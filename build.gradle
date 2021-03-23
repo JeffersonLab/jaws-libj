@@ -1,9 +1,6 @@
 plugins {
-    id 'java'
-    id 'application'
-    id 'distribution'
-    id 'com.commercehub.gradle.plugin.avro' version '0.22.0'
-    id 'com.github.jk1.dependency-license-report' version '1.16'
+    id 'java-library'
+    id 'maven-publish'
 }
 
 group 'org.jlab.alarms'
@@ -29,8 +26,7 @@ dependencies {
             "io.confluent:kafka-streams-avro-serde:" + confluentVer,
             "org.apache.avro:avro:1.10.1",
             "org.slf4j:slf4j-log4j12:1.7.30"
-    testImplementation "org.apache.kafka:kafka-streams-test-utils:" + kafkaVer,
-            "junit:junit:4.13.1"
+    testImplementation "junit:junit:4.13.1"
 }
 
 test {
@@ -41,50 +37,23 @@ test {
 }
 
 jar {
-    archiveFileName = 'alarms-filter.jar'
+    archiveFileName = 'jaws-libj.jar'
 }
 
-application {
-    mainClassName = 'org.jlab.alarms.AlarmsFilter'
-    applicationDefaultJvmArgs = ['-Dlog.dir=logs']
-}
-
-build {
-    dependsOn(installDist)
-}
-
-installDist.dependsOn(generateLicenseReport)
-distTar.dependsOn(generateLicenseReport)
-distZip.dependsOn(generateLicenseReport)
-
-run {
-    classpath += files('config')
-}
-
-distributions {
-    main {
-        contents {
-            from("build/reports/dependency-license") {
-                into "dependency-license"
-            }
-            from('config') {
-                into 'config'
-            }
-            from('scripts') {
-                into 'bin'
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/JeffersonLab/kafka-common-java")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
             }
         }
     }
-}
-
-startScripts {
-    classpath += files('config')
-
-    // https://discuss.gradle.org/t/classpath-in-application-plugin-is-building-always-relative-to-app-home-lib-directory/2012
-    doLast {
-        def windowsScriptFile = file getWindowsScript()
-        def unixScriptFile = file getUnixScript()
-        windowsScriptFile.text = windowsScriptFile.text.replace('%APP_HOME%\\lib\\config', '%APP_HOME%\\config')
-        unixScriptFile.text = unixScriptFile.text.replace('$APP_HOME/lib/config', '$APP_HOME/config')
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
     }
 }

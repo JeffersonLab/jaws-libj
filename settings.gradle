@@ -9,4 +9,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'kafka-common-java'
+rootProject.name = 'jaws-libj'
