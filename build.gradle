@@ -7,6 +7,7 @@ plugins {
 group 'org.jlab.jaws'
 version '0.1.0'
 
+ext.releaseDate = 'March 23 2021'
 ext.confluentVer = '6.0.1'
 ext.kafkaVer = '2.6.0'
 
@@ -41,11 +42,30 @@ jar {
     archiveFileName = 'jaws-libj.jar'
 }
 
+processResources {
+    filesMatching('release.properties') {
+        filter {
+            String line -> line.replaceAll("@VERSION@", version)
+        }
+        filter {
+            String line -> line.replaceAll("@RELEASE_DATE@", releaseDate)
+        }
+    }
+}
+
+javadoc {
+    options.overview = "src/main/java/overview.html"
+    options.source = 11
+    options.with {
+        links 'https://docs.oracle.com/en/java/javase/11/docs/api'
+    }
+}
+
 publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/JeffersonLab/kafka-common-java")
+            url = uri("https://maven.pkg.github.com/JeffersonLab/jaws-libj")
             credentials {
                 username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
                 password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
