@@ -126,8 +126,6 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
 
                 Map<TopicPartition, Long> endOffsets = consumer.endOffsets(partitions);
 
-                System.out.println("endOffsets: " + endOffsets);
-
                 endOffset = endOffsets.get(partitions.iterator().next()); // Exactly one partition verified above
 
                 if(endOffset == 0) {
