@@ -32,7 +32,7 @@ public class RegisteredAlarmViewer {
 
         final EventSourceTable<String, RegisteredAlarm> consumer = new EventSourceTable<>(props);
 
-        consumer.addListener(new EventSourceListener<>() {
+        consumer.addListener(new EventSourceListener<String, RegisteredAlarm>() {
             @Override
             public void update(List<EventSourceRecord<String, RegisteredAlarm>> changes) {
                 for (EventSourceRecord<String, RegisteredAlarm> record : changes) {
