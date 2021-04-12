@@ -11,5 +11,5 @@ import java.util.List;
  * @param <V> The type for message values
  */
 public interface EventSourceListener<K, V> {
-    public abstract void update(List<EventSourceRecord<K, V>> changes);
+    public abstract void update(List<EventSourceRecord<K, V>> records);
 }
