@@ -1,4 +1,4 @@
-# jaws-libj [![Java CI with Gradle](https://github.com/JeffersonLab/jaws-libj/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/JeffersonLab/jaws-libj/actions?query=workflow%3A%22Java+CI+with+Gradle%22)
+# jaws-libj [![Java CI with Gradle](https://github.com/JeffersonLab/jaws-libj/actions/workflows/gradle.yml/badge.svg)](https://github.com/JeffersonLab/jaws-libj/actions/workflows/gradle.yml) [![Maven Central](https://badgen.net/maven/v/maven-central/org.jlab/jaws-libj)](https://repo1.maven.org/maven2/org/jlab/jaws-libj/)
 Reusable Java Classes for [JAWS](https://github.com/JeffersonLab/jaws).  Java classes generated to match the JAWS AVRO schemas are included as well as classes for handling Event Sourcing in Kafka (when Kafka Streams KTable is not a good fit).
 
 ---
