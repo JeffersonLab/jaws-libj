@@ -1,15 +1,23 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'com.commercehub.gradle.plugin.avro' version '0.22.0'
+    id 'com.github.davidmc24.gradle.plugin.avro' version '1.1.0'
+    id 'signing'
 }
 
-group 'org.jlab.jaws'
-version '0.1.0'
+group 'org.jlab'
+version '1.0.0'
 
-ext.releaseDate = 'March 23 2021'
+ext.releaseDate = 'April 12 2021'
 ext.confluentVer = '6.0.1'
 ext.kafkaVer = '2.6.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    withJavadocJar()
+    withSourcesJar()
+}
 
 tasks.withType(JavaCompile) {
     options.compilerArgs += ["-Xlint:unchecked"]
@@ -61,20 +69,57 @@ javadoc {
     }
 }
 
+signing {
+    sign publishing.publications
+}
+
+
 publishing {
     repositories {
+        maven {
+            name "OSSRH"
+            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = project.findProperty("ossrh.user") ?: System.getenv("OSSRH_USER")
+                password = project.findProperty("ossrh.token") ?: System.getenv("OSSRH_TOKEN")
+            }
+        }
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/JeffersonLab/jaws-libj")
             credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+                username = project.findProperty("github.user") ?: System.getenv("GITHUB_USER")
+                password = project.findProperty("github.token") ?: System.getenv("GITHUB_TOKEN")
             }
         }
     }
     publications {
-        gpr(MavenPublication) {
+        maven(MavenPublication) {
             from(components.java)
+            pom {
+                name = project.name
+                description = project.description
+                url = "https://github.com/JeffersonLab/jaws-libj"
+                licenses {
+                    license {
+                        name = "The MIT License"
+                        url = "https://github.com/JeffersonLab/jaws-libj/blob/master/LICENSE"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "slominskir"
+                        name = "Ryan Slominski"
+                        email = "ryans@jlab.org"
+                    }
+                }
+                scm {
+                    url = "https://github.com/JeffersonLab/jaws-libj.git"
+                }
+            }
         }
+    }
+    artifacts {
+        archives javadocJar, sourcesJar
     }
 }
