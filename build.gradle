@@ -5,6 +5,7 @@ plugins {
     id 'signing'
 }
 
+description = "Jefferson Lab Alarm Warning System Java Library"
 group 'org.jlab'
 version '1.0.0'
 
