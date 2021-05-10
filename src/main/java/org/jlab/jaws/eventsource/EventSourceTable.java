@@ -167,10 +167,7 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
             }
         }
 
-        // Toss out old messages on first update
-        changes.clear();
-        changes.addAll(state.values());
-        notifyListeners(); // we always notify even if changes is empty - this tells clients initial state
+        notifyListenersInitial(); // we always notify even if changes is empty - this tells clients initial state
 
         log.debug("Done with EventSourceConsumer init");
     }
@@ -196,7 +193,7 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
             } else {
                 if(hasChanges) {
                     log.debug("Flushing changes since we've settled (we had a poll with no changes)");
-                    notifyListeners();
+                    notifyListenersChanges();
                     hasChanges = false;
                     pollsWithChangesSinceLastFlush = 0;
                 }
@@ -205,7 +202,7 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
             // This is an escape hatch in case poll consistently returns changes; otherwise we'd never flush!
             if(pollsWithChangesSinceLastFlush >= config.getLong(EventSourceConfig.EVENT_SOURCE_MAX_POLL_BEFORE_FLUSH)) {
                 log.debug("Flushing changes due to max poll with changes");
-                notifyListeners();
+                notifyListenersChanges();
                 hasChanges = false;
                 pollsWithChangesSinceLastFlush = 0;
             }
@@ -216,9 +213,16 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
         }
     }
 
-    private void notifyListeners() {
+    private void notifyListenersInitial() {
         for(EventSourceListener<K, V> listener: listeners) {
-            listener.update(new ArrayList<>(changes)); // Safer to return new List
+            listener.initialState(new HashSet<>(state.values())); // Safer to return new Set
+        }
+        changes.clear();
+    }
+
+    private void notifyListenersChanges() {
+        for(EventSourceListener<K, V> listener: listeners) {
+            listener.changes(new ArrayList<>(changes)); // Safer to return new List
         }
         changes.clear();
     }
