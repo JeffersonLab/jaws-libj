@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 public class RegisteredAlarmViewer {
 
@@ -34,8 +35,8 @@ public class RegisteredAlarmViewer {
 
         consumer.addListener(new EventSourceListener<String, RegisteredAlarm>() {
             @Override
-            public void update(List<EventSourceRecord<String, RegisteredAlarm>> changes) {
-                for (EventSourceRecord<String, RegisteredAlarm> record : changes) {
+            public void initialState(Set<EventSourceRecord<String, RegisteredAlarm>> records) {
+                for (EventSourceRecord<String, RegisteredAlarm> record : records) {
                     String key = record.getKey();
                     RegisteredAlarm value = record.getValue();
                     System.out.println(key + "=" + value);
