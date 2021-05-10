@@ -6,6 +6,7 @@ import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -14,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.deser.std.StringDeserializer;
 import org.testcontainers.shaded.com.google.common.collect.ImmutableMap;
 import org.testcontainers.utility.DockerImageName;
 
@@ -34,12 +34,11 @@ public class EventSourceTest {
     @ClassRule
     public static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:6.1.1"))
             .withNetwork(network)
-            .withExposedPorts(9092)
             .withLogConsumer(new Slf4jLogConsumer(LOGGER).withPrefix("kafka"))
             .withCreateContainerCmdModifier(cmd -> cmd.withHostName("kafka").withName("kafka"));
 
     @Test
-    public void queryTable() throws ExecutionException, InterruptedException, TimeoutException {
+    public void basicTableTest() throws ExecutionException, InterruptedException, TimeoutException {
 
         final String topicName = "testing";
 
@@ -66,7 +65,7 @@ public class EventSourceTest {
         );
 
         producer.send(new ProducerRecord<>(topicName, "key1", "value1")).get();
-
+        producer.send(new ProducerRecord<>(topicName, "key1", "value2")).get();
 
 
         // EventSourceTable (Consumer)
