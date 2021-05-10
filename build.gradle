@@ -24,6 +24,11 @@ avro {
     fieldVisibility = "PRIVATE"
 }
 
+task avroJar(type: Jar) {
+    classifier 'avro'
+    from 'src/main/avro'
+}
+
 tasks.withType(JavaCompile) {
     options.compilerArgs += ["-Xlint:unchecked"]
 }
@@ -51,10 +56,6 @@ test {
         events "passed", "skipped", "failed"
         exceptionFormat "full"
     }
-}
-
-jar {
-    archiveFileName = 'jaws-libj.jar'
 }
 
 processResources {
@@ -127,6 +128,6 @@ publishing {
         }
     }
     artifacts {
-        archives javadocJar, sourcesJar
+        archives javadocJar, sourcesJar, avroJar
     }
 }
