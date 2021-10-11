@@ -1,21 +1,20 @@
 package org.jlab.jaws.examples;
 
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
-import org.jlab.jaws.entity.RegisteredAlarm;
+import org.jlab.jaws.entity.AlarmRegistration;
 import org.jlab.jaws.eventsource.EventSourceConfig;
+import org.jlab.jaws.eventsource.EventSourceListener;
 import org.jlab.jaws.eventsource.EventSourceRecord;
 import org.jlab.jaws.eventsource.EventSourceTable;
-import org.jlab.jaws.eventsource.EventSourceListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-public class RegisteredAlarmViewer {
+public class AlarmRegistrationViewer {
 
-    private static final Logger log = LoggerFactory.getLogger(RegisteredAlarmViewer.class);
+    private static final Logger log = LoggerFactory.getLogger(AlarmRegistrationViewer.class);
 
     public static void main(String[] args) throws InterruptedException {
         final String servers = args[0];
@@ -31,14 +30,14 @@ public class RegisteredAlarmViewer {
         props.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://registry:8081");
         props.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG,"true");
 
-        final EventSourceTable<String, RegisteredAlarm> consumer = new EventSourceTable<>(props);
+        final EventSourceTable<String, AlarmRegistration> consumer = new EventSourceTable<>(props);
 
-        consumer.addListener(new EventSourceListener<String, RegisteredAlarm>() {
+        consumer.addListener(new EventSourceListener<String, AlarmRegistration>() {
             @Override
-            public void initialState(Set<EventSourceRecord<String, RegisteredAlarm>> records) {
-                for (EventSourceRecord<String, RegisteredAlarm> record : records) {
+            public void initialState(Set<EventSourceRecord<String, AlarmRegistration>> records) {
+                for (EventSourceRecord<String, AlarmRegistration> record : records) {
                     String key = record.getKey();
-                    RegisteredAlarm value = record.getValue();
+                    AlarmRegistration value = record.getValue();
                     System.out.println(key + "=" + value);
                 }
                 consumer.close();
