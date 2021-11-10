@@ -19,8 +19,13 @@ import java.util.concurrent.atomic.AtomicReference;
  * </p>
  * <p>
  * This class is similar to KTable in that the most recent record key determines the current record value.  It differs
- * in that it always rewinds a topic to the beginning and replays all messages every run and it notifies listeners once
- * the high water mark (highest message index) is reached.  It is not part of the Kafka Streams API and requires none of
+ * in that it ignores the server persisted client log position (offset) and always rewinds a topic to the beginning
+ * (or a specified resume offset) and replays all messages
+ * every run and it notifies listeners once
+ * the high water mark (highest message index) is reached.  It's useful for clients which replay data frequently and
+ * are not concerned about scalability or reliability.
+ *
+ * It is not part of the Kafka Streams API and requires none of
  * that run-time scaffolding.
  * </p>
  * @param <K> The type for message keys
