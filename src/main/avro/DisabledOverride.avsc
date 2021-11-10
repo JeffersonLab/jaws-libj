@@ -8,7 +8,10 @@
             "name": "comments",
             "type": [
                 "null",
-                "string"
+                {
+                    "type": "string",
+                    "avro.java.string": "String"
+                }
             ],
             "doc": "Operator explanation"
         }

@@ -6,7 +6,10 @@
     "fields": [
         {
             "name": "name",
-            "type": "string",
+            "type": {
+                "type": "string",
+                "avro.java.string": "String"
+            },
             "doc": "The unique name of the alarm"
         },
         {

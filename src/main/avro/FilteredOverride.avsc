@@ -6,7 +6,10 @@
     "fields": [
         {
             "name": "filtername",
-            "type": "string",
+            "type": {
+                "type": "string",
+                "avro.java.string": "String"
+            },
             "doc": "The name of the filter suppressing this alarm"
         }
     ]

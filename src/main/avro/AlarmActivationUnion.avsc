@@ -20,7 +20,10 @@
                     "fields": [
                         {
                             "name": "note",
-                            "type": "string",
+                            "type": {
+                                "type": "string",
+                                "avro.java.string": "String"
+                            },
                             "doc": "The extra information about this active alarm"
                         }
                     ]

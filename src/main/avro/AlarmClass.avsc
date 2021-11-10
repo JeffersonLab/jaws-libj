@@ -21,17 +21,26 @@
         },
         {
             "name": "rationale",
-            "type": "string",
+            "type": {
+                "type": "string",
+                "avro.java.string": "String"
+            },
             "doc": "Markdown formatted text describing the reason this alarm is necessary"
         },
         {
             "name": "correctiveaction",
-            "type": "string",
+            "type": {
+                "type": "string",
+                "avro.java.string": "String"
+            },
             "doc": "Markdown formatted text describing the corrective action to take when the alarm becomes active"
         },
         {
             "name": "pointofcontactusername",
-            "type": "string",
+            "type": {
+                "type": "string",
+                "avro.java.string": "String"
+            },
             "doc": "Username (identifier) of point of contact.  Full contact info should be obtained from user database (LDAP for example)"
         },
         {
@@ -66,13 +75,19 @@
             "name": "maskedby",
             "type": [
                 "null",
-                "string"
+                 {
+                    "type": "string",
+                    "avro.java.string": "String"
+                }
             ],
             "doc": "The name of the parent alarm, which if active, masks this alarm (flood suppression via logical hierarchy)"
         },
         {
             "name": "screenpath",
-            "type": "string",
+            "type": {
+                "type": "string",
+                "avro.java.string": "String"
+            },
             "doc": "The path the alarm screen display"
         }
     ]
