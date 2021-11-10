@@ -230,7 +230,7 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
     private void updateState(ConsumerRecord<K, V> record) {
         log.debug("State update: {}={}", record.key(), record.value());
 
-        EventSourceRecord<K, V> esr = new EventSourceRecord<>(record.key(), record.value());
+        EventSourceRecord<K, V> esr = new EventSourceRecord<>(record.key(), record.value(), record.offset(), record.timestamp());
         changes.add(esr);
 
         if(record.value() == null) {

@@ -11,10 +11,14 @@ import java.util.Objects;
 public class EventSourceRecord<K,V> {
     private K key;
     private V value;
+    private long offset;
+    private long timestamp;
 
-    public EventSourceRecord(K key, V value) {
+    public EventSourceRecord(K key, V value, long offset, long timestamp) {
         this.key = key;
         this.value = value;
+        this.offset = offset;
+        this.timestamp = timestamp;
     }
 
     public K getKey() {
@@ -23,6 +27,14 @@ public class EventSourceRecord<K,V> {
 
     public V getValue() {
         return value;
+    }
+
+    public long getOffset() {
+        return offset;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
     }
 
     public String toString() {
