@@ -37,12 +37,7 @@ public class EventSourceTest {
             .withLogConsumer(new Slf4jLogConsumer(LOGGER).withPrefix("kafka"))
             .withCreateContainerCmdModifier(cmd -> cmd.withHostName("kafka").withName("kafka"));
 
-    @Test
-    public void basicTableTest() throws ExecutionException, InterruptedException, TimeoutException {
-
-        final String topicName = "testing";
-
-        // Admin
+    private void setupTopic(String topicName) throws ExecutionException, InterruptedException, TimeoutException {
         AdminClient adminClient = AdminClient.create(ImmutableMap.of(
                 AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafka.getBootstrapServers()
         ));
@@ -50,12 +45,10 @@ public class EventSourceTest {
         Collection<NewTopic> topics = Collections.singletonList(new NewTopic(topicName, 1, (short) 1));
 
         adminClient.createTopics(topics).all().get(30, TimeUnit.SECONDS);
+    }
 
-
-
-
-        // Producer
-        KafkaProducer<String, String> producer = new KafkaProducer<>(
+    private KafkaProducer<String,String> setupProducer() {
+         return new KafkaProducer<>(
                 ImmutableMap.of(
                         ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafka.getBootstrapServers(),
                         ProducerConfig.CLIENT_ID_CONFIG, UUID.randomUUID().toString()
@@ -63,12 +56,9 @@ public class EventSourceTest {
                 new StringSerializer(),
                 new StringSerializer()
         );
+    }
 
-        producer.send(new ProducerRecord<>(topicName, "key1", "value1")).get();
-        producer.send(new ProducerRecord<>(topicName, "key1", "value2")).get();
-
-
-        // EventSourceTable (Consumer)
+    private EventSourceTable<String, String> setupTable(String topicName, long resumeOffset) {
         Properties props = new Properties();
 
         props.setProperty(EventSourceConfig.EVENT_SOURCE_BOOTSTRAP_SERVERS, kafka.getBootstrapServers());
@@ -76,7 +66,68 @@ public class EventSourceTest {
         props.setProperty(EventSourceConfig.EVENT_SOURCE_VALUE_DESERIALIZER, StringDeserializer.class.getName());
         props.setProperty(EventSourceConfig.EVENT_SOURCE_TOPIC, topicName);
 
-        EventSourceTable<String, String> table = new EventSourceTable<>(props);
+        return new EventSourceTable<>(props, resumeOffset);
+    }
+
+
+    @Test
+    public void basicTableTest() throws ExecutionException, InterruptedException, TimeoutException {
+
+        final String topicName = "testing";
+
+        // Admin
+        setupTopic(topicName);
+
+
+        // Producer
+        KafkaProducer<String, String> producer = setupProducer();
+
+        producer.send(new ProducerRecord<>(topicName, "key1", "value1")).get();
+        producer.send(new ProducerRecord<>(topicName, "key1", "value2")).get();
+
+
+        // EventSourceTable (Consumer)
+        EventSourceTable<String, String> table = setupTable(topicName,-1);
+
+        final Set<EventSourceRecord<String,String>> database = new HashSet<>();
+
+        table.addListener(new EventSourceListener<String, String>() {
+            @Override
+            public void initialState(Set<EventSourceRecord<String, String>> records) {
+                database.addAll(records);
+                System.out.println("initialState: ");
+                for(EventSourceRecord record: records) {
+                    System.out.println("Record: " + record);
+                }
+            }
+        });
+
+        table.start();
+
+        Thread.sleep(5000);
+
+        assertEquals(1, database.size());
+    }
+
+    @Test
+    public void resumeOffsetTest() throws ExecutionException, InterruptedException, TimeoutException {
+
+        final String topicName = "testing2";
+
+        // Admin
+        setupTopic(topicName);
+
+
+        // Producer
+        KafkaProducer<String, String> producer = setupProducer();
+
+        producer.send(new ProducerRecord<>(topicName, "key1", "value1")).get();
+        producer.send(new ProducerRecord<>(topicName, "key2", "value2")).get();
+        producer.send(new ProducerRecord<>(topicName, "key3", "value3")).get();
+
+
+        // EventSourceTable (Consumer)
+        EventSourceTable<String, String> table = setupTable(topicName,2);
 
         final Set<EventSourceRecord<String,String>> database = new HashSet<>();
 

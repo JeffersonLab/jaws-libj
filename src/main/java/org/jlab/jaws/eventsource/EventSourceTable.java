@@ -36,6 +36,7 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
 
     private long endOffset = 0;
     private boolean endReached = false;
+    private long resumeOffset;
 
     private AtomicReference<CONSUMER_STATE> consumerState = new AtomicReference<>(CONSUMER_STATE.INITIALIZING);
 
@@ -43,7 +44,15 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
     private final HashMap<K, EventSourceRecord<K, V>> state = new HashMap<>();
     private final List<EventSourceRecord<K, V>> changes = new ArrayList<>();
 
-    public EventSourceTable(Properties props) {
+    /**
+     * Create a new EventSourceTable.
+     *
+     * @param props The properties - see EventSourceConfig
+     * @param resumeOffset The offset to resume, or -1 to start from the beginning
+     */
+    public EventSourceTable(Properties props, long resumeOffset) {
+
+        this.resumeOffset = resumeOffset;
 
         config = new EventSourceConfig(props);
 
@@ -122,11 +131,17 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
                     throw new IllegalStateException("We only support single partition Event Sourced topics at this time");
                 }
 
-                consumer.seekToBeginning(partitions);
+                TopicPartition p = partitions.iterator().next(); // Exactly one partition verified above
+
+                if(resumeOffset < 0) {
+                    consumer.seekToBeginning(partitions);
+                } else {
+                    consumer.seek(p, resumeOffset);
+                }
 
                 Map<TopicPartition, Long> endOffsets = consumer.endOffsets(partitions);
 
-                endOffset = endOffsets.get(partitions.iterator().next()); // Exactly one partition verified above
+                endOffset = endOffsets.get(p);
 
                 if(endOffset == 0) {
                     log.debug("Empty topic to begin with");

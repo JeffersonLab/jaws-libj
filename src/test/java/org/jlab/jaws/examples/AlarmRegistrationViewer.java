@@ -30,7 +30,7 @@ public class AlarmRegistrationViewer {
         props.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://registry:8081");
         props.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG,"true");
 
-        final EventSourceTable<String, AlarmRegistration> consumer = new EventSourceTable<>(props);
+        final EventSourceTable<String, AlarmRegistration> consumer = new EventSourceTable<>(props, -1);
 
         consumer.addListener(new EventSourceListener<String, AlarmRegistration>() {
             @Override
