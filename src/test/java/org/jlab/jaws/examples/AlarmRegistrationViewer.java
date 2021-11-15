@@ -9,8 +9,8 @@ import org.jlab.jaws.eventsource.EventSourceTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.LinkedHashMap;
 import java.util.Properties;
-import java.util.Set;
 
 public class AlarmRegistrationViewer {
 
@@ -34,8 +34,8 @@ public class AlarmRegistrationViewer {
 
         consumer.addListener(new EventSourceListener<String, AlarmRegistration>() {
             @Override
-            public void initialState(Set<EventSourceRecord<String, AlarmRegistration>> records) {
-                for (EventSourceRecord<String, AlarmRegistration> record : records) {
+            public void initialState(LinkedHashMap<String, EventSourceRecord<String, AlarmRegistration>> records) {
+                for (EventSourceRecord<String, AlarmRegistration> record : records.values()) {
                     String key = record.getKey();
                     AlarmRegistration value = record.getValue();
                     System.out.println(key + "=" + value);

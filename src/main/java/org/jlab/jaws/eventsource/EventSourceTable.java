@@ -22,8 +22,9 @@ import java.util.concurrent.atomic.AtomicReference;
  * in that it ignores the server persisted client log position (offset) and always rewinds a topic to the beginning
  * (or a specified resume offset) and replays all messages
  * every run and it notifies listeners once
- * the high water mark (highest message index) is reached.  It's useful for clients which replay data frequently and
- * are not concerned about scalability or reliability.
+ * the high water mark (highest message index) is reached.  It also differs in that it does not cache the full state
+ * of the table.   It's useful for clients which replay data frequently and
+ * are not concerned about scalability or reliability (transient batch processing).
  *
  * It is not part of the Kafka Streams API and requires none of
  * that run-time scaffolding.
@@ -45,9 +46,8 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
 
     private AtomicReference<CONSUMER_STATE> consumerState = new AtomicReference<>(CONSUMER_STATE.INITIALIZING);
 
-    // Both current state and changes since last listener notification are tracked
-    private final HashMap<K, EventSourceRecord<K, V>> state = new HashMap<>();
-    private final List<EventSourceRecord<K, V>> changes = new ArrayList<>();
+    // Ordered and unique changes since last listener notification are tracked
+    private final LinkedHashMap<K, EventSourceRecord<K, V>> state = new LinkedHashMap<>();
 
     /**
      * Create a new EventSourceTable.
@@ -235,31 +235,23 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
 
     private void notifyListenersInitial() {
         for(EventSourceListener<K, V> listener: listeners) {
-            listener.initialState(new HashSet<>(state.values())); // Safer to return new Set
+            listener.initialState(new LinkedHashMap<>(state));
         }
-        changes.clear();
+        state.clear();
     }
 
     private void notifyListenersChanges() {
         for(EventSourceListener<K, V> listener: listeners) {
-            listener.changes(new ArrayList<>(changes)); // Safer to return new List
+            listener.changes(new LinkedHashMap<>(state));
         }
-        changes.clear();
+        state.clear();
     }
 
     private void updateState(ConsumerRecord<K, V> record) {
         log.debug("State update: {}={}", record.key(), record.value());
 
         EventSourceRecord<K, V> esr = new EventSourceRecord<>(record.key(), record.value(), record.offset(), record.timestamp());
-        changes.add(esr);
-
-        if(record.value() == null) {
-            log.debug("Removing record: {}", record.key());
-            state.remove(record.key());
-        } else {
-            log.debug("Adding record: {}", record.key());
-            state.put(record.key(), esr);
-        }
+        state.put(record.key(), esr);
     }
 
     @Override

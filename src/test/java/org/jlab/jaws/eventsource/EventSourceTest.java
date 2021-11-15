@@ -93,10 +93,10 @@ public class EventSourceTest {
 
         table.addListener(new EventSourceListener<String, String>() {
             @Override
-            public void initialState(Set<EventSourceRecord<String, String>> records) {
-                database.addAll(records);
+            public void initialState(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
+                database.addAll(records.values());
                 System.out.println("initialState: ");
-                for(EventSourceRecord record: records) {
+                for(EventSourceRecord record: records.values()) {
                     System.out.println("Record: " + record);
                 }
             }
@@ -133,10 +133,10 @@ public class EventSourceTest {
 
         table.addListener(new EventSourceListener<String, String>() {
             @Override
-            public void initialState(Set<EventSourceRecord<String, String>> records) {
-                database.addAll(records);
+            public void initialState(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
+                database.addAll(records.values());
                 System.out.println("initialState: ");
-                for(EventSourceRecord record: records) {
+                for(EventSourceRecord record: records.values()) {
                     System.out.println("Record: " + record);
                 }
             }

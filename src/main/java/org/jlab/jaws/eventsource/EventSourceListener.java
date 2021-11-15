@@ -1,12 +1,11 @@
 package org.jlab.jaws.eventsource;
 
-import java.util.List;
-import java.util.Set;
+import java.util.LinkedHashMap;
 
 /**
  * An EventSourceListener can be registered to receive batch-processing call-backs from
  * an EventSourceTable.  The first call-back is always the initial state of
- * the database (up to the high water mark).  Changes are reported in batches thereafter as a list of changes
+ * the database (up to the high water mark).  Changes are reported in batches thereafter as a set of changes
  * (duplicate keys possible).
  *
  * @param <K> The type for message keys
@@ -19,7 +18,7 @@ public interface EventSourceListener<K, V> {
      *
      * @param records The initial set of unique records
      */
-    public default void initialState(Set<EventSourceRecord<K, V>> records) {
+    public default void initialState(LinkedHashMap<K, EventSourceRecord<K, V>> records) {
 
     }
 
@@ -29,7 +28,7 @@ public interface EventSourceListener<K, V> {
      *
      * @param records The set of changes
      */
-    public default void changes(List<EventSourceRecord<K, V>> records) {
+    public default void changes(LinkedHashMap<K, EventSourceRecord<K, V>> records) {
 
     }
 }
