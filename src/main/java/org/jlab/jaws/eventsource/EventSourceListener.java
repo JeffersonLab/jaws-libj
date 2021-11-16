@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
  * an EventSourceTable.  The first call-back is always the initial state of
  * the database (up to the high water mark).  Changes are reported in batches thereafter. In both the initial set
  * and change sets, newer keys replace older keys so intermediate states
- * are not reported.  In both scenarios the call-backs return an ordered set of unique records.
+ * are not reported.  In both scenarios the call-backs provide an ordered set of unique records.
  *
  * @param <K> The type for message keys
  * @param <V> The type for message values
