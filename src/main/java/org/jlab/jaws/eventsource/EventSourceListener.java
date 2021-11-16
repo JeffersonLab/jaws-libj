@@ -5,8 +5,9 @@ import java.util.LinkedHashMap;
 /**
  * An EventSourceListener can be registered to receive batch-processing call-backs from
  * an EventSourceTable.  The first call-back is always the initial state of
- * the database (up to the high water mark).  Changes are reported in batches thereafter as a set of changes
- * (duplicate keys possible).
+ * the database (up to the high water mark).  Changes are reported in batches thereafter. In both the initial set
+ * and change sets, newer keys replace older keys so intermediate states
+ * are not reported.  In both scenarios the call-backs return an ordered set of unique records.
  *
  * @param <K> The type for message keys
  * @param <V> The type for message values
