@@ -23,8 +23,10 @@ import java.util.concurrent.atomic.AtomicReference;
  * (or a specified resume offset) and replays all messages
  * every run and it notifies listeners once
  * the high water mark (highest message index) is reached.  It also differs in that it does not cache the full state
- * of the table.   It's useful for clients which replay data frequently and
- * are not concerned about scalability or reliability (transient batch processing).
+ * of the table.  It also collapses duplicate keys (newer keys replace older keys), such that intermediate results are
+ * not provided (WARNING: this may be inappropriate for some use-cases).   It's useful for clients which replay data
+ * frequently and are not concerned about scalability, reliability, or intermediate results
+ * (transient batch processing of entire final state).
  *
  * It is not part of the Kafka Streams API and requires none of
  * that run-time scaffolding.
