@@ -30,7 +30,10 @@ import java.util.concurrent.atomic.AtomicReference;
  * It's useful for clients which replay events
  * frequently (small-ish data) and are not concerned about scalability, reliability, or intermediate results
  * (transient batch processing of entire final state).
- *
+ * </p><p>
+ * For clients that cannot tolerate frequent batches and prefers fewer, but bigger batches configure a larger
+ * max.poll.records and poll.ms.   For example, a Kafka Connect command topic that triggers a re-balance.
+ * </p><p>
  * It is not part of the Kafka Streams API and requires none of
  * that run-time scaffolding.
  * </p>
