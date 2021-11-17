@@ -97,10 +97,20 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
         consumer = new KafkaConsumer<K, V>(consumerProps);
     }
 
+    /**
+     * Register an EventSourceListener.
+     *
+     * @param listener the EventSourceListener
+     */
     public void addListener(EventSourceListener<K, V> listener) {
         listeners.add(listener);
     }
 
+    /**
+     * Unregister an EventSourceListener.
+     *
+     * @param listener the EventSourceListener
+     */
     public void removeListener(EventSourceListener<K, V> listener) {
         listeners.remove(listener);
     }
@@ -256,6 +266,9 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
         state.put(record.key(), esr);
     }
 
+    /**
+     * Close the underlying Kafka Consumer.
+     */
     @Override
     public void close() {
         CONSUMER_STATE previousState = consumerState.getAndSet(CONSUMER_STATE.CLOSED);

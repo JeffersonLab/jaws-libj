@@ -6,19 +6,54 @@ import org.apache.kafka.common.config.ConfigDef;
 import java.util.Map;
 
 /**
- * Configuration required to run an EventSourceTable.
+ * Configuration for an EventSourceTable.
  */
 public class EventSourceConfig extends AbstractConfig {
+    /**
+     * event.source.topic
+     */
     public static final String EVENT_SOURCE_TOPIC = "event.source.topic";
+
+    /**
+     * poll.ms
+     */
     public static final String EVENT_SOURCE_POLL_MILLIS = "poll.ms";
+
+    /**
+     * high.water.timeout
+     */
     public static final String EVENT_SOURCE_HIGH_WATER_TIMEMOUT = "high.water.timeout";
+
+    /**
+     * high.water.units
+     */
     public static final String EVENT_SOURCE_HIGH_WATER_UNITS = "high.water.units";
 
     // Use the same identifiers as ConsumerConfig as we'll pass 'em right on through
+
+    /**
+     * group.id
+     */
     public static final String EVENT_SOURCE_GROUP = "group.id";
+
+    /**
+     * bootstrap.servers
+     */
     public static final String EVENT_SOURCE_BOOTSTRAP_SERVERS = "bootstrap.servers";
+
+    /**
+     * max.poll.records
+     */
     public static final String EVENT_SOURCE_MAX_POLL_RECORDS = "max.poll.records";
+
+    /**
+     * key.deserializer
+     */
     public static final String EVENT_SOURCE_KEY_DESERIALIZER = "key.deserializer";
+
+    /**
+     * value.deserializer
+     */
     public static final String EVENT_SOURCE_VALUE_DESERIALIZER = "value.deserializer";
 
     public EventSourceConfig(Map originals) {
