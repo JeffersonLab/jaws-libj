@@ -14,6 +14,14 @@ public class EventSourceRecord<K,V> {
     private long offset;
     private long timestamp;
 
+    /**
+     * Create a new EventSourceRecord.
+     *
+     * @param key the key
+     * @param value the value
+     * @param offset the offset
+     * @param timestamp the timestamp
+     */
     public EventSourceRecord(K key, V value, long offset, long timestamp) {
         this.key = key;
         this.value = value;
@@ -21,18 +29,38 @@ public class EventSourceRecord<K,V> {
         this.timestamp = timestamp;
     }
 
+    /**
+     * Return the record key.
+     *
+     * @return the key
+     */
     public K getKey() {
         return key;
     }
 
+    /**
+     * Return the record value.
+     *
+     * @return the value
+     */
     public V getValue() {
         return value;
     }
 
+    /**
+     * Return the Kafka log offset.
+     *
+     * @return the offset
+     */
     public long getOffset() {
         return offset;
     }
 
+    /**
+     * Return the record timestamp.
+     *
+     * @return the timestamp
+     */
     public long getTimestamp() {
         return timestamp;
     }

@@ -4,11 +4,7 @@ import java.util.LinkedHashMap;
 
 /**
  * An EventSourceListener can be registered to receive batch-processing call-backs from
- * an EventSourceTable.  The batch callback reports records in batches.  The highWaterOffset callback reports
- * when the last offset is reached (the high water mark).
- *
- * In the batch call-back newer keys replace older keys so intermediate states
- * are not reported.  The call-back provides an ordered set of unique records.
+ * an EventSourceTable.
  *
  * @param <K> The type for message keys
  * @param <V> The type for message values
@@ -25,8 +21,7 @@ public interface EventSourceListener<K, V> {
     }
 
     /**
-     * This callback indicates the high water mark was not reached before EVENT_SOURCE_HIGH_WATER_TIMEOUT,
-     * which is generally due to an error condition such as delete topic policy instead of compact.
+     * This callback indicates the high water mark was not reached before EVENT_SOURCE_HIGH_WATER_TIMEOUT.
      */
     public default void highWaterOffsetTimeout() {
 
@@ -34,7 +29,8 @@ public interface EventSourceListener<K, V> {
 
     /**
      * This callback is invoked periodically depending on EventSourceConfig.EVENT_SOURCE_POLL_MILLIS and
-     * will contain no more than EventSourceConfig.EVENT_SOURCE_MAX_POLL_RECORDS.
+     * will contain no more than EventSourceConfig.EVENT_SOURCE_MAX_POLL_RECORDS.   Newer keys replace older keys
+     * so intermediate states are not reported.
      *
      * @param records The ordered set of unique changes
      */
