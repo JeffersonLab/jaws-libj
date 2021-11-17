@@ -37,7 +37,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @param <K> The type for message keys
  * @param <V> The type for message values
  */
-public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
+public class EventSourceTable<K, V> implements AutoCloseable {
 
     private final Logger log = LoggerFactory.getLogger(EventSourceTable.class);
 
@@ -55,6 +55,8 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
     private final LinkedHashMap<K, EventSourceRecord<K, V>> state = new LinkedHashMap<>();
 
     private final CountDownLatch highWaterSignal = new CountDownLatch(1);
+
+    private ExecutorService pollExecutor = null;
 
     /**
      * Create a new EventSourceTable.
@@ -127,25 +129,35 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
         highWaterSignal.await(timeout, unit);
     }
 
-    @Override
-    public void run() {
+    /**
+     * Start listening for events.
+     *
+     * @throws IllegalStateException if already running or already closed
+     */
+    public void start() throws IllegalStateException {
         boolean transitioned = consumerState.compareAndSet(CONSUMER_STATE.INITIALIZING, CONSUMER_STATE.RUNNING);
 
         if(!transitioned) {
-            log.debug("We must already be closed!");
+            throw new IllegalStateException("Start has already been called, or the Table has already been closed");
         }
 
-        if(transitioned) { // Only allow the first time!
-            try {
-                init();
-                monitorChanges();
-            } catch(WakeupException e) {
-                // We expect this when CLOSED (since we call consumer.wakeup()), else throw
-                if(consumerState.get() != CONSUMER_STATE.CLOSED) throw e;
-            } finally {
-                consumer.close();
+        pollExecutor = Executors.newSingleThreadExecutor();
+
+        pollExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    init();
+                    monitorChanges();
+                } catch(WakeupException e) {
+                    pollExecutor.shutdown();
+                    // We expect this when CLOSED (since we call consumer.wakeup()), else throw
+                    if(consumerState.get() != CONSUMER_STATE.CLOSED) throw e;
+                } finally {
+                    consumer.close();
+                }
             }
-        }
+        });
     }
 
     private void init() {

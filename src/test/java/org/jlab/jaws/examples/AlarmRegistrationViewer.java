@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 public class AlarmRegistrationViewer {
 
@@ -30,26 +31,23 @@ public class AlarmRegistrationViewer {
         props.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://registry:8081");
         props.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG,"true");
 
-        final EventSourceTable<String, AlarmRegistration> table = new EventSourceTable<>(props, -1);
+        try (final EventSourceTable<String, AlarmRegistration> table = new EventSourceTable<>(props, -1)) {
 
-        table.addListener(new EventSourceListener<String, AlarmRegistration>() {
-            @Override
-            public void batch(LinkedHashMap<String, EventSourceRecord<String, AlarmRegistration>> records) {
-                for (EventSourceRecord<String, AlarmRegistration> record : records.values()) {
-                    String key = record.getKey();
-                    AlarmRegistration value = record.getValue();
-                    System.out.println(key + "=" + value);
+            table.addListener(new EventSourceListener<String, AlarmRegistration>() {
+                @Override
+                public void batch(LinkedHashMap<String, EventSourceRecord<String, AlarmRegistration>> records) {
+                    for (EventSourceRecord<String, AlarmRegistration> record : records.values()) {
+                        String key = record.getKey();
+                        AlarmRegistration value = record.getValue();
+                        System.out.println(key + "=" + value);
+                    }
                 }
-            }
+            });
 
-            @Override
-            public void highWaterOffset() {
-                table.close();
-            }
-        });
+            table.start();
 
-        table.start();
-        table.join(); // block until first update, which contains current state of topic
+            table.awaitHighWaterOffset(5, TimeUnit.SECONDS);
+        }
     }
 }
 
