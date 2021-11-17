@@ -22,6 +22,7 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertEquals;
 
@@ -58,7 +59,7 @@ public class EventSourceTest {
         );
     }
 
-    private EventSourceTable<String, String> setupTable(String topicName, long resumeOffset) {
+    private Properties getDefaultProps(String topicName) {
         Properties props = new Properties();
 
         props.setProperty(EventSourceConfig.EVENT_SOURCE_BOOTSTRAP_SERVERS, kafka.getBootstrapServers());
@@ -66,7 +67,7 @@ public class EventSourceTest {
         props.setProperty(EventSourceConfig.EVENT_SOURCE_VALUE_DESERIALIZER, StringDeserializer.class.getName());
         props.setProperty(EventSourceConfig.EVENT_SOURCE_TOPIC, topicName);
 
-        return new EventSourceTable<>(props, resumeOffset);
+        return props;
     }
 
 
@@ -87,14 +88,15 @@ public class EventSourceTest {
 
 
         // EventSourceTable (Consumer)
-        EventSourceTable<String, String> table = setupTable(topicName,-1);
+        Properties props = getDefaultProps(topicName);
+        EventSourceTable<String, String> table = new EventSourceTable<>(props, -1);
 
-        final Set<EventSourceRecord<String,String>> database = new HashSet<>();
+        final LinkedHashMap<String, EventSourceRecord<String,String>> database = new LinkedHashMap<>();
 
         table.addListener(new EventSourceListener<String, String>() {
             @Override
             public void initialState(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
-                database.addAll(records.values());
+                database.putAll(records);
                 System.out.println("initialState: ");
                 for(EventSourceRecord record: records.values()) {
                     System.out.println("Record: " + record);
@@ -127,14 +129,15 @@ public class EventSourceTest {
 
 
         // EventSourceTable (Consumer)
-        EventSourceTable<String, String> table = setupTable(topicName,2);
+        Properties props = getDefaultProps(topicName);
+        EventSourceTable<String, String> table = new EventSourceTable<>(props, 2);
 
-        final Set<EventSourceRecord<String,String>> database = new HashSet<>();
+        final LinkedHashMap<String ,EventSourceRecord<String,String>> database = new LinkedHashMap<>();
 
         table.addListener(new EventSourceListener<String, String>() {
             @Override
             public void initialState(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
-                database.addAll(records.values());
+                database.putAll(records);
                 System.out.println("initialState: ");
                 for(EventSourceRecord record: records.values()) {
                     System.out.println("Record: " + record);
@@ -147,5 +150,108 @@ public class EventSourceTest {
         Thread.sleep(5000);
 
         assertEquals(1, database.size());
+    }
+
+    @Test
+    public void emptyTopicTest() throws ExecutionException, InterruptedException, TimeoutException {
+        final String topicName = "testing3";
+
+        // Admin
+        setupTopic(topicName);
+
+        // EventSourceTable (Consumer)
+        Properties props = getDefaultProps(topicName);
+        EventSourceTable<String, String> table = new EventSourceTable<>(props, -1);
+
+        final LinkedHashMap<String, EventSourceRecord<String,String>> database = new LinkedHashMap<>();
+
+        table.addListener(new EventSourceListener<String, String>() {
+            @Override
+            public void initialState(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
+                database.putAll(records);
+                System.out.println("initialState: ");
+                for(EventSourceRecord record: records.values()) {
+                    System.out.println("Record: " + record);
+                }
+            }
+
+            @Override
+            public void changes(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
+                database.putAll(records);
+
+                System.out.println("changes: ");
+                for(EventSourceRecord record: records.values()) {
+                    System.out.println("Record: " + record);
+                }
+            }
+        });
+
+        table.start();
+
+        Thread.sleep(5000);
+
+        assertEquals(0, database.size());
+    }
+
+    @Test
+    public void batchTest() throws ExecutionException, InterruptedException, TimeoutException {
+        final String topicName = "testing4";
+
+        // Admin
+        setupTopic(topicName);
+
+
+        // Producer
+        KafkaProducer<String, String> producer = setupProducer();
+
+        // EventSourceTable (Consumer)
+        Properties props = getDefaultProps(topicName);
+
+        props.setProperty(EventSourceConfig.EVENT_SOURCE_POLL_MILLIS, "100");
+        props.setProperty(EventSourceConfig.EVENT_SOURCE_MAX_POLL_RECORDS, "1");
+        props.setProperty(EventSourceConfig.EVENT_SOURCE_FLUSH_BATCH_THRESHOLD, "1");
+
+        EventSourceTable<String, String> table = new EventSourceTable<>(props, -1);
+
+        final LinkedHashMap<String, EventSourceRecord<String,String>> database = new LinkedHashMap<>();
+
+        AtomicInteger calls = new AtomicInteger(0);
+
+        table.addListener(new EventSourceListener<String, String>() {
+            @Override
+            public void initialState(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
+                database.putAll(records);
+                System.out.println("initialState: ");
+                for(EventSourceRecord record: records.values()) {
+                    System.out.println("Record: " + record);
+                }
+            }
+
+            @Override
+            public void changes(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
+                database.putAll(records);
+
+                calls.getAndIncrement();
+
+                System.out.println("changes: ");
+                for(EventSourceRecord record: records.values()) {
+                    System.out.println("Record: " + record);
+                }
+            }
+        });
+
+        table.start();
+
+        producer.send(new ProducerRecord<>(topicName, "key1", "value1")).get();
+        producer.send(new ProducerRecord<>(topicName, "key2", "value2")).get();
+        producer.send(new ProducerRecord<>(topicName, "key3", "value3")).get();
+        producer.send(new ProducerRecord<>(topicName, "key4", "value4")).get();
+        producer.send(new ProducerRecord<>(topicName, "key5", "value5")).get();
+        producer.send(new ProducerRecord<>(topicName, "key6", "value6")).get();
+
+        Thread.sleep(5000);
+
+        assertEquals(0, database.size());
+        assertEquals(0, calls.get());
     }
 }
