@@ -7,9 +7,9 @@ plugins {
 
 description = "Jefferson Lab Alarm Warning System Java Library"
 group 'org.jlab'
-version '1.6.0'
+version '1.7.0'
 
-ext.releaseDate = 'Nov 15 2021'
+ext.releaseDate = 'Nov 17 2021'
 ext.confluentVer = '6.0.1'
 ext.kafkaVer = '2.6.0'
 
