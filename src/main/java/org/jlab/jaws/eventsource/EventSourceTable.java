@@ -24,9 +24,13 @@ import java.util.concurrent.atomic.AtomicReference;
  * every run and it notifies listeners once
  * the high water mark (highest message index) is reached.  It also differs in that it does not cache the full state
  * of the table.  It also collapses duplicate keys (newer keys replace older keys), such that intermediate results are
- * not provided (WARNING: this may be inappropriate for some use-cases).   It's useful for clients which replay data
- * frequently and are not concerned about scalability, reliability, or intermediate results
- * (transient batch processing of entire final state).
+ * not provided (WARNING: this may be inappropriate for some use-cases).  The EventSourceTable also offers the
+ * option to prioritize accumulating changes into batches at the expense of latency via the MAX_BATCH_DELAY config.
+ * </p><p>
+ * It's useful for clients which replay events
+ * frequently (small-ish data) and are not concerned about scalability, reliability, or intermediate results
+ * (transient batch processing of entire final state).  It is also useful for clients that prefer large batches of new
+ * events instead of a constant stream of single/small-batch events (Kafka Connect re-balance).
  *
  * It is not part of the Kafka Streams API and requires none of
  * that run-time scaffolding.
@@ -150,8 +154,8 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
 
                 endOffset = endOffsets.get(p);
 
-                if(endOffset == 0) {
-                    log.debug("Empty topic to begin with");
+                if(endOffset == 0 || resumeOffset >= endOffset) {
+                    log.debug("No events at resumeOffset or empty topic");
                     endReached = true;
                 }
             }
@@ -222,8 +226,13 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
             }
 
             // This is an escape hatch in case poll consistently returns changes; otherwise we'd never flush!
-            if(pollsWithChangesSinceLastFlush >= config.getLong(EventSourceConfig.EVENT_SOURCE_MAX_POLL_BEFORE_FLUSH)) {
-                log.debug("Flushing changes due to max poll with changes");
+            if(pollsWithChangesSinceLastFlush >= config.getLong(EventSourceConfig.EVENT_SOURCE_MAX_BATCH_DELAY)) {
+                log.debug("Flushing changes due to max batch delay reached");
+                notifyListenersChanges();
+                hasChanges = false;
+                pollsWithChangesSinceLastFlush = 0;
+            } else if (state.size() >= config.getLong(EventSourceConfig.EVENT_SOURCE_FLUSH_BATCH_THRESHOLD)) {
+                log.debug("Flushing changes due to min batch size reached");
                 notifyListenersChanges();
                 hasChanges = false;
                 pollsWithChangesSinceLastFlush = 0;
