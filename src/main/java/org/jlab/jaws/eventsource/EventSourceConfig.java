@@ -11,8 +11,8 @@ import java.util.Map;
 public class EventSourceConfig extends AbstractConfig {
     public static final String EVENT_SOURCE_TOPIC = "event.source.topic";
     public static final String EVENT_SOURCE_POLL_MILLIS = "poll.ms";
-    public static final String EVENT_SOURCE_MAX_BATCH_DELAY = "max.batch.delay";
-    public static final String EVENT_SOURCE_FLUSH_BATCH_THRESHOLD = "flush.batch.threshold";
+    public static final String EVENT_SOURCE_HIGH_WATER_TIMEMOUT = "high.water.timeout";
+    public static final String EVENT_SOURCE_HIGH_WATER_UNITS = "high.water.units";
 
     // Use the same identifiers as ConsumerConfig as we'll pass 'em right on through
     public static final String EVENT_SOURCE_GROUP = "group.id";
@@ -37,16 +37,16 @@ public class EventSourceConfig extends AbstractConfig {
                         1000l,
                         ConfigDef.Importance.HIGH,
                         "Milliseconds between polls for topic changes - notification delay is EVENT_SOURCE_MAX_BATCH_DELAY times this value with a constant stream of changes, or twice this value when changes are intermittent since the consumer thread waits for 'no changes' poll response before notifying listeners")
-                .define(EVENT_SOURCE_MAX_BATCH_DELAY,
+                .define(EVENT_SOURCE_HIGH_WATER_TIMEMOUT,
                         ConfigDef.Type.LONG,
-                        1l,
-                        ConfigDef.Importance.HIGH,
-                        "Max number of polls before forcing a flush.  The default value of 1 results in flushes after every poll, disabling the delay.  Larger numbers introduce latency but allow accumulation of changes into larger batches (not to exceed max.poll.records).  Be aware that too high a value may result in very long pauses if there is a constant stream of new events.")
-                .define(EVENT_SOURCE_FLUSH_BATCH_THRESHOLD,
-                        ConfigDef.Type.LONG,
-                        500l,
-                        ConfigDef.Importance.HIGH,
-                        "Min number of records to batch before flush.  Larger numbers introduce latency but allow accumulation of changes into larger batches.  Be aware that too high a value may result in very long pauses if there is a constant stream of new events.")
+                        5l,
+                        ConfigDef.Importance.MEDIUM,
+                        "Timeout for determining high water offset")
+                .define(EVENT_SOURCE_HIGH_WATER_UNITS,
+                        ConfigDef.Type.STRING,
+                        "SECONDS",
+                        ConfigDef.Importance.MEDIUM,
+                        "TimeUnit String literal; must match exactly for TimeUnit.valueOf()")
                 .define(EVENT_SOURCE_GROUP,
                         ConfigDef.Type.STRING,
                         "event-source",
@@ -61,7 +61,7 @@ public class EventSourceConfig extends AbstractConfig {
                         ConfigDef.Type.LONG,
                         "500",
                         ConfigDef.Importance.MEDIUM,
-                        "The maximum number of records returned in a single call to poll(), internally.")
+                        "The maximum number of records returned in a single call to poll(), and also the maximum batch size returned in the batch call-back.")
                 .define(EVENT_SOURCE_KEY_DESERIALIZER,
                         ConfigDef.Type.STRING,
                         "org.apache.kafka.common.serialization.StringDeserializer",

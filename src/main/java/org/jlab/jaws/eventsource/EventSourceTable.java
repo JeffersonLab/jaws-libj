@@ -8,7 +8,8 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -24,13 +25,11 @@ import java.util.concurrent.atomic.AtomicReference;
  * every run and it notifies listeners once
  * the high water mark (highest message index) is reached.  It also differs in that it does not cache the full state
  * of the table.  It also collapses duplicate keys (newer keys replace older keys), such that intermediate results are
- * not provided (WARNING: this may be inappropriate for some use-cases).  The EventSourceTable also offers the
- * option to prioritize accumulating changes into batches at the expense of latency via the MAX_BATCH_DELAY config.
+ * not provided (WARNING: this may be inappropriate for some use-cases).
  * </p><p>
  * It's useful for clients which replay events
  * frequently (small-ish data) and are not concerned about scalability, reliability, or intermediate results
- * (transient batch processing of entire final state).  It is also useful for clients that prefer large batches of new
- * events instead of a constant stream of single/small-batch events (Kafka Connect re-balance).
+ * (transient batch processing of entire final state).
  *
  * It is not part of the Kafka Streams API and requires none of
  * that run-time scaffolding.
@@ -54,6 +53,8 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
 
     // Ordered and unique changes since last listener notification are tracked
     private final LinkedHashMap<K, EventSourceRecord<K, V>> state = new LinkedHashMap<>();
+
+    private final CountDownLatch highWaterSignal = new CountDownLatch(1);
 
     /**
      * Create a new EventSourceTable.
@@ -102,6 +103,18 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
 
     public void removeListener(EventSourceListener<K, V> listener) {
         listeners.remove(listener);
+    }
+
+    /**
+     * Causes the current thread to wait until the high water offset has been reached, unless the thread is
+     * interrupted, or the specified waiting time elapses.
+     *
+     * @param timeout the maximum time to wait
+     * @param unit the time unit of the timeout argument
+     * @throws InterruptedException if the current thread is interrupted while waiting
+     */
+    public void awaitHighWaterOffset(long timeout, TimeUnit unit) throws InterruptedException {
+        highWaterSignal.await(timeout, unit);
     }
 
     @Override
@@ -161,50 +174,46 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
             }
         });
 
-        // Note: first poll triggers seek to beginning (so some empty polls are expected)
-        int emptyPollCount = 0;
+        AtomicBoolean timeout = new AtomicBoolean(false);
 
-        while(!endReached && consumerState.get() == CONSUMER_STATE.RUNNING) {
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
+        executor.schedule(new Runnable() {
+            @Override
+            public void run() {
+                timeout.set(true);
+            }
+        }, config.getLong(EventSourceConfig.EVENT_SOURCE_HIGH_WATER_TIMEMOUT),
+                TimeUnit.valueOf(config.getString(EventSourceConfig.EVENT_SOURCE_HIGH_WATER_UNITS)));
+
+        while(!endReached && !timeout.get() && consumerState.get() == CONSUMER_STATE.RUNNING) {
+            log.debug("polling for changes ({})", config.getString(EventSourceConfig.EVENT_SOURCE_TOPIC));
             ConsumerRecords<K, V> records = consumer.poll(Duration.ofMillis(config.getLong(EventSourceConfig.EVENT_SOURCE_POLL_MILLIS)));
 
-            log.debug("found " + records.count() + " records");
+            if (records.count() > 0) { // We have changes
+                for(ConsumerRecord<K, V> record: records) {
+                    updateState(record);
 
-            for (ConsumerRecord<K, V> record : records) {
-                updateState(record);
-
-                log.debug("Looking for last index: {}, found: {}", endOffset, record.offset() + 1);
-
-                if(record.offset() + 1 == endOffset) {
-                    log.debug("end of partition {} reached", record.partition());
-                    endReached = true;
+                    if(record.offset() + 1 == endOffset) {
+                        log.debug("end of partition {} reached", record.partition());
+                        endReached = true;
+                    }
                 }
-            }
 
-            if(records.count() == 0) {
-                emptyPollCount++;
-            }
-
-            if(emptyPollCount > 10) {
-                // Scenario where topic compaction is not configured properly.
-                // Last message (highest endOffset) deleted before consumer connected (so never received)!
-                // It is also possible server just isn't delivering messages timely, so this may be bad check...
-                throw new RuntimeException("Took too long to obtain initial list; verify topic compact policy!");
+                notifyListenersChanges();
             }
         }
 
-        notifyListenersInitial(); // we always notify even if changes is empty - this tells clients initial state
+        executor.shutdown();
 
-        log.debug("Done with EventSourceConsumer init");
+        if(timeout.get()) {
+            notifyListenersTimeout();
+        } else {
+            notifyListenersHighWaterOffset();
+        }
     }
 
     private void monitorChanges() {
-        // We wait until changes have settled to avoid notifying listeners of individual changes
-        // We use a simple strategy of waiting for a single poll without changes to flush
-        // But we won't let changes build up too long either so we check for max poll with changes
-        int pollsWithChangesSinceLastFlush = 0;
-        boolean hasChanges = false;
-
         while(consumerState.get() == CONSUMER_STATE.RUNNING) {
             log.debug("polling for changes ({})", config.getString(EventSourceConfig.EVENT_SOURCE_TOPIC));
             ConsumerRecords<K, V> records = consumer.poll(Duration.ofMillis(config.getLong(EventSourceConfig.EVENT_SOURCE_POLL_MILLIS)));
@@ -214,46 +223,28 @@ public class EventSourceTable<K, V> extends Thread implements AutoCloseable {
                     updateState(record);
                 }
 
-                log.debug("Change in topic: request update once settled");
-                hasChanges = true;
-            } else {
-                if(hasChanges) {
-                    log.debug("Flushing changes since we've settled (we had a poll with no changes)");
-                    notifyListenersChanges();
-                    hasChanges = false;
-                    pollsWithChangesSinceLastFlush = 0;
-                }
-            }
-
-            // This is an escape hatch in case poll consistently returns changes; otherwise we'd never flush!
-            if(pollsWithChangesSinceLastFlush >= config.getLong(EventSourceConfig.EVENT_SOURCE_MAX_BATCH_DELAY)) {
-                log.debug("Flushing changes due to max batch delay reached");
                 notifyListenersChanges();
-                hasChanges = false;
-                pollsWithChangesSinceLastFlush = 0;
-            } else if (state.size() >= config.getLong(EventSourceConfig.EVENT_SOURCE_FLUSH_BATCH_THRESHOLD)) {
-                log.debug("Flushing changes due to min batch size reached");
-                notifyListenersChanges();
-                hasChanges = false;
-                pollsWithChangesSinceLastFlush = 0;
-            }
-
-            if(hasChanges) {
-                pollsWithChangesSinceLastFlush++;
             }
         }
     }
 
-    private void notifyListenersInitial() {
+    private void notifyListenersHighWaterOffset() {
         for(EventSourceListener<K, V> listener: listeners) {
-            listener.initialState(new LinkedHashMap<>(state));
+            listener.highWaterOffset();
         }
-        state.clear();
+
+        highWaterSignal.countDown();
+    }
+
+    private void notifyListenersTimeout() {
+        for(EventSourceListener<K, V> listener: listeners) {
+            listener.highWaterOffsetTimeout();
+        }
     }
 
     private void notifyListenersChanges() {
         for(EventSourceListener<K, V> listener: listeners) {
-            listener.changes(new LinkedHashMap<>(state));
+            listener.batch(new LinkedHashMap<>(state));
         }
         state.clear();
     }

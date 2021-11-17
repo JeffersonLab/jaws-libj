@@ -30,22 +30,26 @@ public class AlarmRegistrationViewer {
         props.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://registry:8081");
         props.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG,"true");
 
-        final EventSourceTable<String, AlarmRegistration> consumer = new EventSourceTable<>(props, -1);
+        final EventSourceTable<String, AlarmRegistration> table = new EventSourceTable<>(props, -1);
 
-        consumer.addListener(new EventSourceListener<String, AlarmRegistration>() {
+        table.addListener(new EventSourceListener<String, AlarmRegistration>() {
             @Override
-            public void initialState(LinkedHashMap<String, EventSourceRecord<String, AlarmRegistration>> records) {
+            public void batch(LinkedHashMap<String, EventSourceRecord<String, AlarmRegistration>> records) {
                 for (EventSourceRecord<String, AlarmRegistration> record : records.values()) {
                     String key = record.getKey();
                     AlarmRegistration value = record.getValue();
                     System.out.println(key + "=" + value);
                 }
-                consumer.close();
+            }
+
+            @Override
+            public void highWaterOffset() {
+                table.close();
             }
         });
 
-        consumer.start();
-        consumer.join(); // block until first update, which contains current state of topic
+        table.start();
+        table.join(); // block until first update, which contains current state of topic
     }
 }
 

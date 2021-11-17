@@ -19,6 +19,7 @@ import org.testcontainers.shaded.com.google.common.collect.ImmutableMap;
 import org.testcontainers.utility.DockerImageName;
 
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -89,24 +90,25 @@ public class EventSourceTest {
 
         // EventSourceTable (Consumer)
         Properties props = getDefaultProps(topicName);
-        EventSourceTable<String, String> table = new EventSourceTable<>(props, -1);
+        final LinkedHashMap<String, EventSourceRecord<String, String>> database = new LinkedHashMap<>();
 
-        final LinkedHashMap<String, EventSourceRecord<String,String>> database = new LinkedHashMap<>();
+        try(EventSourceTable<String, String> table = new EventSourceTable<>(props, -1)) {
 
-        table.addListener(new EventSourceListener<String, String>() {
-            @Override
-            public void initialState(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
-                database.putAll(records);
-                System.out.println("initialState: ");
-                for(EventSourceRecord record: records.values()) {
-                    System.out.println("Record: " + record);
+            table.addListener(new EventSourceListener<String, String>() {
+                @Override
+                public void batch(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
+                    database.putAll(records);
+                    System.out.println("changes: ");
+                    for (EventSourceRecord record : records.values()) {
+                        System.out.println("Record: " + record);
+                    }
                 }
-            }
-        });
+            });
 
-        table.start();
+            table.start();
 
-        Thread.sleep(5000);
+            table.awaitHighWaterOffset(5, TimeUnit.SECONDS);
+        }
 
         assertEquals(1, database.size());
     }
@@ -130,24 +132,25 @@ public class EventSourceTest {
 
         // EventSourceTable (Consumer)
         Properties props = getDefaultProps(topicName);
-        EventSourceTable<String, String> table = new EventSourceTable<>(props, 2);
+        final LinkedHashMap<String, EventSourceRecord<String, String>> database = new LinkedHashMap<>();
 
-        final LinkedHashMap<String ,EventSourceRecord<String,String>> database = new LinkedHashMap<>();
+        try(EventSourceTable<String, String> table = new EventSourceTable<>(props, 2)) {
 
-        table.addListener(new EventSourceListener<String, String>() {
-            @Override
-            public void initialState(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
-                database.putAll(records);
-                System.out.println("initialState: ");
-                for(EventSourceRecord record: records.values()) {
-                    System.out.println("Record: " + record);
+            table.addListener(new EventSourceListener<String, String>() {
+                @Override
+                public void batch(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
+                    database.putAll(records);
+                    System.out.println("batch: ");
+                    for (EventSourceRecord record : records.values()) {
+                        System.out.println("Record: " + record);
+                    }
                 }
-            }
-        });
+            });
 
-        table.start();
+            table.start();
 
-        Thread.sleep(5000);
+            table.awaitHighWaterOffset(5, TimeUnit.SECONDS);
+        }
 
         assertEquals(1, database.size());
     }
@@ -161,34 +164,26 @@ public class EventSourceTest {
 
         // EventSourceTable (Consumer)
         Properties props = getDefaultProps(topicName);
-        EventSourceTable<String, String> table = new EventSourceTable<>(props, -1);
 
-        final LinkedHashMap<String, EventSourceRecord<String,String>> database = new LinkedHashMap<>();
+        final LinkedHashMap<String, EventSourceRecord<String, String>> database = new LinkedHashMap<>();
 
-        table.addListener(new EventSourceListener<String, String>() {
-            @Override
-            public void initialState(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
-                database.putAll(records);
-                System.out.println("initialState: ");
-                for(EventSourceRecord record: records.values()) {
-                    System.out.println("Record: " + record);
+        try(EventSourceTable<String, String> table = new EventSourceTable<>(props, -1)) {
+
+            table.addListener(new EventSourceListener<String, String>() {
+                @Override
+                public void batch(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
+                    database.putAll(records);
+                    System.out.println("initialState: ");
+                    for (EventSourceRecord record : records.values()) {
+                        System.out.println("Record: " + record);
+                    }
                 }
-            }
+            });
 
-            @Override
-            public void changes(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
-                database.putAll(records);
+            table.start();
 
-                System.out.println("changes: ");
-                for(EventSourceRecord record: records.values()) {
-                    System.out.println("Record: " + record);
-                }
-            }
-        });
-
-        table.start();
-
-        Thread.sleep(5000);
+            table.awaitHighWaterOffset(5, TimeUnit.SECONDS);
+        }
 
         assertEquals(0, database.size());
     }
@@ -209,49 +204,41 @@ public class EventSourceTest {
 
         props.setProperty(EventSourceConfig.EVENT_SOURCE_POLL_MILLIS, "100");
         props.setProperty(EventSourceConfig.EVENT_SOURCE_MAX_POLL_RECORDS, "1");
-        props.setProperty(EventSourceConfig.EVENT_SOURCE_FLUSH_BATCH_THRESHOLD, "1");
 
-        EventSourceTable<String, String> table = new EventSourceTable<>(props, -1);
-
-        final LinkedHashMap<String, EventSourceRecord<String,String>> database = new LinkedHashMap<>();
+        final LinkedHashMap<String, EventSourceRecord<String, String>> database = new LinkedHashMap<>();
 
         AtomicInteger calls = new AtomicInteger(0);
 
-        table.addListener(new EventSourceListener<String, String>() {
-            @Override
-            public void initialState(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
-                database.putAll(records);
-                System.out.println("initialState: ");
-                for(EventSourceRecord record: records.values()) {
-                    System.out.println("Record: " + record);
+        try(EventSourceTable<String, String> table = new EventSourceTable<>(props, -1)) {
+
+            table.addListener(new EventSourceListener<String, String>() {
+                @Override
+                public void batch(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
+                    database.putAll(records);
+                    System.out.println("initialState: ");
+                    for (EventSourceRecord record : records.values()) {
+                        System.out.println("Record: " + record);
+                    }
+                    calls.getAndIncrement();
                 }
-            }
+            });
 
-            @Override
-            public void changes(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
-                database.putAll(records);
+            table.start();
 
-                calls.getAndIncrement();
+            table.awaitHighWaterOffset(5, TimeUnit.SECONDS);
 
-                System.out.println("changes: ");
-                for(EventSourceRecord record: records.values()) {
-                    System.out.println("Record: " + record);
-                }
-            }
-        });
+            producer.send(new ProducerRecord<>(topicName, "key1", "value1")).get();
+            producer.send(new ProducerRecord<>(topicName, "key2", "value2")).get();
+            producer.send(new ProducerRecord<>(topicName, "key3", "value3")).get();
+            producer.send(new ProducerRecord<>(topicName, "key4", "value4")).get();
+            producer.send(new ProducerRecord<>(topicName, "key5", "value5")).get();
+            producer.send(new ProducerRecord<>(topicName, "key6", "value6")).get();
 
-        table.start();
+            Thread.sleep(5000);
 
-        producer.send(new ProducerRecord<>(topicName, "key1", "value1")).get();
-        producer.send(new ProducerRecord<>(topicName, "key2", "value2")).get();
-        producer.send(new ProducerRecord<>(topicName, "key3", "value3")).get();
-        producer.send(new ProducerRecord<>(topicName, "key4", "value4")).get();
-        producer.send(new ProducerRecord<>(topicName, "key5", "value5")).get();
-        producer.send(new ProducerRecord<>(topicName, "key6", "value6")).get();
+        }
 
-        Thread.sleep(5000);
-
-        assertEquals(0, database.size());
-        assertEquals(0, calls.get());
+        assertEquals(6, database.size());
+        assertEquals(6, calls.get());
     }
 }
