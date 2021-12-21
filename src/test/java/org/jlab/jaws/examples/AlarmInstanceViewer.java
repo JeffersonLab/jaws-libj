@@ -1,7 +1,7 @@
 package org.jlab.jaws.examples;
 
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
-import org.jlab.jaws.entity.AlarmRegistration;
+import org.jlab.jaws.entity.AlarmInstance;
 import org.jlab.jaws.eventsource.EventSourceConfig;
 import org.jlab.jaws.eventsource.EventSourceListener;
 import org.jlab.jaws.eventsource.EventSourceRecord;
@@ -13,9 +13,9 @@ import java.util.LinkedHashMap;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-public class AlarmRegistrationViewer {
+public class AlarmInstanceViewer {
 
-    private static final Logger log = LoggerFactory.getLogger(AlarmRegistrationViewer.class);
+    private static final Logger log = LoggerFactory.getLogger(AlarmInstanceViewer.class);
 
     public static void main(String[] args) throws InterruptedException {
         final String servers = args[0];
@@ -31,14 +31,14 @@ public class AlarmRegistrationViewer {
         props.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://registry:8081");
         props.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG,"true");
 
-        try (final EventSourceTable<String, AlarmRegistration> table = new EventSourceTable<>(props, -1)) {
+        try (final EventSourceTable<String, AlarmInstance> table = new EventSourceTable<>(props, -1)) {
 
-            table.addListener(new EventSourceListener<String, AlarmRegistration>() {
+            table.addListener(new EventSourceListener<String, AlarmInstance>() {
                 @Override
-                public void batch(LinkedHashMap<String, EventSourceRecord<String, AlarmRegistration>> records) {
-                    for (EventSourceRecord<String, AlarmRegistration> record : records.values()) {
+                public void batch(LinkedHashMap<String, EventSourceRecord<String, AlarmInstance>> records) {
+                    for (EventSourceRecord<String, AlarmInstance> record : records.values()) {
                         String key = record.getKey();
-                        AlarmRegistration value = record.getValue();
+                        AlarmInstance value = record.getValue();
                         System.out.println(key + "=" + value);
                     }
                 }
