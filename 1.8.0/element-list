@@ -1,0 +1,3 @@
+org.jlab.jaws.entity
+org.jlab.jaws.eventsource
+org.jlab.jaws.serde
