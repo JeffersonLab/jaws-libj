@@ -5,13 +5,11 @@
     "doc": "An alarm class",
     "fields": [
         {
-            "name": "location",
-            "type": "AlarmLocation",
-            "doc": "The alarm location"
-        },
-        {
             "name": "category",
-            "type": "AlarmCategory",
+            "type": {
+                "type": "string",
+                "avro.java.string": "String"
+            },
             "doc": "The alarm category"
         },
         {
@@ -70,25 +68,6 @@
                 "long"
             ],
             "doc": "The number of seconds of off-delay"
-        },
-        {
-            "name": "maskedby",
-            "type": [
-                "null",
-                 {
-                    "type": "string",
-                    "avro.java.string": "String"
-                }
-            ],
-            "doc": "The name of the parent alarm, which if active, masks this alarm (flood suppression via logical hierarchy)"
-        },
-        {
-            "name": "screenpath",
-            "type": {
-                "type": "string",
-                "avro.java.string": "String"
-            },
-            "doc": "The path the alarm screen display"
         }
     ]
 }

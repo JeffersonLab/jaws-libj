@@ -57,92 +57,12 @@
         },
         {
             "name": "location",
-            "type": [
-                "null",
-                "AlarmLocation"
-            ],
-            "doc": "The alarm location"
-        },
-        {
-            "name": "category",
-            "type": [
-                "null",
-                "AlarmCategory"
-            ],
-            "doc": "The alarm category"
-        },
-        {
-            "name": "priority",
-            "type": [
-                "null",
-                "AlarmPriority"
-            ],
-            "doc": "The alarm priority"
-        },
-        {
-            "name": "rationale",
-            "type": [
-                "null",
-                {
-                    "type": "string",
-                    "avro.java.string": "String"
-                }
-            ],
-            "doc": "Markdown formatted text describing the reason this alarm is necessary"
-        },
-        {
-            "name": "correctiveaction",
-            "type": [
-                "null",
-                {
-                    "type": "string",
-                    "avro.java.string": "String"
-                }
-            ],
-            "doc": "Markdown formatted text describing the corrective action to take when the alarm becomes active"
-        },
-        {
-            "name": "pointofcontactusername",
-            "type": [
-                "null",
-                {
-                    "type": "string",
-                    "avro.java.string": "String"
-                }
-            ],
-            "doc": "Username (identifier) of point of contact.  Full contact info should be obtained from user database (LDAP for example)"
-        },
-        {
-            "name": "latching",
-            "type": [
-                "null",
-                "boolean"
-            ],
-            "doc": "Indicates whether this alarm latches when activated and can only be cleared after an explicit acknowledgement"
-        },
-        {
-            "name": "filterable",
-            "type": [
-                "null",
-                "boolean"
-            ],
-            "doc": "Indicates whether this alarm can be filtered out of view (typically done when a portion of the machine is turned off).  Some alarms must always be monitored, regardless of program."
-        },
-        {
-            "name": "ondelayseconds",
-            "type": [
-                "null",
-                "long"
-            ],
-            "doc": "The number of seconds of on-delay"
-        },
-        {
-            "name": "offdelayseconds",
-            "type": [
-                "null",
-                "long"
-            ],
-            "doc": "The number of seconds of off-delay"
+            "type": {
+                "type": "array",
+                "items" : "string",
+                "default": []
+            },
+            "doc": "The locations associated with the alarm"
         },
         {
             "name": "maskedby",
@@ -156,7 +76,7 @@
             "doc": "The name of the parent alarm, which if active, masks this alarm (flood suppression via logical hierarchy)"
         },
         {
-            "name": "screenpath",
+            "name": "screencommand",
             "type": [
                 "null",
                 {
@@ -164,7 +84,7 @@
                     "avro.java.string": "String"
                 }
             ],
-            "doc": "The path the alarm screen display"
+            "doc": "The command to open the related control system screen"
         }
     ]
 }
