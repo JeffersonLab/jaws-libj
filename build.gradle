@@ -19,7 +19,6 @@ tasks.withType(JavaCompile) {
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
 
-
 java {
     withJavadocJar()
     withSourcesJar()
@@ -32,10 +31,6 @@ avro {
 task avroJar(type: Jar) {
     classifier 'avro'
     from 'src/main/avro'
-}
-
-tasks.withType(JavaCompile) {
-    options.compilerArgs += ["-Xlint:unchecked"]
 }
 
 repositories {
