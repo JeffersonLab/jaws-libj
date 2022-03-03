@@ -56,10 +56,20 @@ public class EventSourceConfig extends AbstractConfig {
      */
     public static final String EVENT_SOURCE_VALUE_DESERIALIZER = "value.deserializer";
 
+    /**
+     * Create a new EventSourceConfig with provided originals.
+     *
+     * @param originals The originals
+     */
     public EventSourceConfig(Map originals) {
         super(configDef(), originals, false);
     }
 
+    /**
+     * Get the ConfigDef.
+     *
+     * @return The ConfigDef
+     */
     protected static ConfigDef configDef() {
         return new ConfigDef()
                 .define(EVENT_SOURCE_TOPIC,

@@ -16,6 +16,11 @@ public class JsonDeserializer<T> implements Deserializer<T> {
 
     private Class<T> tClass;
 
+    /**
+     * Create a new JsonDeserializer.
+     *
+     * @param tClass The Class of the Java object to map
+     */
     public JsonDeserializer(Class<T> tClass) {
         this.tClass = tClass;
     }
