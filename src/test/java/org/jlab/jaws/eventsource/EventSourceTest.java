@@ -19,7 +19,6 @@ import org.testcontainers.shaded.com.google.common.collect.ImmutableMap;
 import org.testcontainers.utility.DockerImageName;
 
 import java.util.*;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -34,7 +33,7 @@ public class EventSourceTest {
     public static Network network = Network.newNetwork();
 
     @ClassRule
-    public static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:6.1.1"))
+    public static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.0.1"))
             .withNetwork(network)
             .withLogConsumer(new Slf4jLogConsumer(LOGGER).withPrefix("kafka"))
             .withCreateContainerCmdModifier(cmd -> cmd.withHostName("kafka").withName("kafka"));
