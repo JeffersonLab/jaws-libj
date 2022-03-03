@@ -10,12 +10,17 @@ group 'org.jlab'
 version '1.9.0'
 
 ext.releaseDate = 'Jan 31 2022'
-ext.confluentVer = '6.0.1'
-ext.kafkaVer = '2.6.0'
+ext.confluentVer = '7.0.1'
+ext.kafkaVer = '3.1.0'
+
+tasks.withType(JavaCompile) {
+    options.release = 8
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
     withJavadocJar()
     withSourcesJar()
 }
@@ -44,11 +49,11 @@ repositories {
 dependencies {
     implementation "org.apache.kafka:kafka-streams:" + kafkaVer,
             "io.confluent:kafka-streams-avro-serde:" + confluentVer,
-            "org.apache.avro:avro:1.10.1",
+            "org.apache.avro:avro:1.11.0",
             "org.slf4j:slf4j-log4j12:1.7.30"
     testImplementation "junit:junit:4.13.2",
-     "org.testcontainers:testcontainers:1.15.3",
-     "org.testcontainers:kafka:1.15.3"
+     "org.testcontainers:testcontainers:1.16.3",
+     "org.testcontainers:kafka:1.16.3"
 }
 
 test {
@@ -75,6 +80,7 @@ javadoc {
     options.with {
         links 'https://docs.oracle.com/javase/8/docs/api'
     }
+    options.addStringOption('Xdoclint/package:-org.jlab.jaws.entity', '-quiet')
 }
 
 signing {
