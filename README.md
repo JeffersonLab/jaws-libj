@@ -2,24 +2,25 @@
 Reusable Java Classes for [JAWS](https://github.com/JeffersonLab/jaws).  Java classes generated to match the JAWS AVRO schemas are included as well as classes for handling Event Sourcing in Kafka (when Kafka Streams KTable is not a good fit such as transient batch processing in a client app).
 
 ---
- - [Usage](https://github.com/JeffersonLab/jaws-libj#usage)
-   - [API](https://github.com/JeffersonLab/jaws-libj#api)  
-   - [Configure](https://github.com/JeffersonLab/jaws-libj#configure)  
+ - [Install](https://github.com/JeffersonLab/jaws-libj#install)   
+ - [API](https://github.com/JeffersonLab/jaws-libj#api)  
+ - [Configure](https://github.com/JeffersonLab/jaws-libj#configure)  
  - [Build](https://github.com/JeffersonLab/jaws-libj#build)
 ---
 
-## Usage
+## Install
+
 The library is a jar file plus dependencies on Kafka libraries and the Java 8+ JVM and standard library.  You can obtain the jaws-libj jar file from the [Maven Central repository](https://repo1.maven.org/maven2/org/jlab/jaws-libj/) directly or from a Maven friendly build tool with the following coordinates (Gradle example shown):
 ```
 implementation 'org.jlab:jaws-libj:<version>'
 ```
 You can check the [Release Notes](https://github.com/JeffersonLab/jaws-libj/releases) to see what has changed in each version.  
 
-### API
+## API
 [Javadocs](https://jeffersonlab.github.io/jaws-libj)
 
-### Configure
-The EventSourceTable class (simplier version of KTable with some similarieis to a standard Kafka Consumer class) is configured with the [EventSourceConfig](https://github.com/JeffersonLab/jaws-libj/blob/main/src/main/java/org/jlab/jaws/eventsource/EventSourceConfig.java) class, which extends the common Kafka AbstractConfig.  Unlike the Kafka Streams _commit.interval.ms_ and _cache.max.byte.buffering_ configs EventSourceTable uses _event.source.poll.millis_ and _event.source.max.poll.before.flush_.
+## Configure
+The EventSourceTable class (simplier version of KTable with some similarities to a standard Kafka Consumer class) is configured with the [EventSourceConfig](https://github.com/JeffersonLab/jaws-libj/blob/main/src/main/java/org/jlab/jaws/eventsource/EventSourceConfig.java) class, which extends the common Kafka AbstractConfig.  Unlike the Kafka Streams _commit.interval.ms_ and _cache.max.byte.buffering_ configs EventSourceTable uses _event.source.poll.millis_ and _event.source.max.poll.before.flush_.
 
 ## Build
 This [Java 8+](https://adoptopenjdk.net/) project uses the [Gradle 6](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
