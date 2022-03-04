@@ -10,11 +10,13 @@ Reusable Java Classes for [JAWS](https://github.com/JeffersonLab/jaws).  Java cl
 
 ## Install
 
-The library is a jar file plus dependencies on Kafka libraries and the Java 8+ JVM and standard library.  You can obtain the jaws-libj jar file from the [Maven Central repository](https://repo1.maven.org/maven2/org/jlab/jaws-libj/) directly or from a Maven friendly build tool with the following coordinates (Gradle example shown):
+This library requires a Java 8+ JVM and standard library at run time.
+
+You can obtain the jar file from the [Maven Central repository](https://repo1.maven.org/maven2/org/jlab/jaws-libj/) directly or from a Maven friendly build tool with the following coordinates (Gradle example shown):
 ```
 implementation 'org.jlab:jaws-libj:<version>'
 ```
-You can check the [Release Notes](https://github.com/JeffersonLab/jaws-libj/releases) to see what has changed in each version.  
+Check the [Release Notes](https://github.com/JeffersonLab/jaws-libj/releases) to see what has changed in each version.  
 
 ## API
 [Javadocs](https://jeffersonlab.github.io/jaws-libj)
