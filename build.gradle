@@ -7,11 +7,9 @@ plugins {
 
 description = "Jefferson Lab Alarm Warning System Java Library"
 group 'org.jlab'
-version '4.0.0'
+version '4.1.0'
 
-ext.releaseDate = 'April 21 2022'
-ext.confluentVer = '7.0.1'
-ext.kafkaVer = '3.0.0'
+ext.releaseDate = 'May 2 2022'
 
 tasks.withType(JavaCompile) {
     options.release = 8
@@ -42,8 +40,7 @@ repositories {
 }
 
 dependencies {
-    implementation "org.apache.kafka:kafka-streams:" + kafkaVer,
-            "io.confluent:kafka-streams-avro-serde:" + confluentVer,
+    implementation "org.apache.kafka:kafka-clients:3.1.0",
             "org.apache.avro:avro:1.11.0",
             "org.slf4j:slf4j-log4j12:1.7.36"
     testImplementation "junit:junit:4.13.2",
