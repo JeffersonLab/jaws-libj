@@ -22,7 +22,7 @@ Check the [Release Notes](https://github.com/JeffersonLab/jaws-libj/releases) to
 [Javadocs](https://jeffersonlab.github.io/jaws-libj)
 
 ## Configure
-The EventSourceTable class (simplier version of KTable with some similarities to a standard Kafka Consumer class) is configured with the [EventSourceConfig](https://github.com/JeffersonLab/jaws-libj/blob/main/src/main/java/org/jlab/jaws/eventsource/EventSourceConfig.java) class, which extends the common Kafka AbstractConfig.  Unlike the Kafka Streams _commit.interval.ms_ and _cache.max.byte.buffering_ configs EventSourceTable uses _event.source.poll.millis_ and _event.source.max.poll.before.flush_.
+The EventSourceTable class (simplier version of KTable with some similarities to a standard Kafka Consumer class) is configured with the [EventSourceConfig](https://github.com/JeffersonLab/jaws-libj/blob/main/src/main/java/org/jlab/jaws/eventsource/EventSourceConfig.java) class, which extends the common Kafka AbstractConfig.  Unlike the Kafka Streams _commit.interval.ms_ and _cache.max.byte.buffering_ configs EventSourceTable uses _event.source.poll.millis_ and _event.source.max.poll.records_.
 
 ## Build
 This project is built with [Java 17](https://adoptium.net/) (compiled to Java 11 bytecode), and uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
