@@ -1,6 +1,6 @@
 package org.jlab.jaws.clients;
 
-import org.jlab.jaws.eventsource.EventSourceConfig;
+import org.jlab.kafka.eventsource.EventSourceConfig;
 
 import java.time.Instant;
 import java.util.Properties;
