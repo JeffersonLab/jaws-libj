@@ -1,10 +1,9 @@
 # jaws-libj [![Java CI with Gradle](https://github.com/JeffersonLab/jaws-libj/actions/workflows/gradle.yml/badge.svg)](https://github.com/JeffersonLab/jaws-libj/actions/workflows/gradle.yml) [![Maven Central](https://badgen.net/maven/v/maven-central/org.jlab/jaws-libj)](https://repo1.maven.org/maven2/org/jlab/jaws-libj/)
-Reusable Java Classes for [JAWS](https://github.com/JeffersonLab/jaws).  Java classes generated to match the JAWS AVRO schemas are included as well as classes for handling Event Sourcing in Kafka (when Kafka Streams KTable is not a good fit such as transient batch processing in a client app).
+Reusable Java Classes for [JAWS](https://github.com/JeffersonLab/jaws).  Entity classes generated to match the JAWS AVRO schemas are included as well as consumer client classes.
 
 ---
  - [Install](https://github.com/JeffersonLab/jaws-libj#install)   
- - [API](https://github.com/JeffersonLab/jaws-libj#api)  
- - [Configure](https://github.com/JeffersonLab/jaws-libj#configure)  
+ - [API](https://github.com/JeffersonLab/jaws-libj#api)    
  - [Build](https://github.com/JeffersonLab/jaws-libj#build)
 ---
 
@@ -20,9 +19,6 @@ Check the [Release Notes](https://github.com/JeffersonLab/jaws-libj/releases) to
 
 ## API
 [Javadocs](https://jeffersonlab.github.io/jaws-libj)
-
-## Configure
-The EventSourceTable class (simplier version of KTable with some similarities to a standard Kafka Consumer class) is configured with the [EventSourceConfig](https://github.com/JeffersonLab/jaws-libj/blob/main/src/main/java/org/jlab/jaws/eventsource/EventSourceConfig.java) class, which extends the common Kafka AbstractConfig.  Unlike the Kafka Streams _commit.interval.ms_ and _cache.max.byte.buffering_ configs EventSourceTable uses _event.source.poll.millis_ and _event.source.max.poll.records_.
 
 ## Build
 This project is built with [Java 17](https://adoptium.net/) (compiled to Java 11 bytecode), and uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
