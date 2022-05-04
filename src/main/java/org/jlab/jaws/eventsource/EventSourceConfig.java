@@ -57,6 +57,11 @@ public class EventSourceConfig extends AbstractConfig {
     public static final String EVENT_SOURCE_VALUE_DESERIALIZER = "value.deserializer";
 
     /**
+     * compacted.cache
+     */
+    public static final String EVENT_SOURCE_COMPACTED_CACHE = "compacted.cache";
+
+    /**
      * Create a new EventSourceConfig with provided originals.
      *
      * @param originals The originals
@@ -116,6 +121,11 @@ public class EventSourceConfig extends AbstractConfig {
                         ConfigDef.Type.STRING,
                         "org.apache.kafka.common.serialization.StringDeserializer",
                         ConfigDef.Importance.HIGH,
-                        "Class name of deserializer to use for the value");
+                        "Class name of deserializer to use for the value")
+                .define(EVENT_SOURCE_COMPACTED_CACHE,
+                    ConfigDef.Type.BOOLEAN,
+                    "true",
+                    ConfigDef.Importance.HIGH,
+                    "Whether or not the EventSourceTable should accumulate an in-memory compacted cache (potentially memory intensive)");
     }
 }

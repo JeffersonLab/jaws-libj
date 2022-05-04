@@ -54,9 +54,6 @@ public class EventSourceTable<K, V> implements AutoCloseable {
 
     private AtomicReference<CONSUMER_STATE> consumerState = new AtomicReference<>(CONSUMER_STATE.INITIALIZING);
 
-    // Ordered list of messages since last notification
-    private final List<EventSourceRecord<K, V>> records = new ArrayList<>();
-
     private final CountDownLatch highWaterSignal = new CountDownLatch(1);
 
     private ExecutorService pollExecutor = null;
@@ -211,21 +208,26 @@ public class EventSourceTable<K, V> implements AutoCloseable {
         }, config.getLong(EventSourceConfig.EVENT_SOURCE_HIGH_WATER_TIMEMOUT),
                 TimeUnit.valueOf(config.getString(EventSourceConfig.EVENT_SOURCE_HIGH_WATER_UNITS)));
 
+        List<EventSourceRecord<K, V>> eventRecords = new ArrayList<>();
+        LinkedHashMap<K, EventSourceRecord<K,V>> compactedCache = new LinkedHashMap<>();
+
         while(!endReached && !timeout.get() && consumerState.get() == CONSUMER_STATE.RUNNING) {
             log.debug("polling for changes ({})", config.getString(EventSourceConfig.EVENT_SOURCE_TOPIC));
-            ConsumerRecords<K, V> records = consumer.poll(Duration.ofMillis(config.getLong(EventSourceConfig.EVENT_SOURCE_POLL_MILLIS)));
+            ConsumerRecords<K, V> consumerRecords = consumer.poll(Duration.ofMillis(config.getLong(EventSourceConfig.EVENT_SOURCE_POLL_MILLIS)));
 
-            if (records.count() > 0) { // We have changes
-                for(ConsumerRecord<K, V> record: records) {
-                    addRecord(record);
+            if (consumerRecords.count() > 0) { // We have changes
+                for(ConsumerRecord<K, V> consumerRecord: consumerRecords) {
+                    EventSourceRecord<K, V> eventRecord = consumerToEvent(consumerRecord);
+                    eventRecords.add(eventRecord);
+                    compactedCache.put(consumerRecord.key(), eventRecord);
 
-                    if(record.offset() + 1 == endOffset) {
-                        log.debug("end of partition {} reached", record.partition());
+                    if(consumerRecord.offset() + 1 == endOffset) {
+                        log.debug("end of partition {} reached", consumerRecord.partition());
                         endReached = true;
                     }
                 }
 
-                notifyListenersChanges();
+                notifyListenersChanges(eventRecords, false); // Always false while in the init method
             }
         }
 
@@ -234,28 +236,31 @@ public class EventSourceTable<K, V> implements AutoCloseable {
         if(timeout.get()) {
             notifyListenersTimeout();
         } else {
-            notifyListenersHighWaterOffset();
+            notifyListenersHighWaterOffset(compactedCache);
         }
     }
 
     private void monitorChanges() {
         while(consumerState.get() == CONSUMER_STATE.RUNNING) {
             log.debug("polling for changes ({})", config.getString(EventSourceConfig.EVENT_SOURCE_TOPIC));
-            ConsumerRecords<K, V> records = consumer.poll(Duration.ofMillis(config.getLong(EventSourceConfig.EVENT_SOURCE_POLL_MILLIS)));
+            ConsumerRecords<K, V> consumerRecords = consumer.poll(Duration.ofMillis(config.getLong(EventSourceConfig.EVENT_SOURCE_POLL_MILLIS)));
+            List<EventSourceRecord<K, V>> eventRecords = new ArrayList<>();
 
-            if (records.count() > 0) { // We have changes
-                for(ConsumerRecord<K, V> record: records) {
-                    addRecord(record);
+            if (consumerRecords.count() > 0) { // We have changes
+
+                for(ConsumerRecord<K, V> consumerRecord: consumerRecords) {
+                    EventSourceRecord<K, V> eventRecord = consumerToEvent(consumerRecord);
+                    eventRecords.add(eventRecord);
                 }
 
-                notifyListenersChanges();
+                notifyListenersChanges(eventRecords, true); // Always true while in the monitorChanges method
             }
         }
     }
 
-    private void notifyListenersHighWaterOffset() {
+    private void notifyListenersHighWaterOffset(LinkedHashMap<K, EventSourceRecord<K,V>> compactedCache) {
         for(EventSourceListener<K, V> listener: listeners) {
-            listener.highWaterOffset();
+            listener.highWaterOffset(new LinkedHashMap<>(compactedCache));
         }
 
         highWaterSignal.countDown();
@@ -267,17 +272,15 @@ public class EventSourceTable<K, V> implements AutoCloseable {
         }
     }
 
-    private void notifyListenersChanges() {
+    private void notifyListenersChanges(List<EventSourceRecord<K, V>> eventRecords, boolean highWaterReached) {
         for(EventSourceListener<K, V> listener: listeners) {
-            listener.batch(new ArrayList<>(records));
+            listener.batch(new ArrayList<>(eventRecords), highWaterReached);
         }
-        records.clear();
     }
 
-    private void addRecord(ConsumerRecord<K, V> record) {
-        log.debug("Add Record: {}={}", record.key(), record.value());
-        EventSourceRecord<K, V> esr = new EventSourceRecord<>(record.key(), record.value(), record.offset(), record.timestamp());
-        records.add(esr);
+    private EventSourceRecord<K, V> consumerToEvent(ConsumerRecord<K, V> record) {
+        log.debug("Consumer to Event Record: {}={}", record.key(), record.value());
+        return new EventSourceRecord<>(record.key(), record.value(), record.offset(), record.timestamp());
     }
 
     /**

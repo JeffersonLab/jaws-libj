@@ -100,7 +100,7 @@ public class EventSourceTest {
 
             table.addListener(new EventSourceListener<String, String>() {
                 @Override
-                public void batch(List<EventSourceRecord<String, String>> records) {
+                public void batch(List<EventSourceRecord<String, String>> records, boolean highWaterReached) {
                     putAll(database, records);
                     System.out.println("changes: ");
                     for (EventSourceRecord record : records) {
@@ -142,7 +142,7 @@ public class EventSourceTest {
 
             table.addListener(new EventSourceListener<String, String>() {
                 @Override
-                public void batch(List<EventSourceRecord<String, String>> records) {
+                public void batch(List<EventSourceRecord<String, String>> records, boolean highWaterReached) {
                     putAll(database, records);
                     System.out.println("batch: ");
                     for (EventSourceRecord record : records) {
@@ -175,7 +175,7 @@ public class EventSourceTest {
 
             table.addListener(new EventSourceListener<String, String>() {
                 @Override
-                public void batch(List<EventSourceRecord<String, String>> records) {
+                public void batch(List<EventSourceRecord<String, String>> records, boolean highWaterReached) {
                     putAll(database, records);
                     System.out.println("initialState: ");
                     for (EventSourceRecord record : records) {
@@ -217,7 +217,7 @@ public class EventSourceTest {
 
             table.addListener(new EventSourceListener<String, String>() {
                 @Override
-                public void batch(List<EventSourceRecord<String, String>> records) {
+                public void batch(List<EventSourceRecord<String, String>> records, boolean highWaterReached) {
                     putAll(database, records);
                     System.out.println("initialState: ");
                     for (EventSourceRecord record : records) {
