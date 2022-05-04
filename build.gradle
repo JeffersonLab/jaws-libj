@@ -12,7 +12,7 @@ version '4.1.0'
 ext.releaseDate = 'May 2 2022'
 
 tasks.withType(JavaCompile) {
-    options.release = 8
+    options.release = 11
     options.encoding = 'UTF-8'
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
@@ -68,9 +68,9 @@ processResources {
 
 javadoc {
     options.overview = "src/main/java/overview.html"
-    options.source = 8
+    options.source = 11
     options.with {
-        links 'https://docs.oracle.com/javase/8/docs/api'
+        links 'https://docs.oracle.com/en/java/javase/11/docs/api/'
     }
     options.addStringOption('Xdoclint/package:-org.jlab.jaws.entity', '-quiet')
 }
