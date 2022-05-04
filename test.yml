@@ -1,0 +1,26 @@
+services:
+  zookeeper:
+    extends:
+      file: docker-compose.yml
+      service: zookeeper
+
+  kafka:
+    extends:
+      file: docker-compose.yml
+      service: kafka
+
+  registry:
+    extends:
+      file: docker-compose.yml
+      service: registry
+
+  jaws:
+    extends:
+      file: docker-compose.yml
+      service: jaws
+
+  client:
+    image: slominskir/jaws-java-client:4.2.0
+    volumes:
+      - ./build/install/jaws-libj:/opt/jaws-libj
+      - ./build/classes/java/test:/tests

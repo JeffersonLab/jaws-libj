@@ -3,6 +3,8 @@ plugins {
     id 'maven-publish'
     id 'com.github.davidmc24.gradle.plugin.avro' version '1.2.1'
     id 'signing'
+    id 'java-library-distribution'
+    id 'com.github.jk1.dependency-license-report' version '1.16'
 }
 
 description = "Jefferson Lab Alarm Warning System Java Library"
@@ -78,6 +80,28 @@ javadoc {
         links 'https://docs.oracle.com/en/java/javase/11/docs/api/'
     }
     options.addStringOption('Xdoclint/package:-org.jlab.jaws.entity', '-quiet')
+}
+
+
+build {
+    dependsOn(installDist)
+}
+
+installDist.dependsOn(generateLicenseReport)
+distTar.dependsOn(generateLicenseReport)
+distZip.dependsOn(generateLicenseReport)
+
+distributions {
+    main {
+        contents {
+            from("build/reports/dependency-license") {
+                into "dependency-license"
+            }
+            from('config') {
+                into 'config'
+            }
+        }
+    }
 }
 
 signing {
