@@ -62,6 +62,11 @@ public class EventSourceConfig extends AbstractConfig {
     public static final String EVENT_SOURCE_COMPACTED_CACHE = "compacted.cache";
 
     /**
+     * resume.offset
+     */
+    public static final String EVENT_SOURCE_RESUME_OFFSET = "resume.offset";
+
+    /**
      * Create a new EventSourceConfig with provided originals.
      *
      * @param originals The originals
@@ -126,6 +131,11 @@ public class EventSourceConfig extends AbstractConfig {
                     ConfigDef.Type.BOOLEAN,
                     "true",
                     ConfigDef.Importance.HIGH,
-                    "Whether or not the EventSourceTable should accumulate an in-memory compacted cache (potentially memory intensive)");
+                    "Whether or not the EventSourceTable should accumulate an in-memory compacted cache (potentially memory intensive)")
+                .define(EVENT_SOURCE_RESUME_OFFSET,
+                        ConfigDef.Type.LONG,
+                        "-1",
+                        ConfigDef.Importance.HIGH,
+                        "The offset to resume, or -1 to start from the beginning");
     }
 }

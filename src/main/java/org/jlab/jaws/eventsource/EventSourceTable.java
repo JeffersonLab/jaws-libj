@@ -23,9 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * in that it ignores the server persisted client log position (offset) and always rewinds a topic to the beginning
  * (or a specified resume offset) and replays all messages
  * every run and it notifies listeners once
- * the high water mark (highest message index) is reached.  It also differs in that it does not cache the full state
- * of the table.  It also collapses duplicate keys (newer keys replace older keys), such that intermediate results are
- * not provided (WARNING: this may be inappropriate for some use-cases).
+ * the high water mark (highest message index) is reached.
  * </p><p>
  * It's useful for clients which replay events
  * frequently (small-ish data) and are not concerned about scalability, reliability, or intermediate results
@@ -50,7 +48,6 @@ public class EventSourceTable<K, V> implements AutoCloseable {
 
     private long endOffset = 0;
     private boolean endReached = false;
-    private long resumeOffset;
 
     private AtomicReference<CONSUMER_STATE> consumerState = new AtomicReference<>(CONSUMER_STATE.INITIALIZING);
 
@@ -62,11 +59,8 @@ public class EventSourceTable<K, V> implements AutoCloseable {
      * Create a new EventSourceTable.
      *
      * @param props The properties - see EventSourceConfig
-     * @param resumeOffset The offset to resume, or -1 to start from the beginning
      */
-    public EventSourceTable(Properties props, long resumeOffset) {
-
-        this.resumeOffset = resumeOffset;
+    public EventSourceTable(Properties props) {
 
         config = new EventSourceConfig(props);
 
@@ -176,6 +170,8 @@ public class EventSourceTable<K, V> implements AutoCloseable {
                 if(partitions.size() != 1) {
                     throw new IllegalStateException("We only support single partition Event Sourced topics at this time");
                 }
+
+                long resumeOffset = config.getLong(EventSourceConfig.EVENT_SOURCE_RESUME_OFFSET);
 
                 TopicPartition p = partitions.iterator().next(); // Exactly one partition verified above
 

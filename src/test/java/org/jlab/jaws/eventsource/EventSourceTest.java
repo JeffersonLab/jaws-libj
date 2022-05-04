@@ -97,7 +97,7 @@ public class EventSourceTest {
         Properties props = getDefaultProps(topicName);
         final LinkedHashMap<String, EventSourceRecord<String, String>> database = new LinkedHashMap<>();
 
-        try(EventSourceTable<String, String> table = new EventSourceTable<>(props, -1)) {
+        try(EventSourceTable<String, String> table = new EventSourceTable<>(props)) {
 
             table.addListener(new EventSourceListener<String, String>() {
                 @Override
@@ -137,9 +137,12 @@ public class EventSourceTest {
 
         // EventSourceTable (Consumer)
         Properties props = getDefaultProps(topicName);
+
+        props.setProperty(EventSourceConfig.EVENT_SOURCE_RESUME_OFFSET, "2");
+
         final LinkedHashMap<String, EventSourceRecord<String, String>> database = new LinkedHashMap<>();
 
-        try(EventSourceTable<String, String> table = new EventSourceTable<>(props, 2)) {
+        try(EventSourceTable<String, String> table = new EventSourceTable<>(props)) {
 
             table.addListener(new EventSourceListener<String, String>() {
                 @Override
@@ -172,7 +175,7 @@ public class EventSourceTest {
 
         final LinkedHashMap<String, EventSourceRecord<String, String>> database = new LinkedHashMap<>();
 
-        try(EventSourceTable<String, String> table = new EventSourceTable<>(props, -1)) {
+        try(EventSourceTable<String, String> table = new EventSourceTable<>(props)) {
 
             table.addListener(new EventSourceListener<String, String>() {
                 @Override
@@ -214,7 +217,7 @@ public class EventSourceTest {
 
         AtomicInteger calls = new AtomicInteger(0);
 
-        try(EventSourceTable<String, String> table = new EventSourceTable<>(props, -1)) {
+        try(EventSourceTable<String, String> table = new EventSourceTable<>(props)) {
 
             table.addListener(new EventSourceListener<String, String>() {
                 @Override
@@ -268,7 +271,7 @@ public class EventSourceTest {
 
         AtomicInteger calls = new AtomicInteger(0);
 
-        try(EventSourceTable<String, String> table = new EventSourceTable<>(props, -1)) {
+        try(EventSourceTable<String, String> table = new EventSourceTable<>(props)) {
 
             table.addListener(new EventSourceListener<String, String>() {
                 @Override
@@ -323,7 +326,7 @@ public class EventSourceTest {
 
         AtomicInteger calls = new AtomicInteger(0);
 
-        try(EventSourceTable<String, String> table = new EventSourceTable<>(props, -1)) {
+        try(EventSourceTable<String, String> table = new EventSourceTable<>(props)) {
 
             table.addListener(new EventSourceListener<String, String>() {
                 @Override
@@ -377,7 +380,7 @@ public class EventSourceTest {
 
         AtomicInteger calls = new AtomicInteger(0);
 
-        try(EventSourceTable<String, String> table = new EventSourceTable<>(props, -1)) {
+        try(EventSourceTable<String, String> table = new EventSourceTable<>(props)) {
 
             table.addListener(new EventSourceListener<String, String>() {
                 @Override
