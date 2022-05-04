@@ -25,6 +25,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class EventSourceTest {
     private static Logger LOGGER = LoggerFactory.getLogger(EventSourceTest.class);
@@ -244,5 +245,176 @@ public class EventSourceTest {
 
         assertEquals(6, database.size());
         assertEquals(6, calls.get());
+    }
+
+    @Test
+    public void cacheTest() throws ExecutionException, InterruptedException, TimeoutException {
+        final String topicName = "testing5";
+
+        // Admin
+        setupTopic(topicName);
+
+
+        // Producer
+        KafkaProducer<String, String> producer = setupProducer();
+
+        // EventSourceTable (Consumer)
+        Properties props = getDefaultProps(topicName);
+
+        props.setProperty(EventSourceConfig.EVENT_SOURCE_POLL_MILLIS, "100");
+        props.setProperty(EventSourceConfig.EVENT_SOURCE_MAX_POLL_RECORDS, "1");
+
+        final LinkedHashMap<String, EventSourceRecord<String, String>> database = new LinkedHashMap<>();
+
+        AtomicInteger calls = new AtomicInteger(0);
+
+        try(EventSourceTable<String, String> table = new EventSourceTable<>(props, -1)) {
+
+            table.addListener(new EventSourceListener<String, String>() {
+                @Override
+                public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
+                    System.out.println("initialState: ");
+                    database.putAll(records);
+                    for (EventSourceRecord record : records.values()) {
+                        System.out.println("Record: " + record);
+                    }
+                    calls.getAndIncrement();
+                }
+            });
+
+            producer.send(new ProducerRecord<>(topicName, "key1", "value1")).get();
+            producer.send(new ProducerRecord<>(topicName, "key2", "value2")).get();
+            producer.send(new ProducerRecord<>(topicName, "key3", "value3")).get();
+            producer.send(new ProducerRecord<>(topicName, "key4", "value4")).get();
+            producer.send(new ProducerRecord<>(topicName, "key5", "value5")).get();
+            producer.send(new ProducerRecord<>(topicName, "key6", "value6")).get();
+
+            table.start();
+
+            table.awaitHighWaterOffset(5, TimeUnit.SECONDS);
+
+            Thread.sleep(5000);
+
+        }
+
+        assertEquals(6, database.size());
+        assertEquals(1, calls.get());
+    }
+
+    @Test
+    public void cacheDisabledTest() throws ExecutionException, InterruptedException, TimeoutException {
+        final String topicName = "testing6";
+
+        // Admin
+        setupTopic(topicName);
+
+
+        // Producer
+        KafkaProducer<String, String> producer = setupProducer();
+
+        // EventSourceTable (Consumer)
+        Properties props = getDefaultProps(topicName);
+
+        props.setProperty(EventSourceConfig.EVENT_SOURCE_POLL_MILLIS, "100");
+        props.setProperty(EventSourceConfig.EVENT_SOURCE_MAX_POLL_RECORDS, "1");
+        props.setProperty(EventSourceConfig.EVENT_SOURCE_COMPACTED_CACHE, "false");
+
+        final LinkedHashMap<String, EventSourceRecord<String, String>> database = new LinkedHashMap<>();
+
+        AtomicInteger calls = new AtomicInteger(0);
+
+        try(EventSourceTable<String, String> table = new EventSourceTable<>(props, -1)) {
+
+            table.addListener(new EventSourceListener<String, String>() {
+                @Override
+                public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
+                    System.out.println("initialState: ");
+                    database.putAll(records);
+                    for (EventSourceRecord record : records.values()) {
+                        System.out.println("Record: " + record);
+                    }
+                    calls.getAndIncrement();
+                }
+            });
+
+            producer.send(new ProducerRecord<>(topicName, "key1", "value1")).get();
+            producer.send(new ProducerRecord<>(topicName, "key2", "value2")).get();
+            producer.send(new ProducerRecord<>(topicName, "key3", "value3")).get();
+            producer.send(new ProducerRecord<>(topicName, "key4", "value4")).get();
+            producer.send(new ProducerRecord<>(topicName, "key5", "value5")).get();
+            producer.send(new ProducerRecord<>(topicName, "key6", "value6")).get();
+
+            table.start();
+
+            table.awaitHighWaterOffset(5, TimeUnit.SECONDS);
+
+            Thread.sleep(5000);
+
+        }
+
+        assertEquals(0, database.size());
+        assertEquals(1, calls.get());
+    }
+
+    @Test
+    public void cacheCompactionTest() throws ExecutionException, InterruptedException, TimeoutException {
+        final String topicName = "testing7";
+
+        // Admin
+        setupTopic(topicName);
+
+
+        // Producer
+        KafkaProducer<String, String> producer = setupProducer();
+
+        // EventSourceTable (Consumer)
+        Properties props = getDefaultProps(topicName);
+
+        props.setProperty(EventSourceConfig.EVENT_SOURCE_POLL_MILLIS, "100");
+        props.setProperty(EventSourceConfig.EVENT_SOURCE_MAX_POLL_RECORDS, "1");
+
+        final LinkedHashMap<String, EventSourceRecord<String, String>> database = new LinkedHashMap<>();
+
+        AtomicInteger calls = new AtomicInteger(0);
+
+        try(EventSourceTable<String, String> table = new EventSourceTable<>(props, -1)) {
+
+            table.addListener(new EventSourceListener<String, String>() {
+                @Override
+                public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
+                    System.out.println("initialState: ");
+                    database.putAll(records);
+                    for (EventSourceRecord record : records.values()) {
+                        System.out.println("Record: " + record);
+                    }
+                    calls.getAndIncrement();
+                }
+            });
+
+            producer.send(new ProducerRecord<>(topicName, "key1", "value1")).get();
+            producer.send(new ProducerRecord<>(topicName, "key2", "value2")).get();
+            producer.send(new ProducerRecord<>(topicName, "key3", "value3")).get();
+            producer.send(new ProducerRecord<>(topicName, "key4", "value4")).get();
+            producer.send(new ProducerRecord<>(topicName, "key5", "value5")).get();
+            producer.send(new ProducerRecord<>(topicName, "key6", "value6")).get();
+
+            producer.send(new ProducerRecord<>(topicName, "key1", null)).get();
+            producer.send(new ProducerRecord<>(topicName, "key2", null)).get();
+            producer.send(new ProducerRecord<>(topicName, "key3", null)).get();
+            producer.send(new ProducerRecord<>(topicName, "key4", "value4")).get();
+            producer.send(new ProducerRecord<>(topicName, "key5", "value5")).get();
+            producer.send(new ProducerRecord<>(topicName, "key6", "value6")).get();
+
+            table.start();
+
+            table.awaitHighWaterOffset(5, TimeUnit.SECONDS);
+
+            Thread.sleep(5000);
+
+        }
+
+        assertEquals(6, database.size());
+        assertEquals(1, calls.get());
+        assertNull(database.get("key1").getValue());
     }
 }

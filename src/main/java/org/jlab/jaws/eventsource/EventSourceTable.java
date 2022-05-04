@@ -208,6 +208,8 @@ public class EventSourceTable<K, V> implements AutoCloseable {
         }, config.getLong(EventSourceConfig.EVENT_SOURCE_HIGH_WATER_TIMEMOUT),
                 TimeUnit.valueOf(config.getString(EventSourceConfig.EVENT_SOURCE_HIGH_WATER_UNITS)));
 
+        boolean provideCompactedCache = config.getBoolean(EventSourceConfig.EVENT_SOURCE_COMPACTED_CACHE);
+
         List<EventSourceRecord<K, V>> eventRecords = new ArrayList<>();
         LinkedHashMap<K, EventSourceRecord<K,V>> compactedCache = new LinkedHashMap<>();
 
@@ -219,7 +221,9 @@ public class EventSourceTable<K, V> implements AutoCloseable {
                 for(ConsumerRecord<K, V> consumerRecord: consumerRecords) {
                     EventSourceRecord<K, V> eventRecord = consumerToEvent(consumerRecord);
                     eventRecords.add(eventRecord);
-                    compactedCache.put(consumerRecord.key(), eventRecord);
+                    if(provideCompactedCache) {
+                        compactedCache.put(consumerRecord.key(), eventRecord);
+                    }
 
                     if(consumerRecord.offset() + 1 == endOffset) {
                         log.debug("end of partition {} reached", consumerRecord.partition());
