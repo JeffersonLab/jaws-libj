@@ -1,6 +1,7 @@
 package org.jlab.jaws.eventsource;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * An EventSourceListener can be registered to receive batch-processing call-backs from
@@ -29,12 +30,11 @@ public interface EventSourceListener<K, V> {
 
     /**
      * This callback is invoked periodically depending on EventSourceConfig.EVENT_SOURCE_POLL_MILLIS and
-     * will contain no more than EventSourceConfig.EVENT_SOURCE_MAX_POLL_RECORDS.   Newer keys replace older keys
-     * so intermediate states are not reported.
+     * will contain no more than EventSourceConfig.EVENT_SOURCE_MAX_POLL_RECORDS.
      *
-     * @param records The ordered set of unique changes
+     * @param records The ordered list of records
      */
-    public default void batch(LinkedHashMap<K, EventSourceRecord<K, V>> records) {
+    public default void batch(List<EventSourceRecord<K, V>> records) {
 
     }
 }

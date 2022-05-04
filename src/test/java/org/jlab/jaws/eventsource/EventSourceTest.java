@@ -70,6 +70,11 @@ public class EventSourceTest {
         return props;
     }
 
+    private void putAll(LinkedHashMap<String, EventSourceRecord<String, String>> database, List<EventSourceRecord<String, String>> records) {
+        for(EventSourceRecord<String, String> record: records) {
+            database.put(record.getKey(), record);
+        }
+    }
 
     @Test
     public void basicTableTest() throws ExecutionException, InterruptedException, TimeoutException {
@@ -95,10 +100,10 @@ public class EventSourceTest {
 
             table.addListener(new EventSourceListener<String, String>() {
                 @Override
-                public void batch(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
-                    database.putAll(records);
+                public void batch(List<EventSourceRecord<String, String>> records) {
+                    putAll(database, records);
                     System.out.println("changes: ");
-                    for (EventSourceRecord record : records.values()) {
+                    for (EventSourceRecord record : records) {
                         System.out.println("Record: " + record);
                     }
                 }
@@ -137,10 +142,10 @@ public class EventSourceTest {
 
             table.addListener(new EventSourceListener<String, String>() {
                 @Override
-                public void batch(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
-                    database.putAll(records);
+                public void batch(List<EventSourceRecord<String, String>> records) {
+                    putAll(database, records);
                     System.out.println("batch: ");
-                    for (EventSourceRecord record : records.values()) {
+                    for (EventSourceRecord record : records) {
                         System.out.println("Record: " + record);
                     }
                 }
@@ -170,10 +175,10 @@ public class EventSourceTest {
 
             table.addListener(new EventSourceListener<String, String>() {
                 @Override
-                public void batch(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
-                    database.putAll(records);
+                public void batch(List<EventSourceRecord<String, String>> records) {
+                    putAll(database, records);
                     System.out.println("initialState: ");
-                    for (EventSourceRecord record : records.values()) {
+                    for (EventSourceRecord record : records) {
                         System.out.println("Record: " + record);
                     }
                 }
@@ -212,10 +217,10 @@ public class EventSourceTest {
 
             table.addListener(new EventSourceListener<String, String>() {
                 @Override
-                public void batch(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
-                    database.putAll(records);
+                public void batch(List<EventSourceRecord<String, String>> records) {
+                    putAll(database, records);
                     System.out.println("initialState: ");
-                    for (EventSourceRecord record : records.values()) {
+                    for (EventSourceRecord record : records) {
                         System.out.println("Record: " + record);
                     }
                     calls.getAndIncrement();

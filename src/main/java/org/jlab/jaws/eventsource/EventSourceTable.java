@@ -54,8 +54,8 @@ public class EventSourceTable<K, V> implements AutoCloseable {
 
     private AtomicReference<CONSUMER_STATE> consumerState = new AtomicReference<>(CONSUMER_STATE.INITIALIZING);
 
-    // Ordered and unique changes since last listener notification are tracked
-    private final LinkedHashMap<K, EventSourceRecord<K, V>> state = new LinkedHashMap<>();
+    // Ordered list of messages since last notification
+    private final List<EventSourceRecord<K, V>> records = new ArrayList<>();
 
     private final CountDownLatch highWaterSignal = new CountDownLatch(1);
 
@@ -217,7 +217,7 @@ public class EventSourceTable<K, V> implements AutoCloseable {
 
             if (records.count() > 0) { // We have changes
                 for(ConsumerRecord<K, V> record: records) {
-                    updateState(record);
+                    addRecord(record);
 
                     if(record.offset() + 1 == endOffset) {
                         log.debug("end of partition {} reached", record.partition());
@@ -245,7 +245,7 @@ public class EventSourceTable<K, V> implements AutoCloseable {
 
             if (records.count() > 0) { // We have changes
                 for(ConsumerRecord<K, V> record: records) {
-                    updateState(record);
+                    addRecord(record);
                 }
 
                 notifyListenersChanges();
@@ -269,16 +269,15 @@ public class EventSourceTable<K, V> implements AutoCloseable {
 
     private void notifyListenersChanges() {
         for(EventSourceListener<K, V> listener: listeners) {
-            listener.batch(new LinkedHashMap<>(state));
+            listener.batch(new ArrayList<>(records));
         }
-        state.clear();
+        records.clear();
     }
 
-    private void updateState(ConsumerRecord<K, V> record) {
-        log.debug("State update: {}={}", record.key(), record.value());
-
+    private void addRecord(ConsumerRecord<K, V> record) {
+        log.debug("Add Record: {}={}", record.key(), record.value());
         EventSourceRecord<K, V> esr = new EventSourceRecord<>(record.key(), record.value(), record.offset(), record.timestamp());
-        state.put(record.key(), esr);
+        records.add(esr);
     }
 
     /**
