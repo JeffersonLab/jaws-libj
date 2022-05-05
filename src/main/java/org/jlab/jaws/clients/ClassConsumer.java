@@ -21,6 +21,10 @@ public class ClassConsumer extends JAWSConsumer {
     private static Properties setDefaults(Properties overrides) {
         Properties defaults = new Properties();
 
+        if(overrides == null) {
+            overrides = new Properties();
+        }
+
         defaults.put(EventSourceConfig.EVENT_SOURCE_GROUP, "class-consumer" + Instant.now().toString() + "-" + Math.random());
         defaults.put(EventSourceConfig.EVENT_SOURCE_TOPIC, "alarm-classes");
         defaults.put(EventSourceConfig.EVENT_SOURCE_KEY_DESERIALIZER, "org.apache.kafka.common.serialization.StringDeserializer");

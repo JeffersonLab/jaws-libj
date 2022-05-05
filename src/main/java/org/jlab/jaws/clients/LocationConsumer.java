@@ -21,6 +21,10 @@ public class LocationConsumer extends JAWSConsumer {
     private static Properties setDefaults(Properties overrides) {
         Properties defaults = new Properties();
 
+        if(overrides == null) {
+            overrides = new Properties();
+        }
+
         defaults.put(EventSourceConfig.EVENT_SOURCE_GROUP, "location-consumer" + Instant.now().toString() + "-" + Math.random());
         defaults.put(EventSourceConfig.EVENT_SOURCE_TOPIC, "alarm-locations");
         defaults.put(EventSourceConfig.EVENT_SOURCE_KEY_DESERIALIZER, "org.apache.kafka.common.serialization.StringDeserializer");

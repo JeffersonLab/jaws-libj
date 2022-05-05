@@ -22,8 +22,20 @@ public class JAWSConsumer extends EventSourceTable {
     private static Properties setDefaults(Properties overrides) {
         Properties defaults = new Properties();
 
-        defaults.put(EventSourceConfig.EVENT_SOURCE_BOOTSTRAP_SERVERS, System.getenv("BOOTSTRAP_SERVERS"));
-        defaults.put("schema.registry.url", System.getenv("SCHEMA_REGISTRY"));
+        String BOOTSTRAP_SERVERS = System.getenv("BOOTSTRAP_SERVERS");
+
+        if(BOOTSTRAP_SERVERS == null) {
+            BOOTSTRAP_SERVERS = "localhost:9092";
+        }
+
+        String SCHEMA_REGISTRY = System.getenv("SCHEMA_REGISTRY");
+
+        if(SCHEMA_REGISTRY == null) {
+            SCHEMA_REGISTRY = "http://localhost:8081";
+        }
+
+        defaults.put(EventSourceConfig.EVENT_SOURCE_BOOTSTRAP_SERVERS, BOOTSTRAP_SERVERS);
+        defaults.put("schema.registry.url", SCHEMA_REGISTRY);
         defaults.put("specific.avro.reader", "true");
 
         defaults.putAll(overrides);

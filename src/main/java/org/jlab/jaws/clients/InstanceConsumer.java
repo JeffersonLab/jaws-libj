@@ -21,6 +21,10 @@ public class InstanceConsumer extends JAWSConsumer {
     private static Properties setDefaults(Properties overrides) {
         Properties defaults = new Properties();
 
+        if(overrides == null) {
+            overrides = new Properties();
+        }
+
         defaults.put(EventSourceConfig.EVENT_SOURCE_GROUP, "instance-consumer" + Instant.now().toString() + "-" + Math.random());
         defaults.put(EventSourceConfig.EVENT_SOURCE_TOPIC, "alarm-instances");
         defaults.put(EventSourceConfig.EVENT_SOURCE_KEY_DESERIALIZER, "org.apache.kafka.common.serialization.StringDeserializer");
