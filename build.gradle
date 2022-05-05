@@ -45,14 +45,41 @@ repositories {
     }
 }
 
+sourceSets {
+    integration {
+        java.srcDir "${projectDir}/src/integration/java"
+        resources.srcDir "${projectDir}/src/integration/resources"
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+
+configurations {
+    testImplementation.extendsFrom implementation
+    integrationImplementation.extendsFrom testImplementation
+    integrationRuntimeOnly.extendsFrom runtimeOnly
+}
+
 dependencies {
     implementation "org.apache.kafka:kafka-clients:3.1.0",
             "org.apache.avro:avro:1.11.0",
             "org.slf4j:slf4j-log4j12:1.7.36",
             "org.jlab:kafka-common:1.0.0"
-    testImplementation "junit:junit:4.13.2",
-     "org.testcontainers:testcontainers:1.17.1",
-     "org.testcontainers:kafka:1.17.1"
+    testImplementation "junit:junit:4.13.2"
+}
+
+task integrationTest(type: Test) {
+    description = 'Runs integration tests.'
+    group = 'verification'
+
+    testClassesDirs = sourceSets.integration.output.classesDirs
+    classpath = sourceSets.integration.runtimeClasspath
+
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+        showStandardStreams = true
+    }
 }
 
 test {
@@ -60,6 +87,10 @@ test {
         events "passed", "skipped", "failed"
         exceptionFormat "full"
     }
+}
+
+processIntegrationResources {
+    duplicatesStrategy 'include'
 }
 
 processResources {
