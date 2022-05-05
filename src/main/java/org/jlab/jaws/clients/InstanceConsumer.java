@@ -1,5 +1,6 @@
 package org.jlab.jaws.clients;
 
+import org.jlab.jaws.entity.AlarmInstance;
 import org.jlab.kafka.eventsource.EventSourceConfig;
 
 import java.time.Instant;
@@ -8,7 +9,7 @@ import java.util.Properties;
 /**
  * A InstanceConsumer provides default properties values for GROUP, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
  */
-public class InstanceConsumer extends JAWSConsumer {
+public class InstanceConsumer extends JAWSConsumer<String, AlarmInstance> {
     /**
      * Create a new InstanceConsumer with the provided property overrides.
      *

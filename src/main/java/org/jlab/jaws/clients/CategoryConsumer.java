@@ -8,7 +8,7 @@ import java.util.Properties;
 /**
  * A CategoryConsumer provides default properties values for GROUP, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
  */
-public class CategoryConsumer extends JAWSConsumer {
+public class CategoryConsumer extends JAWSConsumer<String, String> {
     /**
      * Create a new CategoryConsumer with the provided property overrides.
      *

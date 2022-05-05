@@ -1,5 +1,6 @@
 package org.jlab.jaws.clients;
 
+import org.jlab.jaws.entity.AlarmLocation;
 import org.jlab.kafka.eventsource.EventSourceConfig;
 
 import java.time.Instant;
@@ -8,7 +9,7 @@ import java.util.Properties;
 /**
  * A LocationConsumer provides default properties values for GROUP, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
  */
-public class LocationConsumer extends JAWSConsumer {
+public class LocationConsumer extends JAWSConsumer<String, AlarmLocation> {
     /**
      * Create a new LocationConsumer with the provided property overrides.
      *

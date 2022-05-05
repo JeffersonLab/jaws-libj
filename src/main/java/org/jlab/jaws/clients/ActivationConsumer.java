@@ -1,5 +1,6 @@
 package org.jlab.jaws.clients;
 
+import org.jlab.jaws.entity.AlarmActivationUnion;
 import org.jlab.kafka.eventsource.EventSourceConfig;
 
 import java.time.Instant;
@@ -8,7 +9,7 @@ import java.util.Properties;
 /**
  * An ActivationConsumer provides default properties values for GROUP, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
  */
-public class ActivationConsumer extends JAWSConsumer {
+public class ActivationConsumer extends JAWSConsumer<String, AlarmActivationUnion> {
     /**
      * Create a new ActivationConsumer with the provided property overrides.
      *

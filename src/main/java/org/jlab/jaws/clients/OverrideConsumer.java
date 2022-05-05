@@ -1,5 +1,6 @@
 package org.jlab.jaws.clients;
 
+import org.jlab.jaws.entity.AlarmOverrideUnion;
 import org.jlab.kafka.eventsource.EventSourceConfig;
 
 import java.time.Instant;
@@ -8,7 +9,7 @@ import java.util.Properties;
 /**
  * An OverrideConsumer provides default properties values for GROUP, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
  */
-public class OverrideConsumer extends JAWSConsumer {
+public class OverrideConsumer extends JAWSConsumer<String, AlarmOverrideUnion> {
     /**
      * Create a new OverrideConsumer with the provided property overrides.
      *

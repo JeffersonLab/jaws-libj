@@ -1,25 +1,22 @@
 package org.jlab.jaws.clients;
 
-import org.jlab.kafka.eventsource.EventSourceConfig;
 import org.jlab.kafka.eventsource.EventSourceListener;
 import org.jlab.kafka.eventsource.EventSourceRecord;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.LinkedHashMap;
-import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-
+/**
+ * NOTE: Since we're not providing a BOOTSTRAP_SERVERS or SCHEMA_REGISTRY override property the environment variables
+ * of the same name are by default consulted, and failing that, the defaults of localhost:9092 and http://localhost:8081
+ * are used.
+ */
 public class ClientTest {
-
     @Test
     public void categoryTest() throws InterruptedException {
-        Properties props = new Properties();
-        props.put(EventSourceConfig.EVENT_SOURCE_BOOTSTRAP_SERVERS, "kafka:9092");
-        props.put("schema.registry.url", "http://registry:8081");
-
-        /*CategoryConsumer consumer = new CategoryConsumer(props);
+        CategoryConsumer consumer = new CategoryConsumer(null);
 
         LinkedHashMap<String, EventSourceRecord<String, String>> results = new LinkedHashMap<>();
 
@@ -33,6 +30,6 @@ public class ClientTest {
         // highWaterOffset method is called before this method returns, so we should be good!
         consumer.awaitHighWaterOffset(10, TimeUnit.SECONDS);
 
-        Assert.assertEquals(1, results.size());*/
+        Assert.assertEquals(0, results.size());
     }
 }

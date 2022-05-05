@@ -8,8 +8,12 @@ import java.util.Properties;
 /**
  * A JAWSConsumer extends an EventSourceTable with default property values for BOOTSTRAP_SERVERS and SCHEMA_REGISTRY
  * via the environment and also sets specific.avro.reader = true.
+ *
+ * Type parameters:
+ * @param <K> The type for message keys
+ * @param <V> The type for message values
  */
-public class JAWSConsumer extends EventSourceTable {
+public class JAWSConsumer<K, V> extends EventSourceTable<K, V> {
     /**
      * Create a new JAWSConsumer with the provided property overrides.
      *
