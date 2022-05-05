@@ -1,4 +1,4 @@
-name: CI w/ Docker & Gradle
+name: CI
 
 on:
   push:
