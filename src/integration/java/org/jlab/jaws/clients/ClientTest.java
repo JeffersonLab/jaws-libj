@@ -1,12 +1,16 @@
 package org.jlab.jaws.clients;
 
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.jlab.kafka.eventsource.EventSourceListener;
 import org.jlab.kafka.eventsource.EventSourceRecord;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.LinkedHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * NOTE: Since we're not providing a BOOTSTRAP_SERVERS or SCHEMA_REGISTRY override property the environment variables
@@ -15,21 +19,30 @@ import java.util.concurrent.TimeUnit;
  */
 public class ClientTest {
     @Test
-    public void categoryTest() throws InterruptedException {
-        CategoryConsumer consumer = new CategoryConsumer(null);
-
+    public void categoryTest() throws InterruptedException, ExecutionException, TimeoutException {
         LinkedHashMap<String, EventSourceRecord<String, String>> results = new LinkedHashMap<>();
 
-        consumer.addListener(new EventSourceListener<String, String>() {
-            @Override
-            public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
-                results.putAll(records);
+        try(CategoryConsumer consumer = new CategoryConsumer(null)) {
+            consumer.addListener(new EventSourceListener<String, String>() {
+                @Override
+                public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
+                    results.putAll(records);
+                }
+            });
+
+            try(CategoryProducer producer = new CategoryProducer(null)) {
+                Future<RecordMetadata> future = producer.send("TESTING", "");
+
+                // Block until sent or an exception is thrown
+                future.get(2, TimeUnit.SECONDS);
             }
-        });
 
-        // highWaterOffset method is called before this method returns, so we should be good!
-        consumer.awaitHighWaterOffset(10, TimeUnit.SECONDS);
+            consumer.start();
 
-        Assert.assertEquals(0, results.size());
+            // highWaterOffset method is called before this method returns, so we should be good!
+            consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+        }
+
+        Assert.assertEquals(2, results.size());
     }
 }
