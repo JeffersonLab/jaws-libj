@@ -5,6 +5,7 @@ Reusable Java Classes for [JAWS](https://github.com/JeffersonLab/jaws).  Entity 
  - [Install](https://github.com/JeffersonLab/jaws-libj#install)   
  - [API](https://github.com/JeffersonLab/jaws-libj#api)    
  - [Build](https://github.com/JeffersonLab/jaws-libj#build)
+ - [Test](https://github.com/JeffersonLab/jaws-libj#test) 
 ---
 
 ## Install
@@ -31,3 +32,14 @@ gradlew build
 **Note**: If you do not already have Gradle installed, it will be installed automatically by the wrapper script included in the source
 
 **Note for JLab On-Site Users**: Jefferson Lab has an intercepting [proxy](https://gist.github.com/slominskir/92c25a033db93a90184a5994e71d0b78)
+
+## Test
+Continuous Integration (CI) is setup using GitHub Actions, so on push tests are automatically run unless `[no ci]` is included in the commit message.   Tests can be manually run on a local workstation using:
+```
+docker compose -f deps.yml up
+```
+Wait for containers to start then:
+```
+gradle integrationTestOutsideNetwork
+```
+**Note**: To run integration tests INSIDE the Docker container network using Kafka's advertised listener as is done with CI use `test.yml` instead of `deps.yml` and then execute tests inside the `client` container using `docker exec -i client sh -c "cd /app; gradle integrationTest"`
