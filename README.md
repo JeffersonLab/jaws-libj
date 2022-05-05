@@ -1,4 +1,4 @@
-# jaws-libj [![Java CI with Gradle](https://github.com/JeffersonLab/jaws-libj/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/JeffersonLab/jaws-libj/actions/workflows/ci.yml) [![Maven Central](https://badgen.net/maven/v/maven-central/org.jlab/jaws-libj)](https://repo1.maven.org/maven2/org/jlab/jaws-libj/)
+# jaws-libj [![CI with Docker and Gradle](https://github.com/JeffersonLab/jaws-libj/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/JeffersonLab/jaws-libj/actions/workflows/ci.yml) [![Maven Central](https://badgen.net/maven/v/maven-central/org.jlab/jaws-libj)](https://repo1.maven.org/maven2/org/jlab/jaws-libj/)
 Reusable Java Classes for [JAWS](https://github.com/JeffersonLab/jaws).  Entity classes generated to match the JAWS AVRO schemas are included as well as consumer client classes.
 
 ---
