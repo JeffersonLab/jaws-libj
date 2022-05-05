@@ -20,7 +20,11 @@ services:
       service: jaws
 
   client:
-    image: slominskir/jaws-java-client:4.2.0
-    volumes:
-      - ./build/install/jaws-libj:/opt/jaws-libj
-      - ./build/classes/java/test:/tests
+    extends:
+      file: docker-compose.yml
+      service: client
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt
