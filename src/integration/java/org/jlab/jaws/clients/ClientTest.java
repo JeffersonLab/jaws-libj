@@ -177,4 +177,42 @@ public class ClientTest {
 
         Assert.assertEquals(1, results.size());
     }
+
+    @Test
+    public void overrideTest() throws InterruptedException, ExecutionException, TimeoutException {
+        LinkedHashMap<OverriddenAlarmKey, EventSourceRecord<OverriddenAlarmKey, AlarmOverrideUnion>> results = new LinkedHashMap<>();
+
+        try(OverrideConsumer consumer = new OverrideConsumer(null)) {
+            consumer.addListener(new EventSourceListener<>() {
+                @Override
+                public void highWaterOffset(LinkedHashMap<OverriddenAlarmKey, EventSourceRecord<OverriddenAlarmKey, AlarmOverrideUnion>> records) {
+                    results.putAll(records);
+                }
+            });
+
+            try(OverrideProducer producer = new OverrideProducer(null)) {
+                Future<RecordMetadata> future = producer.send(new OverriddenAlarmKey("TESTING",
+                        OverriddenAlarmType.Latched), new AlarmOverrideUnion(new LatchedOverride()));
+
+                // Block until sent or an exception is thrown
+                future.get(2, TimeUnit.SECONDS);
+            }
+
+            consumer.start();
+
+            // highWaterOffset method is called before this method returns, so we should be good!
+            consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+        } finally {
+            // Cleanup
+            try(OverrideProducer producer = new OverrideProducer(null)) {
+                Future<RecordMetadata> future = producer.send(new OverriddenAlarmKey("TESTING",
+                        OverriddenAlarmType.Latched), null);
+
+                // Block until sent or an exception is thrown
+                future.get(2, TimeUnit.SECONDS);
+            }
+        }
+
+        Assert.assertEquals(1, results.size());
+    }
 }
