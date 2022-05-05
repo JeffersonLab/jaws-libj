@@ -64,13 +64,30 @@ dependencies {
     implementation "org.apache.kafka:kafka-clients:3.1.0",
             "org.apache.avro:avro:1.11.0",
             "org.slf4j:slf4j-log4j12:1.7.36",
-            "org.jlab:kafka-common:1.0.0"
+            "org.jlab:kafka-common:1.0.0",
+            "io.confluent:kafka-avro-serializer:7.1.1"
     testImplementation "junit:junit:4.13.2"
 }
 
 task integrationTest(type: Test) {
-    description = 'Runs integration tests.'
+    description = 'Runs integration tests using existing BOOTSTRAP_SERVERS env.'
     group = 'verification'
+
+    testClassesDirs = sourceSets.integration.output.classesDirs
+    classpath = sourceSets.integration.runtimeClasspath
+
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+        showStandardStreams = true
+    }
+}
+
+task integrationTestOutsideNetwork(type: Test) {
+    description = 'Runs integration tests using Kafka OUTSIDE Advertised Listener explicit BOOTSTRAP_SERVERS.'
+    group = 'verification'
+
+    environment "BOOTSTRAP_SERVERS", "localhost:9094"
 
     testClassesDirs = sourceSets.integration.output.classesDirs
     classpath = sourceSets.integration.runtimeClasspath

@@ -1,6 +1,7 @@
 package org.jlab.jaws.clients;
 
 import org.apache.kafka.clients.producer.RecordMetadata;
+import org.jlab.jaws.entity.AlarmLocation;
 import org.jlab.kafka.eventsource.EventSourceListener;
 import org.jlab.kafka.eventsource.EventSourceRecord;
 import org.junit.Assert;
@@ -23,7 +24,7 @@ public class ClientTest {
         LinkedHashMap<String, EventSourceRecord<String, String>> results = new LinkedHashMap<>();
 
         try(CategoryConsumer consumer = new CategoryConsumer(null)) {
-            consumer.addListener(new EventSourceListener<String, String>() {
+            consumer.addListener(new EventSourceListener<>() {
                 @Override
                 public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
                     results.putAll(records);
@@ -41,8 +42,52 @@ public class ClientTest {
 
             // highWaterOffset method is called before this method returns, so we should be good!
             consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+        } finally {
+            // Cleanup
+            try(CategoryProducer producer = new CategoryProducer(null)) {
+                Future<RecordMetadata> future = producer.send("TESTING", null);
+
+                // Block until sent or an exception is thrown
+                future.get(2, TimeUnit.SECONDS);
+            }
         }
 
-        Assert.assertEquals(2, results.size());
+        Assert.assertEquals(1, results.size());
+    }
+
+    @Test
+    public void locationTest() throws InterruptedException, ExecutionException, TimeoutException {
+        LinkedHashMap<String, EventSourceRecord<String, AlarmLocation>> results = new LinkedHashMap<>();
+
+        try(LocationConsumer consumer = new LocationConsumer(null)) {
+            consumer.addListener(new EventSourceListener<>() {
+                @Override
+                public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, AlarmLocation>> records) {
+                    results.putAll(records);
+                }
+            });
+
+            try(LocationProducer producer = new LocationProducer(null)) {
+                Future<RecordMetadata> future = producer.send("TESTING", new AlarmLocation(null));
+
+                // Block until sent or an exception is thrown
+                future.get(2, TimeUnit.SECONDS);
+            }
+
+            consumer.start();
+
+            // highWaterOffset method is called before this method returns, so we should be good!
+            consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+        } finally {
+            // Cleanup
+            try(LocationProducer producer = new LocationProducer(null)) {
+                Future<RecordMetadata> future = producer.send("TESTING", null);
+
+                // Block until sent or an exception is thrown
+                future.get(2, TimeUnit.SECONDS);
+            }
+        }
+
+        Assert.assertEquals(1, results.size());
     }
 }
