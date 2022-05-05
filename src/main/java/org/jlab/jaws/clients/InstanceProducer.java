@@ -4,7 +4,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.header.Header;
-import org.jlab.jaws.entity.AlarmLocation;
+import org.jlab.jaws.entity.AlarmInstance;
 
 import java.time.Instant;
 import java.util.Properties;
@@ -14,18 +14,18 @@ import java.util.concurrent.Future;
  * A Producer provides default properties values for CLIENT_ID, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
  * A default send method is also provided.
  */
-public class LocationProducer extends JAWSProducer<String, AlarmLocation> {
+public class InstanceProducer extends JAWSProducer<String, AlarmInstance> {
     /**
      * The topic name
      */
-    public static final String TOPIC = "alarm-locations";
+    public static final String TOPIC = "alarm-instances";
 
     /**
      * Create a new Producer with the provided property overrides.
      *
      * @param props The properties, which will override any defaults set by this class
      */
-    public LocationProducer(Properties props) {
+    public InstanceProducer(Properties props) {
         super(setDefaults(props));
     }
 
@@ -36,7 +36,7 @@ public class LocationProducer extends JAWSProducer<String, AlarmLocation> {
             overrides = new Properties();
         }
 
-        defaults.put(ProducerConfig.CLIENT_ID_CONFIG, "location-producer" + Instant.now().toString() + "-" + Math.random());
+        defaults.put(ProducerConfig.CLIENT_ID_CONFIG, "instance-producer" + Instant.now().toString() + "-" + Math.random());
         defaults.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         defaults.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "io.confluent.kafka.serializers.KafkaAvroSerializer");
 
@@ -52,7 +52,7 @@ public class LocationProducer extends JAWSProducer<String, AlarmLocation> {
      * @param value The message value
      * @return An asynchronous call Future reference
      */
-    public Future<RecordMetadata> send(String key, AlarmLocation value) {
+    public Future<RecordMetadata> send(String key, AlarmInstance value) {
 
         Iterable<Header> headers = getDefaultHeaders();
 

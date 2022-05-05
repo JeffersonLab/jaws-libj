@@ -11,17 +11,17 @@ import java.util.Properties;
 import java.util.concurrent.Future;
 
 /**
- * A ClassProducer provides default properties values for CLIENT_ID, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
+ * A Producer provides default properties values for CLIENT_ID, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
  * A default send method is also provided.
  */
 public class ClassProducer extends JAWSProducer<String, AlarmClass> {
     /**
-     * The Class topic name
+     * The topic name
      */
     public static final String TOPIC = "alarm-classes";
 
     /**
-     * Create a new ClassProducer with the provided property overrides.
+     * Create a new Producer with the provided property overrides.
      *
      * @param props The properties, which will override any defaults set by this class
      */

@@ -1,14 +1,13 @@
 package org.jlab.jaws.clients;
 
 import org.apache.kafka.clients.producer.RecordMetadata;
-import org.jlab.jaws.entity.AlarmClass;
-import org.jlab.jaws.entity.AlarmLocation;
-import org.jlab.jaws.entity.AlarmPriority;
+import org.jlab.jaws.entity.*;
 import org.jlab.kafka.eventsource.EventSourceListener;
 import org.jlab.kafka.eventsource.EventSourceRecord;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -92,6 +91,47 @@ public class ClientTest {
         } finally {
             // Cleanup
             try(ClassProducer producer = new ClassProducer(null)) {
+                Future<RecordMetadata> future = producer.send("TESTING", null);
+
+                // Block until sent or an exception is thrown
+                future.get(2, TimeUnit.SECONDS);
+            }
+        }
+
+        Assert.assertEquals(1, results.size());
+    }
+
+    @Test
+    public void instanceTest() throws InterruptedException, ExecutionException, TimeoutException {
+        LinkedHashMap<String, EventSourceRecord<String, AlarmInstance>> results = new LinkedHashMap<>();
+
+        try(InstanceConsumer consumer = new InstanceConsumer(null)) {
+            consumer.addListener(new EventSourceListener<>() {
+                @Override
+                public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, AlarmInstance>> records) {
+                    results.putAll(records);
+                }
+            });
+
+            try(InstanceProducer producer = new InstanceProducer(null)) {
+                Future<RecordMetadata> future = producer.send("TESTING",
+                        new AlarmInstance("class",
+                                new SimpleProducer(),
+                                Arrays.asList(new String[]{"location1"}),
+                                "maskedby",
+                                "screencommand"));
+
+                // Block until sent or an exception is thrown
+                future.get(2, TimeUnit.SECONDS);
+            }
+
+            consumer.start();
+
+            // highWaterOffset method is called before this method returns, so we should be good!
+            consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+        } finally {
+            // Cleanup
+            try(InstanceProducer producer = new InstanceProducer(null)) {
                 Future<RecordMetadata> future = producer.send("TESTING", null);
 
                 // Block until sent or an exception is thrown
