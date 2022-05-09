@@ -328,4 +328,41 @@ public class ClientTest {
 
         Assert.assertEquals(1, results.size());
     }
+
+    @Test
+    public void effectiveActivationTest() throws InterruptedException, ExecutionException, TimeoutException {
+        LinkedHashMap<String, EventSourceRecord<String, EffectiveActivation>> results = new LinkedHashMap<>();
+
+        try(EffectiveActivationConsumer consumer = new EffectiveActivationConsumer(null)) {
+            consumer.addListener(new EventSourceListener<>() {
+                @Override
+                public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, EffectiveActivation>> records) {
+                    results.putAll(records);
+                }
+            });
+
+            try(EffectiveActivationProducer producer = new EffectiveActivationProducer(null)) {
+                Future<RecordMetadata> future = producer.send("TESTING", new EffectiveActivation(null,
+                        new AlarmOverrideSet(), AlarmState.Normal));
+
+                // Block until sent or an exception is thrown
+                future.get(2, TimeUnit.SECONDS);
+            }
+
+            consumer.start();
+
+            // highWaterOffset method is called before this method returns, so we should be good!
+            consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+        } finally {
+            // Cleanup
+            try(EffectiveActivationProducer producer = new EffectiveActivationProducer(null)) {
+                Future<RecordMetadata> future = producer.send("TESTING", null);
+
+                // Block until sent or an exception is thrown
+                future.get(2, TimeUnit.SECONDS);
+            }
+        }
+
+        Assert.assertEquals(1, results.size());
+    }
 }
