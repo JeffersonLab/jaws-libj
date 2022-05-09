@@ -32,8 +32,10 @@ public class ClientTest {
                 }
             });
 
+            String expected = "";
+
             try(CategoryProducer producer = new CategoryProducer(null)) {
-                Future<RecordMetadata> future = producer.send("TESTING", "");
+                Future<RecordMetadata> future = producer.send("TESTING", expected);
 
                 // Block until sent or an exception is thrown
                 future.get(2, TimeUnit.SECONDS);
@@ -43,6 +45,9 @@ public class ClientTest {
 
             // highWaterOffset method is called before this method returns, so we should be good!
             consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+
+            Assert.assertEquals(1, results.size());
+            Assert.assertEquals(expected, results.values().iterator().next().getValue());
         } finally {
             // Cleanup
             try(CategoryProducer producer = new CategoryProducer(null)) {
@@ -52,8 +57,6 @@ public class ClientTest {
                 future.get(2, TimeUnit.SECONDS);
             }
         }
-
-        Assert.assertEquals(1, results.size());
     }
 
     @Test
@@ -68,17 +71,18 @@ public class ClientTest {
                 }
             });
 
+            AlarmClass expected = new AlarmClass("category",
+                    AlarmPriority.P1_CRITICAL,
+                    "rationale",
+                    "correctiveaction",
+                    "pointofcontactusername",
+                    true,
+                    true,
+                    null,
+                    null);
+
             try(ClassProducer producer = new ClassProducer(null)) {
-                Future<RecordMetadata> future = producer.send("TESTING",
-                        new AlarmClass("category",
-                                AlarmPriority.P1_CRITICAL,
-                                "rationale",
-                                "correctiveaction",
-                                "pointofcontactusername",
-                                true,
-                                true,
-                                null,
-                                null));
+                Future<RecordMetadata> future = producer.send("TESTING", expected);
 
                 // Block until sent or an exception is thrown
                 future.get(2, TimeUnit.SECONDS);
@@ -88,6 +92,9 @@ public class ClientTest {
 
             // highWaterOffset method is called before this method returns, so we should be good!
             consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+
+            Assert.assertEquals(1, results.size());
+            Assert.assertEquals(expected, results.values().iterator().next().getValue());
         } finally {
             // Cleanup
             try(ClassProducer producer = new ClassProducer(null)) {
@@ -97,8 +104,6 @@ public class ClientTest {
                 future.get(2, TimeUnit.SECONDS);
             }
         }
-
-        Assert.assertEquals(1, results.size());
     }
 
     @Test
@@ -113,13 +118,14 @@ public class ClientTest {
                 }
             });
 
+            AlarmInstance expected = new AlarmInstance("class",
+                    new SimpleProducer(),
+                    Arrays.asList(new String[]{"location1"}),
+                    "maskedby",
+                    "screencommand");
+
             try(InstanceProducer producer = new InstanceProducer(null)) {
-                Future<RecordMetadata> future = producer.send("TESTING",
-                        new AlarmInstance("class",
-                                new SimpleProducer(),
-                                Arrays.asList(new String[]{"location1"}),
-                                "maskedby",
-                                "screencommand"));
+                Future<RecordMetadata> future = producer.send("TESTING", expected);
 
                 // Block until sent or an exception is thrown
                 future.get(2, TimeUnit.SECONDS);
@@ -129,6 +135,9 @@ public class ClientTest {
 
             // highWaterOffset method is called before this method returns, so we should be good!
             consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+
+            Assert.assertEquals(1, results.size());
+            Assert.assertEquals(expected, results.values().iterator().next().getValue());
         } finally {
             // Cleanup
             try(InstanceProducer producer = new InstanceProducer(null)) {
@@ -138,8 +147,6 @@ public class ClientTest {
                 future.get(2, TimeUnit.SECONDS);
             }
         }
-
-        Assert.assertEquals(1, results.size());
     }
 
     @Test
@@ -154,8 +161,10 @@ public class ClientTest {
                 }
             });
 
+            AlarmLocation expected = new AlarmLocation(null);
+
             try(LocationProducer producer = new LocationProducer(null)) {
-                Future<RecordMetadata> future = producer.send("TESTING", new AlarmLocation(null));
+                Future<RecordMetadata> future = producer.send("TESTING", expected);
 
                 // Block until sent or an exception is thrown
                 future.get(2, TimeUnit.SECONDS);
@@ -165,6 +174,9 @@ public class ClientTest {
 
             // highWaterOffset method is called before this method returns, so we should be good!
             consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+
+            Assert.assertEquals(1, results.size());
+            Assert.assertEquals(expected, results.values().iterator().next().getValue());
         } finally {
             // Cleanup
             try(LocationProducer producer = new LocationProducer(null)) {
@@ -174,8 +186,6 @@ public class ClientTest {
                 future.get(2, TimeUnit.SECONDS);
             }
         }
-
-        Assert.assertEquals(1, results.size());
     }
 
     @Test
@@ -190,9 +200,11 @@ public class ClientTest {
                 }
             });
 
+            AlarmOverrideUnion expected = new AlarmOverrideUnion(new LatchedOverride());
+
             try(OverrideProducer producer = new OverrideProducer(null)) {
                 Future<RecordMetadata> future = producer.send(new OverriddenAlarmKey("TESTING",
-                        OverriddenAlarmType.Latched), new AlarmOverrideUnion(new LatchedOverride()));
+                        OverriddenAlarmType.Latched), expected);
 
                 // Block until sent or an exception is thrown
                 future.get(2, TimeUnit.SECONDS);
@@ -202,6 +214,9 @@ public class ClientTest {
 
             // highWaterOffset method is called before this method returns, so we should be good!
             consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+
+            Assert.assertEquals(1, results.size());
+            Assert.assertEquals(expected, results.values().iterator().next().getValue());
         } finally {
             // Cleanup
             try(OverrideProducer producer = new OverrideProducer(null)) {
@@ -212,8 +227,6 @@ public class ClientTest {
                 future.get(2, TimeUnit.SECONDS);
             }
         }
-
-        Assert.assertEquals(1, results.size());
     }
 
     @Test
@@ -228,8 +241,10 @@ public class ClientTest {
                 }
             });
 
+            AlarmActivationUnion expected = new AlarmActivationUnion(new SimpleAlarming());
+
             try(ActivationProducer producer = new ActivationProducer(null)) {
-                Future<RecordMetadata> future = producer.send("TESTING", new AlarmActivationUnion(new SimpleAlarming()));
+                Future<RecordMetadata> future = producer.send("TESTING", expected);
 
                 // Block until sent or an exception is thrown
                 future.get(2, TimeUnit.SECONDS);
@@ -239,6 +254,9 @@ public class ClientTest {
 
             // highWaterOffset method is called before this method returns, so we should be good!
             consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+
+            Assert.assertEquals(1, results.size());
+            Assert.assertEquals(expected, results.values().iterator().next().getValue());
         } finally {
             // Cleanup
             try(ActivationProducer producer = new ActivationProducer(null)) {
@@ -248,8 +266,6 @@ public class ClientTest {
                 future.get(2, TimeUnit.SECONDS);
             }
         }
-
-        Assert.assertEquals(1, results.size());
     }
 
     @Test
@@ -265,11 +281,13 @@ public class ClientTest {
                 }
             });
 
+            IntermediateMonolog expected = new IntermediateMonolog(new EffectiveRegistration(),
+                    new EffectiveActivation(null, new AlarmOverrideSet(), AlarmState.Normal),
+                    new ProcessorTransitions());
+
             try(MonologProducer producer = new MonologProducer(null)) {
                 Future<RecordMetadata> future = producer.send(MonologProducer.INTERMEDIATE_REGISTRATION_TOPIC,
-                        "TESTING", new IntermediateMonolog(new EffectiveRegistration(),
-                                new EffectiveActivation(null, new AlarmOverrideSet(), AlarmState.Normal),
-                                new ProcessorTransitions()));
+                        "TESTING", expected);
 
                 // Block until sent or an exception is thrown
                 future.get(2, TimeUnit.SECONDS);
@@ -279,6 +297,9 @@ public class ClientTest {
 
             // highWaterOffset method is called before this method returns, so we should be good!
             consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+
+            Assert.assertEquals(1, results.size());
+            Assert.assertEquals(expected, results.values().iterator().next().getValue());
         } finally {
             // Cleanup
             try(MonologProducer producer = new MonologProducer(null)) {
@@ -289,8 +310,6 @@ public class ClientTest {
                 future.get(2, TimeUnit.SECONDS);
             }
         }
-
-        Assert.assertEquals(1, results.size());
     }
 
     @Test
@@ -305,8 +324,10 @@ public class ClientTest {
                 }
             });
 
+            EffectiveRegistration expected = new EffectiveRegistration();
+
             try(EffectiveRegistrationProducer producer = new EffectiveRegistrationProducer(null)) {
-                Future<RecordMetadata> future = producer.send("TESTING", new EffectiveRegistration());
+                Future<RecordMetadata> future = producer.send("TESTING", expected);
 
                 // Block until sent or an exception is thrown
                 future.get(2, TimeUnit.SECONDS);
@@ -316,6 +337,9 @@ public class ClientTest {
 
             // highWaterOffset method is called before this method returns, so we should be good!
             consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+
+            Assert.assertEquals(1, results.size());
+            Assert.assertEquals(expected, results.values().iterator().next().getValue());
         } finally {
             // Cleanup
             try(EffectiveRegistrationProducer producer = new EffectiveRegistrationProducer(null)) {
@@ -325,8 +349,6 @@ public class ClientTest {
                 future.get(2, TimeUnit.SECONDS);
             }
         }
-
-        Assert.assertEquals(1, results.size());
     }
 
     @Test
@@ -341,9 +363,11 @@ public class ClientTest {
                 }
             });
 
+            EffectiveActivation expected = new EffectiveActivation(null,
+                    new AlarmOverrideSet(), AlarmState.Normal);
+
             try(EffectiveActivationProducer producer = new EffectiveActivationProducer(null)) {
-                Future<RecordMetadata> future = producer.send("TESTING", new EffectiveActivation(null,
-                        new AlarmOverrideSet(), AlarmState.Normal));
+                Future<RecordMetadata> future = producer.send("TESTING", expected);
 
                 // Block until sent or an exception is thrown
                 future.get(2, TimeUnit.SECONDS);
@@ -353,6 +377,9 @@ public class ClientTest {
 
             // highWaterOffset method is called before this method returns, so we should be good!
             consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+
+            Assert.assertEquals(1, results.size());
+            Assert.assertEquals(expected, results.values().iterator().next().getValue());
         } finally {
             // Cleanup
             try(EffectiveActivationProducer producer = new EffectiveActivationProducer(null)) {
@@ -362,7 +389,45 @@ public class ClientTest {
                 future.get(2, TimeUnit.SECONDS);
             }
         }
+    }
 
-        Assert.assertEquals(1, results.size());
+    @Test
+    public void effectiveAlarmTest() throws InterruptedException, ExecutionException, TimeoutException {
+        LinkedHashMap<String, EventSourceRecord<String, EffectiveAlarm>> results = new LinkedHashMap<>();
+
+        try(EffectiveAlarmConsumer consumer = new EffectiveAlarmConsumer(null)) {
+            consumer.addListener(new EventSourceListener<>() {
+                @Override
+                public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, EffectiveAlarm>> records) {
+                    results.putAll(records);
+                }
+            });
+
+            EffectiveAlarm expected = new EffectiveAlarm(new EffectiveRegistration(),
+                    new EffectiveActivation(null, new AlarmOverrideSet(), AlarmState.Normal));
+
+            try(EffectiveAlarmProducer producer = new EffectiveAlarmProducer(null)) {
+                Future<RecordMetadata> future = producer.send("TESTING", expected);
+
+                // Block until sent or an exception is thrown
+                future.get(2, TimeUnit.SECONDS);
+            }
+
+            consumer.start();
+
+            // highWaterOffset method is called before this method returns, so we should be good!
+            consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+
+            Assert.assertEquals(1, results.size());
+            Assert.assertEquals(expected, results.values().iterator().next().getValue());
+        } finally {
+            // Cleanup
+            try(EffectiveAlarmProducer producer = new EffectiveAlarmProducer(null)) {
+                Future<RecordMetadata> future = producer.send("TESTING", null);
+
+                // Block until sent or an exception is thrown
+                future.get(2, TimeUnit.SECONDS);
+            }
+        }
     }
 }
