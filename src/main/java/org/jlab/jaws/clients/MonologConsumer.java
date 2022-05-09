@@ -9,8 +9,10 @@ import java.util.Properties;
 /**
  * A Consumer provides default properties values for GROUP, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
  *
- * Defaults to the *intermediate-registration* topic.  Use property key *event.source.topic* to override. See
- * *MonologProducer* for list of intermediate monolog topic names.
+ * Defaults to the <b>intermediate-registration</b> topic.  Use property key
+ * {@link org.jlab.kafka.eventsource.EventSourceConfig}
+ * {@value org.jlab.kafka.eventsource.EventSourceConfig#EVENT_SOURCE_TOPIC} to override. See
+ * {@link MonologProducer} for list of intermediate monolog topic names.
  */
 public class MonologConsumer extends JAWSConsumer<String, IntermediateMonolog> {
     /**
