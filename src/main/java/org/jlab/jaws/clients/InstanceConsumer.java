@@ -7,11 +7,11 @@ import java.time.Instant;
 import java.util.Properties;
 
 /**
- * A InstanceConsumer provides default properties values for GROUP, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
+ * A Consumer provides default properties values for GROUP, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
  */
 public class InstanceConsumer extends JAWSConsumer<String, AlarmInstance> {
     /**
-     * Create a new InstanceConsumer with the provided property overrides.
+     * Create a new Consumer with the provided property overrides.
      *
      * @param props The properties, which will override any defaults set by this class
      */
@@ -27,7 +27,7 @@ public class InstanceConsumer extends JAWSConsumer<String, AlarmInstance> {
         }
 
         defaults.put(EventSourceConfig.EVENT_SOURCE_GROUP, "instance-consumer" + Instant.now().toString() + "-" + Math.random());
-        defaults.put(EventSourceConfig.EVENT_SOURCE_TOPIC, "alarm-instances");
+        defaults.put(EventSourceConfig.EVENT_SOURCE_TOPIC, InstanceProducer.TOPIC);
         defaults.put(EventSourceConfig.EVENT_SOURCE_KEY_DESERIALIZER, "org.apache.kafka.common.serialization.StringDeserializer");
         defaults.put(EventSourceConfig.EVENT_SOURCE_VALUE_DESERIALIZER, "io.confluent.kafka.serializers.KafkaAvroDeserializer");
 

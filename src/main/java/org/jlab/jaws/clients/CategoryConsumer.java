@@ -6,11 +6,11 @@ import java.time.Instant;
 import java.util.Properties;
 
 /**
- * A CategoryConsumer provides default properties values for GROUP, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
+ * A Consumer provides default properties values for GROUP, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
  */
 public class CategoryConsumer extends JAWSConsumer<String, String> {
     /**
-     * Create a new CategoryConsumer with the provided property overrides.
+     * Create a new Consumer with the provided property overrides.
      *
      * @param props The properties, which will override any defaults set by this class
      */
@@ -26,7 +26,7 @@ public class CategoryConsumer extends JAWSConsumer<String, String> {
         }
 
         defaults.put(EventSourceConfig.EVENT_SOURCE_GROUP, "category-consumer" + Instant.now().toString() + "-" + Math.random());
-        defaults.put(EventSourceConfig.EVENT_SOURCE_TOPIC, "alarm-categories");
+        defaults.put(EventSourceConfig.EVENT_SOURCE_TOPIC, CategoryProducer.TOPIC);
         defaults.put(EventSourceConfig.EVENT_SOURCE_KEY_DESERIALIZER, "org.apache.kafka.common.serialization.StringDeserializer");
         defaults.put(EventSourceConfig.EVENT_SOURCE_VALUE_DESERIALIZER, "org.apache.kafka.common.serialization.StringDeserializer");
 

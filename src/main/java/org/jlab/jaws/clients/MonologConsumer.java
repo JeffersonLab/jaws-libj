@@ -30,7 +30,7 @@ public class MonologConsumer extends JAWSConsumer<String, IntermediateMonolog> {
         }
 
         defaults.put(EventSourceConfig.EVENT_SOURCE_GROUP, "monolog-consumer" + Instant.now().toString() + "-" + Math.random());
-        defaults.put(EventSourceConfig.EVENT_SOURCE_TOPIC, "intermediate-registration");
+        defaults.put(EventSourceConfig.EVENT_SOURCE_TOPIC, MonologProducer.INTERMEDIATE_REGISTRATION_TOPIC);
         defaults.put(EventSourceConfig.EVENT_SOURCE_KEY_DESERIALIZER, "org.apache.kafka.common.serialization.StringDeserializer");
         defaults.put(EventSourceConfig.EVENT_SOURCE_VALUE_DESERIALIZER, "io.confluent.kafka.serializers.KafkaAvroDeserializer");
 

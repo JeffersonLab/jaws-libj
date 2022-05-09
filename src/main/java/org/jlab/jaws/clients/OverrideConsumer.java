@@ -8,11 +8,11 @@ import java.time.Instant;
 import java.util.Properties;
 
 /**
- * An OverrideConsumer provides default properties values for GROUP, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
+ * A Consumer provides default properties values for GROUP, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
  */
 public class OverrideConsumer extends JAWSConsumer<OverriddenAlarmKey, AlarmOverrideUnion> {
     /**
-     * Create a new OverrideConsumer with the provided property overrides.
+     * Create a new Consumer with the provided property overrides.
      *
      * @param props The properties, which will override any defaults set by this class
      */
@@ -28,7 +28,7 @@ public class OverrideConsumer extends JAWSConsumer<OverriddenAlarmKey, AlarmOver
         }
 
         defaults.put(EventSourceConfig.EVENT_SOURCE_GROUP, "override-consumer" + Instant.now().toString() + "-" + Math.random());
-        defaults.put(EventSourceConfig.EVENT_SOURCE_TOPIC, "alarm-overrides");
+        defaults.put(EventSourceConfig.EVENT_SOURCE_TOPIC, OverrideProducer.TOPIC);
         defaults.put(EventSourceConfig.EVENT_SOURCE_KEY_DESERIALIZER, "io.confluent.kafka.serializers.KafkaAvroDeserializer");
         defaults.put(EventSourceConfig.EVENT_SOURCE_VALUE_DESERIALIZER, "io.confluent.kafka.serializers.KafkaAvroDeserializer");
 
