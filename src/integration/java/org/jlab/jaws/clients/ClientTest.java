@@ -251,4 +251,45 @@ public class ClientTest {
 
         Assert.assertEquals(1, results.size());
     }
+
+    @Test
+    public void monologTest() throws InterruptedException, ExecutionException, TimeoutException {
+        LinkedHashMap<String, EventSourceRecord<String, IntermediateMonolog>> results = new LinkedHashMap<>();
+
+        try(MonologConsumer consumer = new MonologConsumer(null)) {
+            consumer.addListener(new EventSourceListener<>() {
+                @Override
+                public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String,
+                        IntermediateMonolog>> records) {
+                    results.putAll(records);
+                }
+            });
+
+            try(MonologProducer producer = new MonologProducer(null)) {
+                Future<RecordMetadata> future = producer.send(MonologProducer.INTERMEDIATE_REGISTRATION_TOPIC,
+                        "TESTING", new IntermediateMonolog(new EffectiveRegistration(),
+                                new EffectiveActivation(null, new AlarmOverrideSet(), AlarmState.Normal),
+                                new ProcessorTransitions()));
+
+                // Block until sent or an exception is thrown
+                future.get(2, TimeUnit.SECONDS);
+            }
+
+            consumer.start();
+
+            // highWaterOffset method is called before this method returns, so we should be good!
+            consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+        } finally {
+            // Cleanup
+            try(MonologProducer producer = new MonologProducer(null)) {
+                Future<RecordMetadata> future = producer.send(MonologProducer.INTERMEDIATE_REGISTRATION_TOPIC,
+                        "TESTING", null);
+
+                // Block until sent or an exception is thrown
+                future.get(2, TimeUnit.SECONDS);
+            }
+        }
+
+        Assert.assertEquals(1, results.size());
+    }
 }
