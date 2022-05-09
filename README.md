@@ -5,7 +5,8 @@ Reusable Java Classes for [JAWS](https://github.com/JeffersonLab/jaws).  Entity 
  - [Install](https://github.com/JeffersonLab/jaws-libj#install)   
  - [API](https://github.com/JeffersonLab/jaws-libj#api)    
  - [Build](https://github.com/JeffersonLab/jaws-libj#build)
- - [Test](https://github.com/JeffersonLab/jaws-libj#test) 
+ - [Test](https://github.com/JeffersonLab/jaws-libj#test)
+ - [See Also](https://github.com/JeffersonLab/jaws-libj#see-also)
 ---
 
 ## Install
@@ -43,3 +44,6 @@ Wait for containers to start then:
 gradle integrationTestOutsideNetwork
 ```
 **Note**: To run integration tests INSIDE the Docker container network using Kafka's advertised listener as is done with CI use `test.yml` instead of `deps.yml` and then execute tests inside the `client` container using `docker exec -i client sh -c "cd /app; gradle integrationTest"`
+
+## See Also
+- [jaws-libp (Python)](https://github.com/JeffersonLab/jaws-libp)
