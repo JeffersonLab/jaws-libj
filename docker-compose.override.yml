@@ -1,3 +1,0 @@
-services:
-  client:
-    image: slominskir/jaws-java-client:4.2.0

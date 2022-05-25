@@ -37,13 +37,12 @@ gradlew build
 ## Test
 Continuous Integration (CI) is setup using GitHub Actions, so on push tests are automatically run unless `[no ci]` is included in the commit message.   Tests can be manually run on a local workstation using:
 ```
-docker compose -f deps.yml up
+docker compose -f test.yml up
 ```
 Wait for containers to start then:
 ```
-gradle integrationTestOutsideNetwork
+gradlew integrationTest
 ```
-**Note**: To run integration tests INSIDE the Docker container network using Kafka's advertised listener as is done with CI use `test.yml` instead of `deps.yml` and then execute tests inside the `client` container using `docker exec -i client sh -c "cd /app; gradle integrationTest"`
 
 ## See Also
 - [jaws-libp (Python)](https://github.com/JeffersonLab/jaws-libp)

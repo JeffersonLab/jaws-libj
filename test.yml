@@ -1,30 +1,49 @@
 services:
   zookeeper:
-    extends:
-      file: docker-compose.yml
-      service: zookeeper
+    image: debezium/zookeeper:1.9.2.Final
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
 
   kafka:
-    extends:
-      file: docker-compose.yml
-      service: kafka
+    image: debezium/kafka:1.9.2.Final
+    hostname: kafka
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9094:9094"
+    environment:
+      KAFKA_HOME: "/kafka"
+      BOOTSTRAP_SERVER: "kafka:9092"
+      ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENERS: 'INTERNAL://kafka:9092,OUTSIDE://kafka:9094'
+      KAFKA_ADVERTISED_LISTENERS: 'INTERNAL://kafka:9092, OUTSIDE://localhost:9094'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'INTERNAL:PLAINTEXT, OUTSIDE:PLAINTEXT'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'INTERNAL'
 
   registry:
-    extends:
-      file: docker-compose.yml
-      service: registry
+    image: confluentinc/cp-schema-registry:7.1.1
+    hostname: registry
+    container_name: registry
+    depends_on:
+      - zookeeper
+      - kafka
+    ports:
+      - 8081:8081
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:9092
+      SCHEMA_REGISTRY_HOST_NAME: registry
 
   jaws:
-    extends:
-      file: docker-compose.yml
-      service: jaws
-
-  client:
-    extends:
-      file: docker-compose.yml
-      service: client
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt
+    image: slominskir/jaws:4.3.0
+    hostname: jaws
+    container_name: jaws
+    depends_on:
+      - zookeeper
+      - kafka
+      - registry
+    environment:
+      BOOTSTRAP_SERVERS: "kafka:9092"
+      SCHEMA_REGISTRY: "http://registry:8081"
