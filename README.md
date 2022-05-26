@@ -46,7 +46,7 @@ gradlew integrationTest
 ```
 
 ## Release
-1. Bump the version number and release date in [build.gradle](https://github.com/JeffersonLab/jaws-libj/blob/66188b79063c2223daa1800eb745b4f31d93193a/build.gradle#L12-L14) and commit and push to GitHub (using Semantic Versioning).   
+1. Bump the version number and release date in [build.gradle](https://github.com/JeffersonLab/jaws-libj/blob/66188b79063c2223daa1800eb745b4f31d93193a/build.gradle#L12-L14) and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)).   
 1. Create a new release on the GitHub [Releases](https://github.com/JeffersonLab/jaws-libj/releases) page corresponding to same version in build.gradle (Enumerate changes and link issues)
 1. Publish new artifact on maven central with:
 ```
