@@ -5,6 +5,7 @@ plugins {
     id 'signing'
     id 'java-library-distribution'
     id 'com.github.jk1.dependency-license-report' version '1.16'
+    id 'io.github.gradle-nexus.publish-plugin' version '1.1.0'
 }
 
 description = "Jefferson Lab Alarm Warning System Java Library"
@@ -188,5 +189,14 @@ publishing {
     }
     artifacts {
         archives javadocJar, sourcesJar, avroJar
+    }
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {  //only for users registered in Sonatype after 24 Feb 2021
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+        }
     }
 }
