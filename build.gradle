@@ -9,9 +9,9 @@ plugins {
 
 description = "Jefferson Lab Alarm Warning System Java Library"
 group 'org.jlab'
-version '4.3.0'
+version '4.3.1'
 
-ext.releaseDate = 'May 25 2022'
+ext.releaseDate = 'May 26 2022'
 
 tasks.withType(JavaCompile) {
     options.release = 11
