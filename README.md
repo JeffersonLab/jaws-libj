@@ -56,3 +56,4 @@ gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
 
 ## See Also
 - [jaws-libp (Python)](https://github.com/JeffersonLab/jaws-libp)
+- [kafka-common](https://github.com/JeffersonLab/kafka-common)
