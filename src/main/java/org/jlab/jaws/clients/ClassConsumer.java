@@ -26,10 +26,10 @@ public class ClassConsumer extends JAWSConsumer<String, AlarmClass> {
             overrides = new Properties();
         }
 
-        defaults.put(EventSourceConfig.EVENT_SOURCE_GROUP, "class-consumer" + Instant.now().toString() + "-" + Math.random());
-        defaults.put(EventSourceConfig.EVENT_SOURCE_TOPIC, ClassProducer.TOPIC);
-        defaults.put(EventSourceConfig.EVENT_SOURCE_KEY_DESERIALIZER, "org.apache.kafka.common.serialization.StringDeserializer");
-        defaults.put(EventSourceConfig.EVENT_SOURCE_VALUE_DESERIALIZER, "io.confluent.kafka.serializers.KafkaAvroDeserializer");
+        defaults.put(EventSourceConfig.GROUP_ID_CONFIG, "class-consumer" + Instant.now().toString() + "-" + Math.random());
+        defaults.put(EventSourceConfig.TOPIC_CONFIG, ClassProducer.TOPIC);
+        defaults.put(EventSourceConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+        defaults.put(EventSourceConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "io.confluent.kafka.serializers.KafkaAvroDeserializer");
 
         defaults.putAll(overrides);
 

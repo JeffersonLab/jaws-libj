@@ -26,10 +26,10 @@ public class ActivationConsumer extends JAWSConsumer<String, AlarmActivationUnio
             overrides = new Properties();
         }
 
-        defaults.put(EventSourceConfig.EVENT_SOURCE_GROUP, "activation-consumer" + Instant.now().toString() + "-" + Math.random());
-        defaults.put(EventSourceConfig.EVENT_SOURCE_TOPIC, ActivationProducer.TOPIC);
-        defaults.put(EventSourceConfig.EVENT_SOURCE_KEY_DESERIALIZER, "org.apache.kafka.common.serialization.StringDeserializer");
-        defaults.put(EventSourceConfig.EVENT_SOURCE_VALUE_DESERIALIZER, "io.confluent.kafka.serializers.KafkaAvroDeserializer");
+        defaults.put(EventSourceConfig.GROUP_ID_CONFIG, "activation-consumer" + Instant.now().toString() + "-" + Math.random());
+        defaults.put(EventSourceConfig.TOPIC_CONFIG, ActivationProducer.TOPIC);
+        defaults.put(EventSourceConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+        defaults.put(EventSourceConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "io.confluent.kafka.serializers.KafkaAvroDeserializer");
 
         defaults.putAll(overrides);
 

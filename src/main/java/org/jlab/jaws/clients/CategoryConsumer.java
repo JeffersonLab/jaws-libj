@@ -25,10 +25,10 @@ public class CategoryConsumer extends JAWSConsumer<String, String> {
             overrides = new Properties();
         }
 
-        defaults.put(EventSourceConfig.EVENT_SOURCE_GROUP, "category-consumer" + Instant.now().toString() + "-" + Math.random());
-        defaults.put(EventSourceConfig.EVENT_SOURCE_TOPIC, CategoryProducer.TOPIC);
-        defaults.put(EventSourceConfig.EVENT_SOURCE_KEY_DESERIALIZER, "org.apache.kafka.common.serialization.StringDeserializer");
-        defaults.put(EventSourceConfig.EVENT_SOURCE_VALUE_DESERIALIZER, "org.apache.kafka.common.serialization.StringDeserializer");
+        defaults.put(EventSourceConfig.GROUP_ID_CONFIG, "category-consumer" + Instant.now().toString() + "-" + Math.random());
+        defaults.put(EventSourceConfig.TOPIC_CONFIG, CategoryProducer.TOPIC);
+        defaults.put(EventSourceConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+        defaults.put(EventSourceConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
 
         defaults.putAll(overrides);
 

@@ -11,7 +11,7 @@ import java.util.Properties;
  *
  * Defaults to the <b>intermediate-registration</b> topic.  Use property key
  * {@link org.jlab.kafka.eventsource.EventSourceConfig}
- * {@value org.jlab.kafka.eventsource.EventSourceConfig#EVENT_SOURCE_TOPIC} to override. See
+ * {@value org.jlab.kafka.eventsource.EventSourceConfig#TOPIC_CONFIG} to override. See
  * {@link MonologProducer} for list of intermediate monolog topic names.
  */
 public class MonologConsumer extends JAWSConsumer<String, IntermediateMonolog> {
@@ -31,10 +31,10 @@ public class MonologConsumer extends JAWSConsumer<String, IntermediateMonolog> {
             overrides = new Properties();
         }
 
-        defaults.put(EventSourceConfig.EVENT_SOURCE_GROUP, "monolog-consumer" + Instant.now().toString() + "-" + Math.random());
-        defaults.put(EventSourceConfig.EVENT_SOURCE_TOPIC, MonologProducer.INTERMEDIATE_REGISTRATION_TOPIC);
-        defaults.put(EventSourceConfig.EVENT_SOURCE_KEY_DESERIALIZER, "org.apache.kafka.common.serialization.StringDeserializer");
-        defaults.put(EventSourceConfig.EVENT_SOURCE_VALUE_DESERIALIZER, "io.confluent.kafka.serializers.KafkaAvroDeserializer");
+        defaults.put(EventSourceConfig.GROUP_ID_CONFIG, "monolog-consumer" + Instant.now().toString() + "-" + Math.random());
+        defaults.put(EventSourceConfig.TOPIC_CONFIG, MonologProducer.INTERMEDIATE_REGISTRATION_TOPIC);
+        defaults.put(EventSourceConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+        defaults.put(EventSourceConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "io.confluent.kafka.serializers.KafkaAvroDeserializer");
 
         defaults.putAll(overrides);
 

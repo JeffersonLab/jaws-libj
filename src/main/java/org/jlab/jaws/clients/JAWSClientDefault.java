@@ -31,7 +31,7 @@ public class JAWSClientDefault {
             SCHEMA_REGISTRY = "http://localhost:8081";
         }
 
-        defaults.put(EventSourceConfig.EVENT_SOURCE_BOOTSTRAP_SERVERS, BOOTSTRAP_SERVERS);
+        defaults.put(EventSourceConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
         defaults.put("schema.registry.url", SCHEMA_REGISTRY);
 
         defaults.putAll(overrides);

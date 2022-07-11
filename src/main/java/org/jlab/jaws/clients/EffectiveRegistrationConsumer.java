@@ -26,10 +26,10 @@ public class EffectiveRegistrationConsumer extends JAWSConsumer<String, Effectiv
             overrides = new Properties();
         }
 
-        defaults.put(EventSourceConfig.EVENT_SOURCE_GROUP, "effective-registration-consumer" + Instant.now().toString() + "-" + Math.random());
-        defaults.put(EventSourceConfig.EVENT_SOURCE_TOPIC, EffectiveRegistrationProducer.TOPIC);
-        defaults.put(EventSourceConfig.EVENT_SOURCE_KEY_DESERIALIZER, "org.apache.kafka.common.serialization.StringDeserializer");
-        defaults.put(EventSourceConfig.EVENT_SOURCE_VALUE_DESERIALIZER, "io.confluent.kafka.serializers.KafkaAvroDeserializer");
+        defaults.put(EventSourceConfig.GROUP_ID_CONFIG, "effective-registration-consumer" + Instant.now().toString() + "-" + Math.random());
+        defaults.put(EventSourceConfig.TOPIC_CONFIG, EffectiveRegistrationProducer.TOPIC);
+        defaults.put(EventSourceConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+        defaults.put(EventSourceConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "io.confluent.kafka.serializers.KafkaAvroDeserializer");
 
         defaults.putAll(overrides);
 
