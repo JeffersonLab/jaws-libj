@@ -33,7 +33,7 @@ public class ClientTest {
 
     @Before
     public void setup(){
-        clientOverrides.setProperty(EventSourceConfig.EVENT_SOURCE_BOOTSTRAP_SERVERS, getBootstrapServers());
+        clientOverrides.setProperty(EventSourceConfig.BOOTSTRAP_SERVERS_CONFIG, getBootstrapServers());
     }
 
 
@@ -136,7 +136,7 @@ public class ClientTest {
             });
 
             AlarmInstance expected = new AlarmInstance("class",
-                    new SimpleProducer(),
+                    new Source(),
                     Arrays.asList(new String[]{"location1"}),
                     "maskedby",
                     "screencommand");
@@ -207,12 +207,12 @@ public class ClientTest {
 
     @Test
     public void overrideTest() throws InterruptedException, ExecutionException, TimeoutException {
-        LinkedHashMap<OverriddenAlarmKey, EventSourceRecord<OverriddenAlarmKey, AlarmOverrideUnion>> results = new LinkedHashMap<>();
+        LinkedHashMap<AlarmOverrideKey, EventSourceRecord<AlarmOverrideKey, AlarmOverrideUnion>> results = new LinkedHashMap<>();
 
         try(OverrideConsumer consumer = new OverrideConsumer(clientOverrides)) {
             consumer.addListener(new EventSourceListener<>() {
                 @Override
-                public void highWaterOffset(LinkedHashMap<OverriddenAlarmKey, EventSourceRecord<OverriddenAlarmKey, AlarmOverrideUnion>> records) {
+                public void highWaterOffset(LinkedHashMap<AlarmOverrideKey, EventSourceRecord<AlarmOverrideKey, AlarmOverrideUnion>> records) {
                     results.putAll(records);
                 }
             });
@@ -220,7 +220,7 @@ public class ClientTest {
             AlarmOverrideUnion expected = new AlarmOverrideUnion(new LatchedOverride());
 
             try(OverrideProducer producer = new OverrideProducer(clientOverrides)) {
-                Future<RecordMetadata> future = producer.send(new OverriddenAlarmKey("TESTING",
+                Future<RecordMetadata> future = producer.send(new AlarmOverrideKey("TESTING",
                         OverriddenAlarmType.Latched), expected);
 
                 // Block until sent or an exception is thrown
@@ -237,7 +237,7 @@ public class ClientTest {
         } finally {
             // Cleanup
             try(OverrideProducer producer = new OverrideProducer(clientOverrides)) {
-                Future<RecordMetadata> future = producer.send(new OverriddenAlarmKey("TESTING",
+                Future<RecordMetadata> future = producer.send(new AlarmOverrideKey("TESTING",
                         OverriddenAlarmType.Latched), null);
 
                 // Block until sent or an exception is thrown
@@ -258,7 +258,7 @@ public class ClientTest {
                 }
             });
 
-            AlarmActivationUnion expected = new AlarmActivationUnion(new SimpleAlarming());
+            AlarmActivationUnion expected = new AlarmActivationUnion(new Activation());
 
             try(ActivationProducer producer = new ActivationProducer(clientOverrides)) {
                 Future<RecordMetadata> future = producer.send("TESTING", expected);
@@ -299,7 +299,7 @@ public class ClientTest {
             });
 
             IntermediateMonolog expected = new IntermediateMonolog(new EffectiveRegistration(),
-                    new EffectiveActivation(null, new AlarmOverrideSet(), AlarmState.Normal),
+                    new EffectiveNotification(null, new AlarmOverrideSet(), AlarmState.Normal),
                     new ProcessorTransitions());
 
             try(MonologProducer producer = new MonologProducer(clientOverrides)) {
@@ -370,17 +370,17 @@ public class ClientTest {
 
     @Test
     public void effectiveActivationTest() throws InterruptedException, ExecutionException, TimeoutException {
-        LinkedHashMap<String, EventSourceRecord<String, EffectiveActivation>> results = new LinkedHashMap<>();
+        LinkedHashMap<String, EventSourceRecord<String, EffectiveNotification>> results = new LinkedHashMap<>();
 
         try(EffectiveNotificationConsumer consumer = new EffectiveNotificationConsumer(clientOverrides)) {
             consumer.addListener(new EventSourceListener<>() {
                 @Override
-                public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, EffectiveActivation>> records) {
+                public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, EffectiveNotification>> records) {
                     results.putAll(records);
                 }
             });
 
-            EffectiveActivation expected = new EffectiveActivation(null,
+            EffectiveNotification expected = new EffectiveNotification(null,
                     new AlarmOverrideSet(), AlarmState.Normal);
 
             try(EffectiveNotificationProducer producer = new EffectiveNotificationProducer(clientOverrides)) {
@@ -421,7 +421,7 @@ public class ClientTest {
             });
 
             EffectiveAlarm expected = new EffectiveAlarm(new EffectiveRegistration(),
-                    new EffectiveActivation(null, new AlarmOverrideSet(), AlarmState.Normal));
+                    new EffectiveNotification(null, new AlarmOverrideSet(), AlarmState.Normal));
 
             try(EffectiveAlarmProducer producer = new EffectiveAlarmProducer(clientOverrides)) {
                 Future<RecordMetadata> future = producer.send("TESTING", expected);
