@@ -1,6 +1,6 @@
 package org.jlab.jaws.clients;
 
-import org.jlab.jaws.entity.EffectiveActivation;
+import org.jlab.jaws.entity.EffectiveNotification;
 import org.jlab.kafka.eventsource.EventSourceConfig;
 
 import java.time.Instant;
@@ -9,13 +9,13 @@ import java.util.Properties;
 /**
  * A Consumer provides default properties values for GROUP, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
  */
-public class EffectiveActivationConsumer extends JAWSConsumer<String, EffectiveActivation> {
+public class EffectiveNotificationConsumer extends JAWSConsumer<String, EffectiveNotification> {
     /**
      * Create a new Consumer with the provided property overrides.
      *
      * @param props The properties, which will override any defaults set by this class
      */
-    public EffectiveActivationConsumer(Properties props) {
+    public EffectiveNotificationConsumer(Properties props) {
         super(setDefaults(props));
     }
 
@@ -26,8 +26,8 @@ public class EffectiveActivationConsumer extends JAWSConsumer<String, EffectiveA
             overrides = new Properties();
         }
 
-        defaults.put(EventSourceConfig.EVENT_SOURCE_GROUP, "effective-activation-consumer" + Instant.now().toString() + "-" + Math.random());
-        defaults.put(EventSourceConfig.EVENT_SOURCE_TOPIC, EffectiveActivationProducer.TOPIC);
+        defaults.put(EventSourceConfig.EVENT_SOURCE_GROUP, "effective-notification-consumer" + Instant.now().toString() + "-" + Math.random());
+        defaults.put(EventSourceConfig.EVENT_SOURCE_TOPIC, EffectiveNotificationProducer.TOPIC);
         defaults.put(EventSourceConfig.EVENT_SOURCE_KEY_DESERIALIZER, "org.apache.kafka.common.serialization.StringDeserializer");
         defaults.put(EventSourceConfig.EVENT_SOURCE_VALUE_DESERIALIZER, "io.confluent.kafka.serializers.KafkaAvroDeserializer");
 

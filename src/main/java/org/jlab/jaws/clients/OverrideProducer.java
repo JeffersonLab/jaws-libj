@@ -4,9 +4,8 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.header.Header;
-import org.jlab.jaws.entity.AlarmInstance;
 import org.jlab.jaws.entity.AlarmOverrideUnion;
-import org.jlab.jaws.entity.OverriddenAlarmKey;
+import org.jlab.jaws.entity.AlarmOverrideKey;
 
 import java.time.Instant;
 import java.util.Properties;
@@ -16,7 +15,7 @@ import java.util.concurrent.Future;
  * A Producer provides default properties values for CLIENT_ID, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
  * A default send method is also provided.
  */
-public class OverrideProducer extends JAWSProducer<OverriddenAlarmKey, AlarmOverrideUnion> {
+public class OverrideProducer extends JAWSProducer<AlarmOverrideKey, AlarmOverrideUnion> {
     /**
      * The topic name
      */
@@ -54,7 +53,7 @@ public class OverrideProducer extends JAWSProducer<OverriddenAlarmKey, AlarmOver
      * @param value The message value
      * @return An asynchronous call Future reference
      */
-    public Future<RecordMetadata> send(OverriddenAlarmKey key, AlarmOverrideUnion value) {
+    public Future<RecordMetadata> send(AlarmOverrideKey key, AlarmOverrideUnion value) {
 
         Iterable<Header> headers = getDefaultHeaders();
 

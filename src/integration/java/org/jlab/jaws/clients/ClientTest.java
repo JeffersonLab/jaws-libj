@@ -372,7 +372,7 @@ public class ClientTest {
     public void effectiveActivationTest() throws InterruptedException, ExecutionException, TimeoutException {
         LinkedHashMap<String, EventSourceRecord<String, EffectiveActivation>> results = new LinkedHashMap<>();
 
-        try(EffectiveActivationConsumer consumer = new EffectiveActivationConsumer(clientOverrides)) {
+        try(EffectiveNotificationConsumer consumer = new EffectiveNotificationConsumer(clientOverrides)) {
             consumer.addListener(new EventSourceListener<>() {
                 @Override
                 public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, EffectiveActivation>> records) {
@@ -383,7 +383,7 @@ public class ClientTest {
             EffectiveActivation expected = new EffectiveActivation(null,
                     new AlarmOverrideSet(), AlarmState.Normal);
 
-            try(EffectiveActivationProducer producer = new EffectiveActivationProducer(clientOverrides)) {
+            try(EffectiveNotificationProducer producer = new EffectiveNotificationProducer(clientOverrides)) {
                 Future<RecordMetadata> future = producer.send("TESTING", expected);
 
                 // Block until sent or an exception is thrown
@@ -399,7 +399,7 @@ public class ClientTest {
             Assert.assertEquals(expected, results.values().iterator().next().getValue());
         } finally {
             // Cleanup
-            try(EffectiveActivationProducer producer = new EffectiveActivationProducer(clientOverrides)) {
+            try(EffectiveNotificationProducer producer = new EffectiveNotificationProducer(clientOverrides)) {
                 Future<RecordMetadata> future = producer.send("TESTING", null);
 
                 // Block until sent or an exception is thrown

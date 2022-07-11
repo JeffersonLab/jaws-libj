@@ -4,7 +4,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.header.Header;
-import org.jlab.jaws.entity.EffectiveActivation;
+import org.jlab.jaws.entity.EffectiveNotification;
 
 import java.time.Instant;
 import java.util.Properties;
@@ -14,18 +14,18 @@ import java.util.concurrent.Future;
  * A Producer provides default properties values for CLIENT_ID, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
  * A default send method is also provided.
  */
-public class EffectiveActivationProducer extends JAWSProducer<String, EffectiveActivation> {
+public class EffectiveNotificationProducer extends JAWSProducer<String, EffectiveNotification> {
     /**
      * The topic name
      */
-    public static final String TOPIC = "effective-activations";
+    public static final String TOPIC = "effective-notifications";
 
     /**
      * Create a new Producer with the provided property overrides.
      *
      * @param props The properties, which will override any defaults set by this class
      */
-    public EffectiveActivationProducer(Properties props) {
+    public EffectiveNotificationProducer(Properties props) {
         super(setDefaults(props));
     }
 
@@ -36,7 +36,7 @@ public class EffectiveActivationProducer extends JAWSProducer<String, EffectiveA
             overrides = new Properties();
         }
 
-        defaults.put(ProducerConfig.CLIENT_ID_CONFIG, "effective-activation-producer" + Instant.now().toString() + "-" + Math.random());
+        defaults.put(ProducerConfig.CLIENT_ID_CONFIG, "effective-notification-producer" + Instant.now().toString() + "-" + Math.random());
         defaults.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         defaults.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "io.confluent.kafka.serializers.KafkaAvroSerializer");
 
@@ -52,7 +52,7 @@ public class EffectiveActivationProducer extends JAWSProducer<String, EffectiveA
      * @param value The message value
      * @return An asynchronous call Future reference
      */
-    public Future<RecordMetadata> send(String key, EffectiveActivation value) {
+    public Future<RecordMetadata> send(String key, EffectiveNotification value) {
 
         Iterable<Header> headers = getDefaultHeaders();
 

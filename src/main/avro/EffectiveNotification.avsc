@@ -1,10 +1,11 @@
 {
     "type": "record",
-    "name": "EffectiveActivation",
+    "name": "EffectiveNotification",
     "namespace": "org.jlab.jaws.entity",
+    "doc": "Processed notification (activation + overrides + state)",
     "fields": [
         {
-            "name": "actual",
+            "name": "activation",
             "type": [
                 "null",
                 "AlarmActivationUnion"
