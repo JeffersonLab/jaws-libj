@@ -52,7 +52,7 @@ gradlew integrationTest
 ```
 gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
 ```
-4. Update javadocs by copying them from build dir into gh-pages branch and updating index.html (commit, push).
+4. Update javadocs by copying them from build dir into gh-pages branch and updating index.html (commit, push).  This should occur automatically via [Publish to gh-pages](https://github.com/JeffersonLab/jaws-libj/actions/workflows/gh-pages-publish.yml) GitHub Action.
 
 ## See Also
 - [jaws-libp (Python)](https://github.com/JeffersonLab/jaws-libp)
