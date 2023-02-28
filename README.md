@@ -52,6 +52,8 @@ gradlew integrationTest
 ```
 gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
 ```
+**Note**: There is a [GitHub action](https://github.com/JeffersonLab/jaws-libj/actions/workflows/maven-publish.yml) for this to happen automatically. To run locally you'll need to configure credentials. See: [Gradle Publish Notes](https://gist.github.com/slominskir/5fcd5cf84182bf1542c07cbca953904a)
+
 4. Update javadocs by copying them from build dir into gh-pages branch and updating index.html (commit, push).  This should occur automatically via [Publish to gh-pages](https://github.com/JeffersonLab/jaws-libj/actions/workflows/gh-pages-publish.yml) GitHub Action.
 
 ## See Also
