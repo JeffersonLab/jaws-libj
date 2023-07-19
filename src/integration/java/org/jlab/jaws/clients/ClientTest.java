@@ -61,7 +61,11 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+
+            if(!reached) {
+                throw new TimeoutException("Took too long to reach high water");
+            }
 
             Assert.assertEquals(1, results.size());
             Assert.assertEquals(expected, results.values().iterator().next().getValue());
@@ -108,7 +112,11 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+
+            if(!reached) {
+                throw new TimeoutException("Took too long to reach high water");
+            }
 
             Assert.assertEquals(1, results.size());
             Assert.assertEquals(expected, results.values().iterator().next().getValue());
@@ -135,7 +143,7 @@ public class ClientTest {
                 }
             });
 
-            AlarmInstance expected = new AlarmInstance("class",
+            AlarmInstance expected = new AlarmInstance("class", "device",
                     new Source(),
                     Arrays.asList(new String[]{"location1"}),
                     "maskedby",
@@ -151,7 +159,11 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+
+            if(!reached) {
+                throw new TimeoutException("Took too long to reach high water");
+            }
 
             Assert.assertEquals(1, results.size());
             Assert.assertEquals(expected, results.values().iterator().next().getValue());
@@ -190,7 +202,11 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+
+            if(!reached) {
+                throw new TimeoutException("Took too long to reach high water");
+            }
 
             Assert.assertEquals(1, results.size());
             Assert.assertEquals(expected, results.values().iterator().next().getValue());
@@ -230,7 +246,11 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+
+            if(!reached) {
+                throw new TimeoutException("Took too long to reach high water");
+            }
 
             Assert.assertEquals(1, results.size());
             Assert.assertEquals(expected, results.values().iterator().next().getValue());
@@ -270,7 +290,11 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+
+            if(!reached) {
+                throw new TimeoutException("Took too long to reach high water");
+            }
 
             Assert.assertEquals(1, results.size());
             Assert.assertEquals(expected, results.values().iterator().next().getValue());
@@ -313,7 +337,11 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+
+            if(!reached) {
+                throw new TimeoutException("Took too long to reach high water");
+            }
 
             Assert.assertEquals(1, results.size());
             Assert.assertEquals(expected, results.values().iterator().next().getValue());
@@ -353,7 +381,11 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+
+            if(!reached) {
+                throw new TimeoutException("Took too long to reach high water");
+            }
 
             Assert.assertEquals(1, results.size());
             Assert.assertEquals(expected, results.values().iterator().next().getValue());
@@ -393,7 +425,11 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+
+            if(!reached) {
+                throw new TimeoutException("Took too long to reach high water");
+            }
 
             Assert.assertEquals(1, results.size());
             Assert.assertEquals(expected, results.values().iterator().next().getValue());
@@ -433,7 +469,11 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            consumer.awaitHighWaterOffset(2, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+
+            if(!reached) {
+                throw new TimeoutException("Took too long to reach high water");
+            }
 
             Assert.assertEquals(1, results.size());
             Assert.assertEquals(expected, results.values().iterator().next().getValue());
