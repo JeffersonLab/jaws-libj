@@ -35,7 +35,6 @@ services:
       - SCHEMA_REGISTRY_LISTENERS=http://0.0.0.0:8081
       - SCHEMA_REGISTRY_KAFKA_BROKERS=PLAINTEXT://kafka:9092
 
-
   jaws-libp:
     image: jeffersonlab/jaws-libp:4.6.3
     tty: true
@@ -46,6 +45,6 @@ services:
       - kafka
       - registry
     environment:
-      TZ: "America/New_York"
-      BOOTSTRAP_SERVERS: "kafka:9092"
-      SCHEMA_REGISTRY: "http://registry:8081"
+      - TZ=America/New_York
+      - BOOTSTRAP_SERVERS=kafka:9092
+      - SCHEMA_REGISTRY=http://registry:8081
