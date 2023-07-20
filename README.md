@@ -6,6 +6,7 @@ Reusable Java Classes for [JAWS](https://github.com/JeffersonLab/jaws).  Entity 
  - [API](https://github.com/JeffersonLab/jaws-libj#api)
  - [Configure](https://github.com/JeffersonLab/jaws-libj#configure)       
  - [Build](https://github.com/JeffersonLab/jaws-libj#build)
+ - [Develop](https://github.com/JeffersonLab/jaws-libj#develop) 
  - [Test](https://github.com/JeffersonLab/jaws-libj#test)
  - [Release](https://github.com/JeffersonLab/jaws-libj#release)
  - [See Also](https://github.com/JeffersonLab/jaws-libj#see-also)
@@ -39,12 +40,16 @@ gradlew build
 
 **Note for JLab On-Site Users**: Jefferson Lab has an intercepting [proxy](https://gist.github.com/slominskir/92c25a033db93a90184a5994e71d0b78)
 
-## Test
-Continuous Integration (CI) is setup using GitHub Actions, so on push tests are automatically run unless `[no ci]` is included in the commit message.   Tests can be manually run on a local workstation using:
+## Develop
+Set up the build environment following the [Build](https://github.com/JeffersonLab/jaws-libj#build) instructions.
+
+In order to iterate rapidly when making changes it's often useful to create new tests and run them directly on the local workstation, perhaps leveraging an IDE.  In this scenario run the service dependencies with Docker Compose:
 ```
 docker compose -f deps.yml up
 ```
-Wait for containers to start then:
+
+## Test
+The integration tests depend on a running Kafka instance, generally in Docker. The tests run automatically via the [CI](https://github.com/JeffersonLab/jaws-libj/actions/workflows/ci.yml) GitHub Action on every commit (unless [no ci] is included in the commit message). The tests can be run locally during development. Set up the development environment following the [Develop](https://github.com/JeffersonLab/jaws-libj#develop) instructions. Then with the deps.yml Docker containers running execute:
 ```
 gradlew integrationTest
 ```
