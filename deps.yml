@@ -27,12 +27,14 @@ services:
     hostname: registry
     container_name: registry
     depends_on:
-      - kafka
+      kafka:
+        condition: service_healthy
     ports:
       - 8081:8081
     environment:
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:9092
-      SCHEMA_REGISTRY_HOST_NAME: registry
+      - SCHEMA_REGISTRY_HOST_NAME=registry
+      - SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS=kafka:9092
+
 
   jaws-libp:
     image: jeffersonlab/jaws-libp:4.6.3
