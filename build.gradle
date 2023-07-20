@@ -1,7 +1,7 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'com.github.davidmc24.gradle.plugin.avro' version '1.2.1'
+    id 'com.github.davidmc24.gradle.plugin.avro' version '1.8.0'
     id 'signing'
     id 'java-library-distribution'
     id 'com.github.jk1.dependency-license-report' version '1.16'
@@ -63,10 +63,10 @@ configurations {
 
 dependencies {
     api "org.jlab:kafka-common:1.2.0"
-    implementation "org.apache.kafka:kafka-clients:3.1.0",
-            "org.apache.avro:avro:1.11.0",
+    implementation "org.apache.kafka:kafka-clients:3.5.0",
+            "org.apache.avro:avro:1.11.2",
             "org.slf4j:slf4j-log4j12:1.7.36",
-            "io.confluent:kafka-avro-serializer:7.1.1"
+            "io.confluent:kafka-avro-serializer:7.4.0"
     testImplementation "junit:junit:4.13.2"
 }
 
