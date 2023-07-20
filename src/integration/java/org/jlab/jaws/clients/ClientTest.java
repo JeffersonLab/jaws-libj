@@ -19,6 +19,8 @@ import java.util.concurrent.TimeoutException;
 
 public class ClientTest {
 
+    private static final int HIGHWATER_TIMEOUT_SECONDS = 5;
+
     private Properties clientOverrides = new Properties();
 
     public static String getBootstrapServers() {
@@ -34,6 +36,8 @@ public class ClientTest {
     @Before
     public void setup(){
         clientOverrides.setProperty(EventSourceConfig.BOOTSTRAP_SERVERS_CONFIG, getBootstrapServers());
+        clientOverrides.setProperty("auto.register.schemas", "false");
+        clientOverrides.setProperty("use.latest.version", "true");
     }
 
 
@@ -61,7 +65,7 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(HIGHWATER_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
             if(!reached) {
                 throw new TimeoutException("Took too long to reach high water");
@@ -112,7 +116,7 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(HIGHWATER_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
             if(!reached) {
                 throw new TimeoutException("Took too long to reach high water");
@@ -159,7 +163,7 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(HIGHWATER_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
             if(!reached) {
                 throw new TimeoutException("Took too long to reach high water");
@@ -202,7 +206,7 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(HIGHWATER_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
             if(!reached) {
                 throw new TimeoutException("Took too long to reach high water");
@@ -246,7 +250,7 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(HIGHWATER_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
             if(!reached) {
                 throw new TimeoutException("Took too long to reach high water");
@@ -290,7 +294,7 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(HIGHWATER_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
             if(!reached) {
                 throw new TimeoutException("Took too long to reach high water");
@@ -337,7 +341,7 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(HIGHWATER_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
             if(!reached) {
                 throw new TimeoutException("Took too long to reach high water");
@@ -381,7 +385,7 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(HIGHWATER_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
             if(!reached) {
                 throw new TimeoutException("Took too long to reach high water");
@@ -425,7 +429,7 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(HIGHWATER_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
             if(!reached) {
                 throw new TimeoutException("Took too long to reach high water");
@@ -469,7 +473,7 @@ public class ClientTest {
             consumer.start();
 
             // highWaterOffset method is called before this method returns, so we should be good!
-            boolean reached = consumer.awaitHighWaterOffset(4, TimeUnit.SECONDS);
+            boolean reached = consumer.awaitHighWaterOffset(HIGHWATER_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
             if(!reached) {
                 throw new TimeoutException("Took too long to reach high water");
