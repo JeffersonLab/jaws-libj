@@ -3,7 +3,8 @@ Reusable Java Classes for [JAWS](https://github.com/JeffersonLab/jaws).  Entity 
 
 ---
  - [Install](https://github.com/JeffersonLab/jaws-libj#install)   
- - [API](https://github.com/JeffersonLab/jaws-libj#api)    
+ - [API](https://github.com/JeffersonLab/jaws-libj#api)
+ - [Configure](https://github.com/JeffersonLab/jaws-libj#configure)       
  - [Build](https://github.com/JeffersonLab/jaws-libj#build)
  - [Test](https://github.com/JeffersonLab/jaws-libj#test)
  - [Release](https://github.com/JeffersonLab/jaws-libj#release)
@@ -22,6 +23,9 @@ Check the [Release Notes](https://github.com/JeffersonLab/jaws-libj/releases) to
 
 ## API
 [Javadocs](https://jeffersonlab.github.io/jaws-libj)
+
+## Configure
+Each client class requires a Java Properties object in the constructor to indicate configuration.   The expected properties match those in the [kakfa-common](https://github.com/JeffersonLab/kafka-common#configure) lib.
 
 ## Build
 This project is built with [Java 17](https://adoptium.net/) (compiled to Java 11 bytecode), and uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
