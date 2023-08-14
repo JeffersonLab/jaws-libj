@@ -62,11 +62,11 @@ configurations {
 }
 
 dependencies {
-    api "org.jlab:kafka-common:1.2.0"
+    api "org.jlab:kafka-common:1.3.0"
     implementation "org.apache.kafka:kafka-clients:3.5.0",
-            "org.apache.avro:avro:1.11.2",
-            "org.slf4j:slf4j-log4j12:1.7.36",
-            "io.confluent:kafka-avro-serializer:7.4.0"
+                   "org.apache.avro:avro:1.11.2",
+                   "org.slf4j:slf4j-log4j12:1.7.36",
+                   "io.confluent:kafka-avro-serializer:7.4.0"
     testImplementation "junit:junit:4.13.2"
 }
 
@@ -110,7 +110,7 @@ javadoc {
     options.overview = "src/main/java/overview.html"
     options.source = 11
     options.with {
-        links 'https://docs.oracle.com/en/java/javase/11/docs/api/', 'https://jeffersonlab.github.io/kafka-common/1.1.0/'
+        links 'https://docs.oracle.com/en/java/javase/11/docs/api/', 'https://jeffersonlab.github.io/kafka-common/v1.3.0/'
     }
     options.addStringOption('Xdoclint/package:-org.jlab.jaws.entity', '-quiet')
 }
