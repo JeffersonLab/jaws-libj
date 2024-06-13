@@ -55,10 +55,12 @@ gradlew integrationTest
 ```
 
 ## Release
-1. Bump the version number and release date in [build.gradle](https://github.com/JeffersonLab/jaws-libj/blob/66188b79063c2223daa1800eb745b4f31d93193a/build.gradle#L12-L14) and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)).   
-1. Create a new release on the GitHub [Releases](https://github.com/JeffersonLab/jaws-libj/releases) page corresponding to same version in build.gradle (Enumerate changes and link issues)
-1. [Publish to Maven Central](https://github.com/JeffersonLab/jaws-libj/actions/workflows/maven-publish.yaml) GitHub Action should run automatically.
-1. [Publish to gh-pages](https://github.com/JeffersonLab/jaws-libj/actions/workflows/gh-pages-publish.yaml) GitHub Action should run automatically.
+1. Bump the version number in the VERSION file and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)).
+2. The [CD](https://github.com/JeffersonLab/jmyapi/blob/main/.github/workflows/cd.yml) GitHub Action should run automatically invoking:
+   - The [Create release](https://github.com/JeffersonLab/java-workflows/blob/main/.github/workflows/gh-release.yaml) GitHub Action to tag the source and create release notes summarizing any pull requests.   Edit the release notes to add any missing details.
+   - The [Publish artifact](https://github.com/JeffersonLab/java-workflows/blob/main/.github/workflows/maven-publish.yaml) GitHub Action to create a deployment artifact on maven central.
+   - The [Publish docs](https://github.com/JeffersonLab/java-workflows/blob/main/.github/workflows/gh-pages-publish.yaml) GitHub Action to create javadocs.
+
 
 ## See Also
 - [jaws-libp (Python)](https://github.com/JeffersonLab/jaws-libp)
