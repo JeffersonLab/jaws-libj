@@ -100,7 +100,6 @@ public class ClientTest {
                     AlarmPriority.P1_CRITICAL,
                     "rationale",
                     "correctiveaction",
-                    "pointofcontactusername",
                     true,
                     true,
                     null,
