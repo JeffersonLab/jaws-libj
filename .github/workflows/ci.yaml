@@ -17,11 +17,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Start containers
-        run: docker compose -f deps.yml up -d
+        run: docker compose -f deps.yaml up -d
       - name: Wait for containers to settle
         run: docker exec -i kafka bash -c "sleep 20"
       - name: Run build and integration test
         run: ./gradlew integrationTest
       - name: Stop containers
         if: always()
-        run: docker compose -f deps.yml down
+        run: docker compose -f deps.yaml down

@@ -1,4 +1,4 @@
-# jaws-libj [![CI with Docker and Gradle](https://github.com/JeffersonLab/jaws-libj/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/JeffersonLab/jaws-libj/actions/workflows/ci.yml) [![Maven Central](https://badgen.net/maven/v/maven-central/org.jlab/jaws-libj)](https://repo1.maven.org/maven2/org/jlab/jaws-libj/)
+# jaws-libj [![CI with Docker and Gradle](https://github.com/JeffersonLab/jaws-libj/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/JeffersonLab/jaws-libj/actions/workflows/ci.yaml) [![Maven Central](https://badgen.net/maven/v/maven-central/org.jlab/jaws-libj)](https://repo1.maven.org/maven2/org/jlab/jaws-libj/)
 Reusable Java Classes for [JAWS](https://github.com/JeffersonLab/jaws).  Entity classes generated to match the JAWS AVRO schemas are included as well as consumer client classes.
 
 ---
@@ -45,11 +45,11 @@ Set up the build environment following the [Build](https://github.com/JeffersonL
 
 In order to iterate rapidly when making changes it's often useful to create new tests and run them directly on the local workstation, perhaps leveraging an IDE.  In this scenario run the service dependencies with Docker Compose:
 ```
-docker compose -f deps.yml up
+docker compose -f deps.yaml up
 ```
 
 ## Test
-The integration tests depend on a running Kafka instance, generally in Docker. The tests run automatically via the [CI](https://github.com/JeffersonLab/jaws-libj/actions/workflows/ci.yml) GitHub Action on every commit (unless [no ci] is included in the commit message). The tests can be run locally during development. Set up the development environment following the [Develop](https://github.com/JeffersonLab/jaws-libj#develop) instructions. Then with the deps.yml Docker containers running execute:
+The integration tests depend on a running Kafka instance, generally in Docker. The tests run automatically via the [CI](https://github.com/JeffersonLab/jaws-libj/actions/workflows/ci.yaml) GitHub Action on every commit (unless [no ci] is included in the commit message). The tests can be run locally during development. Set up the development environment following the [Develop](https://github.com/JeffersonLab/jaws-libj#develop) instructions. Then with the deps.yaml Docker containers running execute:
 ```
 gradlew integrationTest
 ```
@@ -57,8 +57,8 @@ gradlew integrationTest
 ## Release
 1. Bump the version number and release date in [build.gradle](https://github.com/JeffersonLab/jaws-libj/blob/66188b79063c2223daa1800eb745b4f31d93193a/build.gradle#L12-L14) and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)).   
 1. Create a new release on the GitHub [Releases](https://github.com/JeffersonLab/jaws-libj/releases) page corresponding to same version in build.gradle (Enumerate changes and link issues)
-1. [Publish to Maven Central](https://github.com/JeffersonLab/jaws-libj/actions/workflows/maven-publish.yml) GitHub Action should run automatically.
-1. [Publish to gh-pages](https://github.com/JeffersonLab/jaws-libj/actions/workflows/gh-pages-publish.yml) GitHub Action should run automatically.
+1. [Publish to Maven Central](https://github.com/JeffersonLab/jaws-libj/actions/workflows/maven-publish.yaml) GitHub Action should run automatically.
+1. [Publish to gh-pages](https://github.com/JeffersonLab/jaws-libj/actions/workflows/gh-pages-publish.yaml) GitHub Action should run automatically.
 
 ## See Also
 - [jaws-libp (Python)](https://github.com/JeffersonLab/jaws-libp)
