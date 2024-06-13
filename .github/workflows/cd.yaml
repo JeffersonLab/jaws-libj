@@ -1,0 +1,26 @@
+name: CD
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'VERSION'
+    tags-ignore:
+      - '**'
+
+jobs:
+  release:
+    uses: jeffersonlab/java-workflows/.github/workflows/gh-release.yaml@v2
+
+  docs_publish:
+    needs:
+      - release
+    uses: jeffersonlab/java-workflows/.github/workflows/gh-pages-publish.yaml@v2
+    with:
+      semvertag: ${{ needs.release.outputs.semvertag }}
+
+  artifact_publish:
+    needs:
+      - release
+    uses: jeffersonlab/java-workflows/.github/workflows/maven-publish.yaml@v2
+    secrets: inherit
