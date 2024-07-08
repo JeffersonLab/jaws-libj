@@ -43,17 +43,17 @@ public class ClientTest {
 
     @Test
     public void categoryTest() throws InterruptedException, ExecutionException, TimeoutException {
-        LinkedHashMap<String, EventSourceRecord<String, String>> results = new LinkedHashMap<>();
+        LinkedHashMap<String, EventSourceRecord<String, AlarmCategory>> results = new LinkedHashMap<>();
 
         try(CategoryConsumer consumer = new CategoryConsumer(clientOverrides)) {
             consumer.addListener(new EventSourceListener<>() {
                 @Override
-                public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, String>> records) {
+                public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, AlarmCategory>> records) {
                     results.putAll(records);
                 }
             });
 
-            String expected = "";
+            AlarmCategory expected = new AlarmCategory("team1");
 
             try(CategoryProducer producer = new CategoryProducer(clientOverrides)) {
                 Future<RecordMetadata> future = producer.send("TESTING", expected);
