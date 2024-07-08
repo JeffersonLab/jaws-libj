@@ -4,6 +4,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.header.Header;
+import org.jlab.jaws.entity.AlarmCategory;
 
 import java.time.Instant;
 import java.util.Properties;
@@ -13,7 +14,7 @@ import java.util.concurrent.Future;
  * A Producer provides default properties values for CLIENT_ID, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
  * A default send method is also provided.
  */
-public class CategoryProducer extends JAWSProducer<String, String> {
+public class CategoryProducer extends JAWSProducer<String, AlarmCategory> {
     /**
      * The topic name
      */
@@ -37,7 +38,7 @@ public class CategoryProducer extends JAWSProducer<String, String> {
 
         defaults.put(ProducerConfig.CLIENT_ID_CONFIG, "category-producer" + Instant.now().toString() + "-" + Math.random());
         defaults.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
-        defaults.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
+        defaults.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "io.confluent.kafka.serializers.KafkaAvroSerializer");
 
         defaults.putAll(overrides);
 
@@ -51,7 +52,7 @@ public class CategoryProducer extends JAWSProducer<String, String> {
      * @param value The message value
      * @return An asynchronous call Future reference
      */
-    public Future<RecordMetadata> send(String key, String value) {
+    public Future<RecordMetadata> send(String key, AlarmCategory value) {
 
         Iterable<Header> headers = getDefaultHeaders();
 

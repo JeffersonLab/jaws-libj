@@ -1,5 +1,6 @@
 package org.jlab.jaws.clients;
 
+import org.jlab.jaws.entity.AlarmCategory;
 import org.jlab.kafka.eventsource.EventSourceConfig;
 
 import java.time.Instant;
@@ -8,7 +9,7 @@ import java.util.Properties;
 /**
  * A Consumer provides default properties values for GROUP, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
  */
-public class CategoryConsumer extends JAWSConsumer<String, String> {
+public class CategoryConsumer extends JAWSConsumer<String, AlarmCategory> {
     /**
      * Create a new Consumer with the provided property overrides.
      *
@@ -28,7 +29,7 @@ public class CategoryConsumer extends JAWSConsumer<String, String> {
         defaults.put(EventSourceConfig.GROUP_ID_CONFIG, "category-consumer" + Instant.now().toString() + "-" + Math.random());
         defaults.put(EventSourceConfig.TOPIC_CONFIG, CategoryProducer.TOPIC);
         defaults.put(EventSourceConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
-        defaults.put(EventSourceConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+        defaults.put(EventSourceConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "io.confluent.kafka.serializers.KafkaAvroDeserializer");
 
         defaults.putAll(overrides);
 
