@@ -1,6 +1,6 @@
 package org.jlab.jaws.clients;
 
-import org.jlab.jaws.entity.AlarmCategory;
+import org.jlab.jaws.entity.AlarmSystem;
 import org.jlab.kafka.eventsource.EventSourceConfig;
 
 import java.time.Instant;
@@ -9,13 +9,13 @@ import java.util.Properties;
 /**
  * A Consumer provides default properties values for GROUP, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
  */
-public class CategoryConsumer extends JAWSConsumer<String, AlarmCategory> {
+public class SystemConsumer extends JAWSConsumer<String, AlarmSystem> {
     /**
      * Create a new Consumer with the provided property overrides.
      *
      * @param props The properties, which will override any defaults set by this class
      */
-    public CategoryConsumer(Properties props) {
+    public SystemConsumer(Properties props) {
         super(setDefaults(props));
     }
 
@@ -26,8 +26,8 @@ public class CategoryConsumer extends JAWSConsumer<String, AlarmCategory> {
             overrides = new Properties();
         }
 
-        defaults.put(EventSourceConfig.GROUP_ID_CONFIG, "category-consumer" + Instant.now().toString() + "-" + Math.random());
-        defaults.put(EventSourceConfig.TOPIC_CONFIG, CategoryProducer.TOPIC);
+        defaults.put(EventSourceConfig.GROUP_ID_CONFIG, "system-consumer" + Instant.now().toString() + "-" + Math.random());
+        defaults.put(EventSourceConfig.TOPIC_CONFIG, SystemProducer.TOPIC);
         defaults.put(EventSourceConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         defaults.put(EventSourceConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "io.confluent.kafka.serializers.KafkaAvroDeserializer");
 

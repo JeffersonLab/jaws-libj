@@ -1,16 +1,16 @@
 {
     "type": "record",
-    "name": "AlarmInstance",
+    "name": "Alarm",
     "namespace": "org.jlab.jaws.entity",
-    "doc": "Instance of an alarm class",
+    "doc": "An alarm instance",
     "fields": [
         {
-            "name": "alarmclass",
+            "name": "action",
             "type": {
                 "type": "string",
                 "avro.java.string": "String"
             },
-            "doc": "The alarm class; provides inheritable shared values",
+            "doc": "The alarm action; provides inheritable shared class values",
             "default": "base"
         },
         {
@@ -74,6 +74,17 @@
                 "default": []
             },
             "doc": "The locations associated with the alarm"
+        },
+        {
+            "name": "managedby",
+            "type": [
+                "null",
+                {
+                    "type": "string",
+                    "avro.java.string": "String"
+                }
+            ],
+            "doc": "Whom manages this alarm"
         },
         {
             "name": "maskedby",
