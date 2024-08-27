@@ -42,20 +42,20 @@ public class ClientTest {
 
 
     @Test
-    public void categoryTest() throws InterruptedException, ExecutionException, TimeoutException {
-        LinkedHashMap<String, EventSourceRecord<String, AlarmCategory>> results = new LinkedHashMap<>();
+    public void systemTest() throws InterruptedException, ExecutionException, TimeoutException {
+        LinkedHashMap<String, EventSourceRecord<String, AlarmSystem>> results = new LinkedHashMap<>();
 
-        try(CategoryConsumer consumer = new CategoryConsumer(clientOverrides)) {
+        try(SystemConsumer consumer = new SystemConsumer(clientOverrides)) {
             consumer.addListener(new EventSourceListener<>() {
                 @Override
-                public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, AlarmCategory>> records) {
+                public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, AlarmSystem>> records) {
                     results.putAll(records);
                 }
             });
 
-            AlarmCategory expected = new AlarmCategory("team1");
+            AlarmSystem expected = new AlarmSystem("team1");
 
-            try(CategoryProducer producer = new CategoryProducer(clientOverrides)) {
+            try(SystemProducer producer = new SystemProducer(clientOverrides)) {
                 Future<RecordMetadata> future = producer.send("TESTING", expected);
 
                 // Block until sent or an exception is thrown
@@ -75,7 +75,7 @@ public class ClientTest {
             Assert.assertEquals(expected, results.values().iterator().next().getValue());
         } finally {
             // Cleanup
-            try(CategoryProducer producer = new CategoryProducer(clientOverrides)) {
+            try(SystemProducer producer = new SystemProducer(clientOverrides)) {
                 Future<RecordMetadata> future = producer.send("TESTING", null);
 
                 // Block until sent or an exception is thrown
@@ -85,18 +85,18 @@ public class ClientTest {
     }
 
     @Test
-    public void classTest() throws InterruptedException, ExecutionException, TimeoutException {
-        LinkedHashMap<String, EventSourceRecord<String, AlarmClass>> results = new LinkedHashMap<>();
+    public void actionTest() throws InterruptedException, ExecutionException, TimeoutException {
+        LinkedHashMap<String, EventSourceRecord<String, AlarmAction>> results = new LinkedHashMap<>();
 
-        try(ClassConsumer consumer = new ClassConsumer(clientOverrides)) {
+        try(ActionConsumer consumer = new ActionConsumer(clientOverrides)) {
             consumer.addListener(new EventSourceListener<>() {
                 @Override
-                public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, AlarmClass>> records) {
+                public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, AlarmAction>> records) {
                     results.putAll(records);
                 }
             });
 
-            AlarmClass expected = new AlarmClass("category",
+            AlarmAction expected = new AlarmAction("system",
                     AlarmPriority.P1_CRITICAL,
                     "rationale",
                     "correctiveaction",
@@ -105,7 +105,7 @@ public class ClientTest {
                     null,
                     null);
 
-            try(ClassProducer producer = new ClassProducer(clientOverrides)) {
+            try(ActionProducer producer = new ActionProducer(clientOverrides)) {
                 Future<RecordMetadata> future = producer.send("TESTING", expected);
 
                 // Block until sent or an exception is thrown
@@ -125,7 +125,7 @@ public class ClientTest {
             Assert.assertEquals(expected, results.values().iterator().next().getValue());
         } finally {
             // Cleanup
-            try(ClassProducer producer = new ClassProducer(clientOverrides)) {
+            try(ActionProducer producer = new ActionProducer(clientOverrides)) {
                 Future<RecordMetadata> future = producer.send("TESTING", null);
 
                 // Block until sent or an exception is thrown
@@ -135,24 +135,25 @@ public class ClientTest {
     }
 
     @Test
-    public void instanceTest() throws InterruptedException, ExecutionException, TimeoutException {
-        LinkedHashMap<String, EventSourceRecord<String, AlarmInstance>> results = new LinkedHashMap<>();
+    public void alarmTest() throws InterruptedException, ExecutionException, TimeoutException {
+        LinkedHashMap<String, EventSourceRecord<String, Alarm>> results = new LinkedHashMap<>();
 
-        try(InstanceConsumer consumer = new InstanceConsumer(clientOverrides)) {
+        try(AlarmConsumer consumer = new AlarmConsumer(clientOverrides)) {
             consumer.addListener(new EventSourceListener<>() {
                 @Override
-                public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, AlarmInstance>> records) {
+                public void highWaterOffset(LinkedHashMap<String, EventSourceRecord<String, Alarm>> records) {
                     results.putAll(records);
                 }
             });
 
-            AlarmInstance expected = new AlarmInstance("class", "device",
+            Alarm expected = new Alarm("action", "device",
                     new Source(),
                     Arrays.asList(new String[]{"location1"}),
+                    "managedby",
                     "maskedby",
                     "screencommand");
 
-            try(InstanceProducer producer = new InstanceProducer(clientOverrides)) {
+            try(AlarmProducer producer = new AlarmProducer(clientOverrides)) {
                 Future<RecordMetadata> future = producer.send("TESTING", expected);
 
                 // Block until sent or an exception is thrown
@@ -172,7 +173,7 @@ public class ClientTest {
             Assert.assertEquals(expected, results.values().iterator().next().getValue());
         } finally {
             // Cleanup
-            try(InstanceProducer producer = new InstanceProducer(clientOverrides)) {
+            try(AlarmProducer producer = new AlarmProducer(clientOverrides)) {
                 Future<RecordMetadata> future = producer.send("TESTING", null);
 
                 // Block until sent or an exception is thrown

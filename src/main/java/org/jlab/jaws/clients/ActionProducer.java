@@ -4,7 +4,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.header.Header;
-import org.jlab.jaws.entity.AlarmCategory;
+import org.jlab.jaws.entity.AlarmAction;
 
 import java.time.Instant;
 import java.util.Properties;
@@ -14,18 +14,18 @@ import java.util.concurrent.Future;
  * A Producer provides default properties values for CLIENT_ID, TOPIC, KEY_DESERIALIZER, and VALUE_DESERIALIZER.
  * A default send method is also provided.
  */
-public class CategoryProducer extends JAWSProducer<String, AlarmCategory> {
+public class ActionProducer extends JAWSProducer<String, AlarmAction> {
     /**
      * The topic name
      */
-    public static final String TOPIC = "alarm-categories";
+    public static final String TOPIC = "alarm-actions";
 
     /**
      * Create a new Producer with the provided property overrides.
      *
      * @param props The properties, which will override any defaults set by this class
      */
-    public CategoryProducer(Properties props) {
+    public ActionProducer(Properties props) {
         super(setDefaults(props));
     }
 
@@ -36,7 +36,7 @@ public class CategoryProducer extends JAWSProducer<String, AlarmCategory> {
             overrides = new Properties();
         }
 
-        defaults.put(ProducerConfig.CLIENT_ID_CONFIG, "category-producer" + Instant.now().toString() + "-" + Math.random());
+        defaults.put(ProducerConfig.CLIENT_ID_CONFIG, "action-producer" + Instant.now().toString() + "-" + Math.random());
         defaults.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         defaults.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "io.confluent.kafka.serializers.KafkaAvroSerializer");
 
@@ -52,7 +52,7 @@ public class CategoryProducer extends JAWSProducer<String, AlarmCategory> {
      * @param value The message value
      * @return An asynchronous call Future reference
      */
-    public Future<RecordMetadata> send(String key, AlarmCategory value) {
+    public Future<RecordMetadata> send(String key, AlarmAction value) {
 
         Iterable<Header> headers = getDefaultHeaders();
 
